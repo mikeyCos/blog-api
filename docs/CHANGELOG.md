@@ -2,6 +2,8 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 14 APR 2025
+- Changed `Prisma` client output location from `"./prisma/generated"` to `"./generated/client"`.
+- Deleted `prisma/migrations` subdirectory.
 - Created `prisma` subdirectory and `*.prisma` files.
 - Installed `prisma` package to `devDependencies`.
 - Installed `@prisma/client` package to `dependencies`.
