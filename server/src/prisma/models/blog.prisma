@@ -1,0 +1,23 @@
+model Blog {
+  id       String @id @default(uuid())
+  posts    Post[]
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String @unique
+}
+
+model Post {
+  id       String    @id @default(uuid())
+  blog     Blog      @relation(fields: [blogId], references: [id])
+  blogId   String
+  author   User      @relation(fields: [authorId], references: [id])
+  authorId String
+  comments Comment[]
+}
+
+model Comment {
+  id       String @id @default(uuid())
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+  post     Post   @relation(fields: [postId], references: [id])
+  postId   String
+}

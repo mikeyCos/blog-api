@@ -2,6 +2,10 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 14 APR 2025
+- Created `prisma` subdirectory and `*.prisma` files.
+- Installed `prisma` package to `devDependencies`.
+- Installed `@prisma/client` package to `dependencies`.
+- Initial commit for `blog-api` project.
 - Merged `fix-cannot-find-module` branch with `main`.
 - Created boilerplate `Pizza` page in `client` directory; fetches `http://localhost:3000/pizza` and creates a list of pizzas.
 - Created boilerplate `pizza` routes and controllers in `server` directory.
