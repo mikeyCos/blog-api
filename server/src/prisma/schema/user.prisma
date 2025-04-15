@@ -3,4 +3,11 @@ model User {
   blog     Blog?
   posts    Post[]
   comments Comment[]
+  role     Role      @default(USER)
+}
+
+enum Role {
+  USER
+  AUTHOR
+  ADMIN
 }

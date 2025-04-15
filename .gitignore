@@ -134,3 +134,4 @@ Dockerfile
 fly.toml
 .dockerignore
 .github
+**/generated/prisma
