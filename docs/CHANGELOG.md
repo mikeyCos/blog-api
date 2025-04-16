@@ -2,9 +2,11 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 15 APR 2025
+- Added `username` and `timestamp` to `user` model in `user.prisma` schema.
+- Created `server-controllers` branch.
 - Created `user` and `blog` modules in `routes` subdirectory.
 - Created `user.controller` and `blog.controller` modules.
-- Created `db` and `interfaces` subdirectories.
+- Created `db`, `interfaces`, and `validators` subdirectories.
 - Resolved Prisma `Error code: P1012` by using a relative path, `../generated/prisma`, for the `client` in `schema.prisma`.
 - Created enum `Role` in `user.prisma`.
 ---

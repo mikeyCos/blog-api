@@ -1,15 +1,20 @@
 import { RequestHandler } from "express";
 import asyncHandler = require("express-async-handler");
-import { getUser, getUsers, deleteUser } from "../services/user";
+import { createUser, getUser, getUsers, deleteUser } from "../services/user";
 
 import { UserId } from "../interfaces/user";
 
 interface userController {
+  createUser: RequestHandler;
   getUser: RequestHandler<UserId>;
   getUsers: RequestHandler;
 }
 
 const userController = {
+  createUser: asyncHandler(async (req, res) => {
+    const user = await createUser(req.body);
+    res.json(user);
+  }),
   getUser: asyncHandler(async (req, res) => {
     const { id } = req.params;
     const user = await getUser(id);

@@ -1,8 +1,8 @@
 import prisma from "../config/prisma";
-import { UserId } from "../interfaces/user";
+import { Id, User } from "../interfaces/user";
 
-export const createUser = async () => {
-  const user = await prisma.user.create({
+export const createUser = async ({}) => {
+  /* const user = await prisma.user.create({
     data: {
       blog: {
         create: {},
@@ -10,20 +10,10 @@ export const createUser = async () => {
     },
   });
 
-  return user;
+  return user; */
 };
 
-export const deleteUser = async (id: string) => {
-  const user = await prisma.user.delete({
-    where: {
-      id: id,
-    },
-  });
-
-  return user;
-};
-
-export const getUser = async (id: string) => {
+export const getUser = async (id: Id) => {
   const user = await prisma.user.findUnique({
     where: {
       id: id,
@@ -37,4 +27,14 @@ export const getUsers = async () => {
   const users = await prisma.user.findMany();
 
   return users;
+};
+
+export const deleteUser = async (id: Id) => {
+  const user = await prisma.user.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  return user;
 };

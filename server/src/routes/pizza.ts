@@ -1,5 +1,5 @@
 import { Router } from "express";
-import pizzaController from "../controllers/pizzaController";
+import pizzaController from "../controllers/pizza.controller";
 
 const pizzaRoutes = () => {
   const pizzaRouter = Router();
