@@ -1,5 +1,6 @@
+import { RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
-import { checkSchema, validationResult, Schema } from "express-validator";
+import { checkSchema, Schema, validationResult } from "express-validator";
 import { getUser } from "../services/user";
 
 const isIdValid = async (id: string) => {
@@ -18,15 +19,21 @@ const userSchema = {
   },
 };
 
-const validateParams = (schema: Schema) => {
-  return asyncHandler(async (req, res, next) => {
-    await checkSchema(schema, ["params"]).run(req);
-    const errors = validationResult(req);
+const validateParams = (schema: Schema): RequestHandler => {
+  const paramsValidator: RequestHandler = asyncHandler(
+    async (req, res, next) => {
+      await checkSchema(schema, ["params"]).run(req);
+      const errors = validationResult(req);
 
-    if (!errors.isEmpty()) next({ status: 404, message: "Resource not found" });
+      if (!errors.isEmpty()) {
+        next({ status: 404, message: "Resource not found" });
+      }
 
-    next();
-  });
+      next();
+    }
+  );
+
+  return paramsValidator;
 };
 
 export { validateParams as default, userSchema };

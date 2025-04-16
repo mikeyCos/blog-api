@@ -1,6 +1,14 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 16 APR 2025
+- Installed `bcryptjs` package.
+- Created npm script `seed-db`; this will run `seedDB` function from `seed.db.ts` module.
+- A user can be created, read, and deleted.
+- Added referential action `onDelete: Cascade` to the `Blog` model.
+- Added `.route` suffix to route files.
+- Added `.controller` suffix to controller files.
+---
 ### 15 APR 2025
 - Added `username` and `timestamp` to `user` model in `user.prisma` schema.
 - Created `server-controllers` branch.

@@ -11,13 +11,13 @@ const userRoutes = () => {
   userRouter.get("/", getUsers);
 
   // POST requests
-  // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3000/user -d '{"username":"squinton"}'
+  // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/user -d '{"username":"squinton", "password":"passWord123"}'
   userRouter.post("/", createUser);
 
   // PUT requests
 
   // DELETE requests
-  userRouter.delete("/:id", deleteUser);
+  userRouter.delete("/:id", validateParams(userSchema), deleteUser);
   return userRouter;
 };
 export default userRoutes;

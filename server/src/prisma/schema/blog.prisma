@@ -1,7 +1,7 @@
 model Blog {
   id       String @id @default(uuid())
   posts    Post[]
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String @unique
 }
 
@@ -9,14 +9,14 @@ model Post {
   id       String    @id @default(uuid())
   blog     Blog      @relation(fields: [blogId], references: [id])
   blogId   String
-  author   User      @relation(fields: [authorId], references: [id])
+  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
   comments Comment[]
 }
 
 model Comment {
   id       String @id @default(uuid())
-  author   User   @relation(fields: [authorId], references: [id])
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
   post     Post   @relation(fields: [postId], references: [id])
   postId   String

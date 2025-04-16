@@ -6,10 +6,10 @@ const pizzaRoutes = () => {
   const { getPizza, getPizzas } = pizzaController;
 
   // GET requests
-  // curl -w "\n" -X GET http://localhost:3000/pizza/
+  // curl -w "\n" -X GET http://localhost:3001/pizza/
   pizzaRouter.get("/", getPizzas);
 
-  // curl -w "\n" -X GET http://localhost:3000/pizza/:id
+  // curl -w "\n" -X GET http://localhost:3001/pizza/:id
   pizzaRouter.get("/:id", getPizza);
 
   // POST requests

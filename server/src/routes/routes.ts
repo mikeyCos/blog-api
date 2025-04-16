@@ -1,7 +1,7 @@
 import express, { Application } from "express";
-import blogRoutes from "./blog";
-import userRoutes from "./user";
-import pizzaRoutes from "./pizzas";
+import blogRoutes from "./blog.route";
+import userRoutes from "./user.route";
+import pizzaRoutes from "./pizza.route";
 
 // Import routes and mount routes on specific paths
 const routes = (app: Application) => {

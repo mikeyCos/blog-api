@@ -4,7 +4,8 @@ model User {
   posts     Post[]
   comments  Comment[]
   role      Role      @default(USER)
-  username  String
+  username  String    @unique
+  password  String
   timestamp DateTime  @default(now())
 }
 
