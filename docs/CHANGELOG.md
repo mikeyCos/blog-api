@@ -2,7 +2,13 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 16 APR 2025
+- Defined query functions for blog posts and comments in `services/blog.ts`.
+- Added `content` field to `Comment` model.
+- Added `title` and `content` fields to `Post` model.
+- Created `blog` in `services` subdirectory.
+- Created `post.controller` and `post.route` modules.
 - Installed `bcryptjs` package.
+- Created npm script `clear-db`; this will run `clearDB` function from `seed.db.ts` module.
 - Created npm script `seed-db`; this will run `seedDB` function from `seed.db.ts` module.
 - A user can be created, read, and deleted.
 - Added referential action `onDelete: Cascade` to the `Blog` model.

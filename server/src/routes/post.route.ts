@@ -12,7 +12,7 @@ const postRoutes = () => {
     getPostComment,
     getPostComments,
     deletePost,
-    deletePostComment
+    deletePostComment,
   } = postController;
 
   // GET requests
@@ -23,13 +23,13 @@ const postRoutes = () => {
 
   // POST requests
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/user -d '{"username":"squinton", "password":"passWord123"}'
-  postRouter.post("/:postId", createPost);
+  postRouter.post("/:postId", createPost); // Needs to be protected
   postRouter.post("/:postId/comment", createPostComment);
   // PUT requests
 
   // DELETE requests
-  postRouter.delete("/:postId", deletePost);
-  postRouter.delete('/:postId/comments/:commentId' deletePostComment)
+  postRouter.delete("/:postId", deletePost); // Needs to be protected
+  postRouter.delete("/:postId/comments/:commentId", deletePostComment); // Needs to be protected(?)
 
   return postRouter;
 };

@@ -6,12 +6,15 @@ model Blog {
 }
 
 model Post {
-  id       String    @id @default(uuid())
-  blog     Blog      @relation(fields: [blogId], references: [id])
-  blogId   String
-  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId String
-  comments Comment[]
+  id        String    @id @default(uuid())
+  blog      Blog      @relation(fields: [blogId], references: [id])
+  blogId    String
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  title     String
+  content   String
 }
 
 model Comment {
@@ -20,4 +23,5 @@ model Comment {
   authorId String
   post     Post   @relation(fields: [postId], references: [id])
   postId   String
+  content  String
 }
