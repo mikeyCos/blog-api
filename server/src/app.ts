@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Application-level
 app.use("/", (req: Request, res: Response, next: NextFunction) => {
-  console.log("Testing");
+  console.log("Application-level middleware running...");
   next();
 });
 

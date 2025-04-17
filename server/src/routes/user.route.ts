@@ -7,7 +7,7 @@ const userRoutes = () => {
   const { createUser, getUser, getUsers, deleteUser } = userController;
 
   // GET requests
-  userRouter.get("/:id", validateParams(userSchema), getUser);
+  userRouter.get("/:userId", validateParams(userSchema), getUser);
   userRouter.get("/", getUsers);
 
   // POST requests
@@ -17,7 +17,7 @@ const userRoutes = () => {
   // PUT requests
 
   // DELETE requests
-  userRouter.delete("/:id", validateParams(userSchema), deleteUser);
+  userRouter.delete("/:userId", validateParams(userSchema), deleteUser);
   return userRouter;
 };
 export default userRoutes;

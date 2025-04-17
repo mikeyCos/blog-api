@@ -1,5 +1,5 @@
 export interface User {
-  id: Id;
+  id: userId;
   blog: object;
   posts: [];
   comments: [];
@@ -8,8 +8,13 @@ export interface User {
 
 type Role = "USER" | "AUTHOR" | "ADMIN";
 
-export interface UserId {
-  id: Id;
+export interface CreateUser {
+  username: string;
+  password: string;
 }
 
-export type Id = string;
+export interface UserIdParams {
+  userId: userId;
+}
+
+export type userId = string;

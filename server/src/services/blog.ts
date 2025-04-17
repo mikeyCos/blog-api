@@ -44,12 +44,23 @@ export const createComment = async ({
   authorId,
   content,
 }: CreateComment) => {
-  /* const newComment = prisma.comment.create({
+  const newComment = prisma.comment.create({
     data: {
-    }
+      post: {
+        connect: {
+          id: postId,
+        },
+      },
+      author: {
+        connect: {
+          id: authorId,
+        },
+      },
+      content: content,
+    },
+  });
 
-    return newComment
-  }) */
+  return newComment;
 };
 
 export const getPost = async (postId: string) => {

@@ -10,7 +10,7 @@ const isIdValid = async (id: string) => {
 };
 
 const userSchema = {
-  id: {
+  userId: {
     trim: true,
     custom: {
       options: isIdValid,
@@ -24,7 +24,6 @@ const validateParams = (schema: Schema): RequestHandler => {
     async (req, res, next) => {
       await checkSchema(schema, ["params"]).run(req);
       const errors = validationResult(req);
-
       if (!errors.isEmpty()) {
         next({ status: 404, message: "Resource not found" });
       }

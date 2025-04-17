@@ -11,17 +11,18 @@ model Post {
   blogId    String
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
-  comments  Comment[]
+  comments  Comment[] @relation("PostComments")
   createdAt DateTime  @default(now())
   title     String
   content   String
 }
 
 model Comment {
-  id       String @id @default(uuid())
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId String
-  post     Post   @relation(fields: [postId], references: [id])
-  postId   String
-  content  String
+  id        String   @id @default(uuid())
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  post      Post     @relation("PostComments", fields: [postId], references: [id])
+  postId    String
+  createdAt DateTime @default(now())
+  content   String
 }

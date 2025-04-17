@@ -1,13 +1,8 @@
 import prisma from "../config/prisma";
-import { Id, User } from "../interfaces/user";
-
-interface NewUser {
-  username: string;
-  password: string;
-}
+import { User, userId, CreateUser } from "../interfaces/user";
 
 // How can I throw error from services to endpoint?
-export const createUser = async ({ username, password }: NewUser) => {
+export const createUser = async ({ username, password }: CreateUser) => {
   const user = await prisma.user.create({
     data: {
       username,
@@ -21,10 +16,10 @@ export const createUser = async ({ username, password }: NewUser) => {
   return user;
 };
 
-export const getUser = async (id: Id) => {
+export const getUser = async (userId: userId) => {
   const user = await prisma.user.findUnique({
     where: {
-      id: id,
+      id: userId,
     },
   });
 
@@ -37,10 +32,10 @@ export const getUsers = async () => {
   return users;
 };
 
-export const deleteUser = async (id: Id) => {
+export const deleteUser = async (userId: userId) => {
   const user = await prisma.user.delete({
     where: {
-      id: id,
+      id: userId,
     },
   });
 

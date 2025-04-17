@@ -17,13 +17,13 @@ const postRoutes = () => {
 
   // GET requests
   postRouter.get("/:postId", getPost);
-  postRouter.get("/:postId", getPosts);
+  postRouter.get("/:blogId", getPosts);
   postRouter.get("/:postId/comments/:commentId", getPostComment);
   postRouter.get("/:postId/comments", getPostComments);
 
   // POST requests
-  // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/user -d '{"username":"squinton", "password":"passWord123"}'
-  postRouter.post("/:postId", createPost); // Needs to be protected
+  // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'
+  postRouter.post("/", createPost); // Needs to be protected
   postRouter.post("/:postId/comment", createPostComment);
   // PUT requests
 

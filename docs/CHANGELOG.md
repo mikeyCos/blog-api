@@ -1,6 +1,14 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 17 APR 2025
+- Created `blog` interface.
+- Added `createdAt` field to `Comment` model.
+- Added `name` argument to `relation` attribute in `blog.prisma` schema.
+- Defined `UserIdParams` interface; this is used as a generic for `matchedData` in `user.controller`.
+- Deleted `blog.route` and `blog.controller` modules.
+- Changed request parameters on `/user` route from `/:id` to `userId`.
+---
 ### 16 APR 2025
 - Defined query functions for blog posts and comments in `services/blog.ts`.
 - Added `content` field to `Comment` model.
