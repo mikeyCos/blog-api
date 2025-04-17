@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import asyncHandler = require("express-async-handler");
 
-interface blogController {
+interface BlogController {
   getBlog: RequestHandler<BlogId>;
 }
 
@@ -9,7 +9,7 @@ interface BlogId {
   id: string;
 }
 
-const blogController = {
+const blogController: BlogController = {
   getBlog: asyncHandler(async (req, res) => {}),
 };
 

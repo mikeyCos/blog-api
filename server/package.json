@@ -8,6 +8,7 @@
     "start": "node ./dist/server.js",
     "dev": "nodemon ./src/server.ts",
     "seed-db": "ts-node -e 'import { seedDB } from \"./src/db/seed.db\"; seedDB()'",
+    "clear-db": "ts-node -e 'import { clearDB } from \"./src/db/seed.db\"; clearDB()'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
