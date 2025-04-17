@@ -2,6 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 17 APR 2025
+- Merged `server-controllers` branch to `main` branch.
 - Created `blog` interface.
 - Added `createdAt` field to `Comment` model.
 - Added `name` argument to `relation` attribute in `blog.prisma` schema.
