@@ -2,6 +2,9 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 17 APR 2025
+- Created `auth.route` module.
+- Installed `jsonwebtoken` package.
+- Created `server-authentication` branch.
 - Merged `server-controllers` branch to `main` branch.
 - Created `blog` interface.
 - Added `createdAt` field to `Comment` model.
