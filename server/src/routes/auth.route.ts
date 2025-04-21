@@ -1,13 +1,15 @@
 import { Router } from "express";
+import authController from "../controllers/auth.controller";
 
 const authRoutes = () => {
+  const { auth } = authController;
   const authRouter = Router();
 
   // GET requests
 
   // POST requests
-  // curl -w "\n" -X POST http://localhost:3001/pizza/
-  // authRouter.post("/login", getPizzas);
+  // curl -w "\n" -X POST http://localhost:3001/auth
+  authRouter.post("/login", auth);
 
   // curl -w "\n" -X POST http://localhost:3001/pizza/:id
   // authRouter.post("/logout", getPizza);

@@ -46,7 +46,7 @@ const seedDB = async () => {
     await seedUsers();
     console.log("Database seeded");
   } catch (err) {
-    console.log(err);
+    console.log("err:", err);
   }
 };
 

@@ -1,5 +1,8 @@
 export interface Blog {
   id: string;
   authorId: string;
-  content: string;
+}
+
+export interface CreatedAt {
+  createdAt: Date;
 }

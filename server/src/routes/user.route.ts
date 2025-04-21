@@ -7,6 +7,7 @@ const userRoutes = () => {
   const { createUser, getUser, getUsers, deleteUser } = userController;
 
   // GET requests
+  // curl -w "\n" -X GET http://localhost:3001/user/:userId
   userRouter.get("/:userId", validateParams(userSchema), getUser);
   userRouter.get("/", getUsers);
 

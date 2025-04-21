@@ -1,8 +1,8 @@
 import { Request, RequestHandler } from "express";
 import asyncHandler = require("express-async-handler");
 import { matchedData } from "express-validator";
-import { createUser, getUser, getUsers, deleteUser } from "../services/user";
 
+import { createUser, getUser, getUsers, deleteUser } from "../services/user";
 import { CreateUser, UserIdParams } from "../interfaces/user";
 import validateCreateUser from "../validators/createUser.validator";
 

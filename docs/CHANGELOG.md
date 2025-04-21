@@ -1,6 +1,22 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 20 APR 2025
+- Included `blog`, `posts` and `comments` for user objects returned from `getUser` and `getUsers` query functions.
+- Created `verifyToken` module and middleware.
+- User credentials are authenticated with `passport.authenticate`.
+---
+### 19 APR 2025
+- Query function `getUser` will throw a error if both arguments are falsy values.
+- Query function `deleteUser` will throw a error if `userId` is a falsy value.
+- `UserID` and `Username` types can be `string | undefined | null`.
+---
+### 18 APR 2025
+- Created `passport` module.
+- Renamed `login.*` modules to `auth.*`.
+- Created `*_added_created_at_field_comment` Prisma migration.
+- Installed `passport`, and `passport-local` packages.
+---
 ### 17 APR 2025
 - Created `auth.route` module.
 - Installed `jsonwebtoken` package.

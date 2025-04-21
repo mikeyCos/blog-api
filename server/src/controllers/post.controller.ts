@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import asyncHandler = require("express-async-handler");
 import { matchedData } from "express-validator";
+import jwt from "jsonwebtoken";
 
 import { createPost, createComment, getPost, getPosts } from "../services/blog";
 
@@ -20,8 +21,30 @@ const postController: PostController = {
     // For now the req.body values are strings
     // createPost needs blogId and authorId
     // blogId and authorId should be accessible from
-    const newPost = await createPost(req.body);
-    res.json(newPost);
+    console.log("createPost running...");
+    console.log("res.locals.token:", res.locals.token);
+
+    jwt.verify(
+      res.locals.token,
+      "secretKey",
+      async (err: any, authData: any) => {
+        console.log("err:", err);
+        if (err) {
+          res.sendStatus(403);
+        } else {
+          const { user } = authData;
+          console.log(authData);
+          const { title, content } = req.body;
+          const newPost = await createPost({
+            blogId: user.blog.id,
+            authorId: user.id,
+            title,
+            content,
+          });
+          res.json({ newPost, authData });
+        }
+      }
+    );
   }),
   createPostComment: asyncHandler(async (req, res) => {
     // const newPostComment = await createComment({...req.body, });

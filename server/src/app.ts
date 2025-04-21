@@ -10,6 +10,8 @@ const app: Application = express();
 // Enables pre-flight across-the-board l
 app.use(cors());
 
+import "./config/passport";
+
 // Parses incoming requests with JSON payloads
 app.use(express.json());
 

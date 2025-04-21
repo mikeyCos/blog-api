@@ -1,9 +1,20 @@
 export interface User {
-  id: userId;
-  blog: object;
-  posts: [];
-  comments: [];
+  id: UserId;
   role: Role;
+  timestamp: Date;
+  username: Username;
+  password: string;
+}
+
+// TODO
+// For now, this fixes the error for passport.serializeUser; Express.User
+declare global {
+  namespace Express {
+    interface User {
+      id: UserId;
+      username: Username;
+    }
+  }
 }
 
 type Role = "USER" | "AUTHOR" | "ADMIN";
@@ -14,7 +25,9 @@ export interface CreateUser {
 }
 
 export interface UserIdParams {
-  userId: userId;
+  userId: UserId;
 }
 
-export type userId = string;
+export type UserId = string | undefined | null;
+
+export type Username = string | undefined | null;

@@ -1,6 +1,8 @@
-import { Blog } from "./blog";
-import { CreatedAt } from "./post";
+import { CreatedAt } from "./blog";
 
-export interface Comment extends Blog, CreatedAt {
+export interface Comment extends CreatedAt {
+  id: string;
+  authorId: string;
   postId: string;
+  content: string;
 }

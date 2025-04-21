@@ -1,0 +1,62 @@
+// import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
+import { Strategy as LocalStrategy } from "passport-local";
+import passport from "passport";
+import bcrypt from "bcryptjs";
+
+import { getUser } from "../services/user";
+import { User, UserId } from "../interfaces/user";
+
+const verifyCallback = async (
+  username: string,
+  password: string,
+  done: Function
+) => {
+  console.log("LocalStrategy verifyCallback running...");
+  try {
+    console.log("username:", username);
+    console.log("password:", password);
+    const user = await getUser(null, username);
+    console.log("user:", user);
+    const match = user && (await bcrypt.compare(password, user.password));
+
+    if (!user || !match) {
+      return done(null, false, { message: "Invalid username or password" });
+    }
+
+    return done(null, user);
+  } catch (err) {
+    return done(err);
+  }
+};
+
+/* const verifyCallback = async (jwt_payload: any, done: Function) => {};
+
+const jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+const secretOrKey = "secret";
+const issue = "";
+const audience = "";
+
+const jwtStrategyOptions = {
+  jwtFromRequest,
+  secretOrKey,
+};
+ */
+// const strategy = new JwtStrategy(jwtStrategyOptions, verifyCallback);
+const strategy = new LocalStrategy(verifyCallback);
+passport.use(strategy);
+
+passport.serializeUser((user, done) => {
+  console.log("passport.serializeUser");
+  console.log("user:", user);
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id: UserId, done) => {
+  console.log("passport.deserializeUser");
+  try {
+    const user = await getUser(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});

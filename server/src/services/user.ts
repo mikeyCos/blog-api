@@ -1,5 +1,6 @@
 import prisma from "../config/prisma";
-import { User, userId, CreateUser } from "../interfaces/user";
+import { User, UserId, Username, CreateUser } from "../interfaces/user";
+import { Prisma } from "../prisma/generated/prisma";
 
 // How can I throw error from services to endpoint?
 export const createUser = async ({ username, password }: CreateUser) => {
@@ -16,10 +17,25 @@ export const createUser = async ({ username, password }: CreateUser) => {
   return user;
 };
 
-export const getUser = async (userId: userId) => {
+// Should I throw error if both arguments are falsy values?
+export const getUser = async (userId: UserId, username?: Username) => {
+  if (!userId && !username) {
+    throw new Error("Failed to execute 'getUser' 1 argument required.");
+  }
+
+  /* Non-null Assertion Operator (Postfix !)
+   * https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#non-null-assertion-operator-postfix-
+   */
+  const filter: Prisma.UserWhereUniqueInput = username
+    ? { username: username }
+    : { id: userId! };
+
   const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
+    where: filter,
+    include: {
+      blog: true,
+      posts: true,
+      comments: true,
     },
   });
 
@@ -27,12 +43,16 @@ export const getUser = async (userId: userId) => {
 };
 
 export const getUsers = async () => {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    include: { blog: true, posts: true, comments: true },
+  });
 
   return users;
 };
 
-export const deleteUser = async (userId: userId) => {
+export const deleteUser = async (userId: UserId) => {
+  if (!userId)
+    throw new Error("Failed to execute 'deleteUser' 1 argument required.");
   const user = await prisma.user.delete({
     where: {
       id: userId,
