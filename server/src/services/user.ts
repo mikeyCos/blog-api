@@ -30,6 +30,8 @@ export const getUser = async (userId: UserId, username?: Username) => {
     ? { username: username }
     : { id: userId! };
 
+  // TODO
+  // What to include on user object?
   const user = await prisma.user.findUnique({
     where: filter,
     include: {

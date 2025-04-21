@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import postController from "../controllers/post.controller";
 import validateParams from "../validators/params.validator";
-import verifyToken from "../middleware/verifyToken";
+import authenticateToken from "../middleware/authenticateToken";
 
 const postRoutes = () => {
   const postRouter = Router();
@@ -13,6 +13,7 @@ const postRoutes = () => {
     getPosts,
     getPostComment,
     getPostComments,
+    editPost,
     deletePost,
     deletePostComment,
   } = postController;
@@ -25,13 +26,20 @@ const postRoutes = () => {
 
   // POST requests
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'
-  postRouter.post("/", verifyToken, createPost); // Needs to be protected
+  // blogId and authorId are required
+  postRouter.post("/", authenticateToken, createPost); // Needs to be protected
   postRouter.post("/:postId/comment", createPostComment);
+
   // PUT requests
+  postRouter.put("/", authenticateToken, editPost);
 
   // DELETE requests
-  postRouter.delete("/:postId", deletePost); // Needs to be protected
-  postRouter.delete("/:postId/comments/:commentId", deletePostComment); // Needs to be protected(?)
+  postRouter.delete("/:postId", authenticateToken, deletePost); // Needs to be protected
+  postRouter.delete(
+    "/:postId/comments/:commentId",
+    authenticateToken,
+    deletePostComment
+  ); // Needs to be protected(?)
 
   return postRouter;
 };

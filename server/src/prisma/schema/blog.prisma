@@ -1,3 +1,4 @@
+// Is the Blog model needed?
 model Blog {
   id       String @id @default(uuid())
   posts    Post[]
@@ -13,6 +14,7 @@ model Post {
   authorId  String
   comments  Comment[] @relation("PostComments")
   createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   title     String
   content   String
 }

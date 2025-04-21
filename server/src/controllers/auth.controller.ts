@@ -3,16 +3,16 @@ import asyncHandler from "express-async-handler";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 
-import validateAuth from "../validators/auth.validator";
+import validateLogin from "../validators/login.validator";
 import { User } from "../interfaces/user";
 
 interface authController {
-  auth: RequestHandler[];
+  login: RequestHandler[];
 }
 
 const authController: authController = {
-  auth: [
-    validateAuth(),
+  login: [
+    validateLogin(),
     asyncHandler(async (req, res, next) => {
       passport.authenticate(
         "local",
@@ -25,17 +25,16 @@ const authController: authController = {
           if (err) return next(err);
           if (!user) return next({ status: 422, message: info.message });
 
-          // return req.login(user, { session: false }, next);
           return req.login(user, { session: false }, (err) => {
-            const token = jwt.sign({ user }, "secretKey");
+            // TODO
+            // Create a private accessToken
+            const expiresIn = 30; // seconds
+            const token = jwt.sign({ user }, "secretKey", { expiresIn });
             return res.json({ token });
           });
         }
       )(req, res, next);
     }),
-    (req, res) => {
-      res.json({ message: "authorized" });
-    },
   ],
 };
 

@@ -22,19 +22,24 @@ const authSchema = {
   },
 };
 
-const validateAuth = (): RequestHandler => {
-  const authValidator: RequestHandler = asyncHandler(async (req, res, next) => {
-    await checkSchema(authSchema, ["body"]).run(req);
-    const errors = validationResult(req);
+const validateLogin = (): RequestHandler => {
+  const loginValidator: RequestHandler = asyncHandler(
+    async (req, res, next) => {
+      await checkSchema(authSchema, ["body"]).run(req);
+      const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      next({ status: 401, message: "Unauthorized" });
+      if (!errors.isEmpty()) {
+        // TODO
+        // Send errors to client
+        // May need to map errors; errors.mapped()
+        next({ status: 401, message: "Unauthorized" });
+      }
+
+      next();
     }
+  );
 
-    next();
-  });
-
-  return authValidator;
+  return loginValidator;
 };
 
-export default validateAuth;
+export default validateLogin;

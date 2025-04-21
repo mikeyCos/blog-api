@@ -12,6 +12,7 @@ interface PostController {
   getPosts: RequestHandler;
   getPostComment: RequestHandler;
   getPostComments: RequestHandler;
+  editPost: RequestHandler;
   deletePost: RequestHandler;
   deletePostComment: RequestHandler;
 }
@@ -23,28 +24,17 @@ const postController: PostController = {
     // blogId and authorId should be accessible from
     console.log("createPost running...");
     console.log("res.locals.token:", res.locals.token);
+    console.log("res.locals.user:", res.locals.user);
+    const { title, content } = req.body;
+    const { user } = res.locals;
+    const newPost = await createPost({
+      blogId: user.blog.id,
+      authorId: user.id,
+      title,
+      content,
+    });
 
-    jwt.verify(
-      res.locals.token,
-      "secretKey",
-      async (err: any, authData: any) => {
-        console.log("err:", err);
-        if (err) {
-          res.sendStatus(403);
-        } else {
-          const { user } = authData;
-          console.log(authData);
-          const { title, content } = req.body;
-          const newPost = await createPost({
-            blogId: user.blog.id,
-            authorId: user.id,
-            title,
-            content,
-          });
-          res.json({ newPost, authData });
-        }
-      }
-    );
+    res.json({ newPost });
   }),
   createPostComment: asyncHandler(async (req, res) => {
     // const newPostComment = await createComment({...req.body, });
@@ -63,6 +53,7 @@ const postController: PostController = {
   }),
   getPostComment: asyncHandler(async (req, res) => {}),
   getPostComments: asyncHandler(async (req, res) => {}),
+  editPost: asyncHandler(async (req, res) => {}),
   deletePost: asyncHandler(async (req, res) => {}),
   deletePostComment: asyncHandler(async (req, res) => {}),
 };
