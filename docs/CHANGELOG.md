@@ -2,6 +2,9 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 21 APR 2025
+- Created `src` subdirectories and it's children subdirectories in `cms` directory.
+- Initialized `React` setup in `cms` directory.
+- Created `cms-init` branch.
 - Merged `server-authentication` branch to `main`.
 - Renamed `auth.validator` module to `login.validator`.
 - Moved `jwt.verify` from `auth.controller` to `authenticateToken` module.

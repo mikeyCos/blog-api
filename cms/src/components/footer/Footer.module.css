@@ -1,0 +1,16 @@
+.footer {
+  display: flex;
+  /* background-color: var(--bkg-color-secondary); */
+  padding: 0.5rem 0;
+  box-shadow: 0 0 4px var(--box-shadow-color-primary);
+  color: var(--font-color-primary);
+  margin-top: 1rem;
+}
+
+.footer-main {
+  /* font-family: var(--font-family-secondary); */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

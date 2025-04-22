@@ -7,6 +7,9 @@ import routes from "../routes/routes";
 import "./index.css";
 import "./reset.styles.css";
 
+const token = localStorage.getItem("token");
+
+console.log("token:", token);
 const router = createBrowserRouter(routes);
 const rootElement: HTMLElement | null = document.getElementById("root");
 if (!rootElement) throw new Error(`Failed to find the root element`);
