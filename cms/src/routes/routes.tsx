@@ -1,27 +1,37 @@
 import DefaultLayout from "../layouts/DefaultLayout";
-import Home from "../pages/home/Home";
-import About from "../pages/about/About";
-import Faq from "../pages/faq/Faq";
-import Error from "../pages/error/Error";
-import Dashboard from "../pages/dashboard/Dashboard";
-import Login from "../pages/login/Login";
+import Home from "../features/home/Home";
+import About from "../features/about/About";
+import Faq from "../features/faq/Faq";
+import Error from "../features/error/Error";
+import Dashboard from "../features/dashboard/Dashboard";
+import Login from "../features/login/Login";
 
-// Go to landing page if user is not logged in
-// If user tries to go to a protected route, they are redirected to the sign in page
-// If user is logged in and they try to go to the sign in page, they are redirected to their dashboard
+import ProtectedRoute from "./ProtectedRoute";
+
+// If no user is logged in
+//  Go to home page
+//  If user goes to a protected route, they are redirected to the sign in page
+// If user is logged in
+//  Go to dashboard
+//  If user goes to the sign in page, they are redirected to their dashboard
 
 const routes = [
   {
     id: "root",
+    path: "/?",
     element: <DefaultLayout />,
     errorElement: <Error />,
     children: [
       {
-        path: "/dashboard?",
-        element: <Dashboard />,
+        path: "/dashboard",
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: "/home",
+        path: "/home?",
         element: <Home />,
       },
       {

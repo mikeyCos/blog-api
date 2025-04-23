@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 22 APR 2025
+- 
+---
 ### 21 APR 2025
 - Created `src` subdirectories and it's children subdirectories in `cms` directory.
 - Initialized `React` setup in `cms` directory.
