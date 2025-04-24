@@ -25,10 +25,6 @@ const Header: React.FC = () => {
           </li>
 
           <li>
-            <NavAnchor pathname="/pizza" textContent="pizza" />
-          </li>
-
-          <li>
             <NavAnchor pathname="/login" textContent="login" />
           </li>
         </ul>

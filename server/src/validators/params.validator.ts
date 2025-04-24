@@ -26,7 +26,7 @@ const validateParams = (schema: Schema): RequestHandler => {
       await checkSchema(schema, ["params"]).run(req);
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        next({ status: 404, message: "Resource not found" });
+        next({ status: "fail", code: 404, data: errors.mapped() });
       }
 
       next();

@@ -23,7 +23,12 @@ const authController: authController = {
           console.log("user:", user);
           console.log("info:", info);
           if (err) return next(err);
-          if (!user) return next({ status: 422, message: info.message });
+          if (!user)
+            return next({
+              status: "fail",
+              code: 422,
+              data: { message: info.message },
+            });
 
           return req.login(user, { session: false }, (err) => {
             // TODO

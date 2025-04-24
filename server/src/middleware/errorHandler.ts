@@ -1,10 +1,11 @@
 import { ErrorRequestHandler } from "express";
 
+// TODO
+// Create error type
 // Error middleware function
-// Could make custom error object
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  const { status, message, errors } = err;
-  res.status(status).json({ status, message, errors });
+  const { status, code, data } = err;
+  res.status(code).json({ status, code, data });
 };
 
 export default errorHandler;

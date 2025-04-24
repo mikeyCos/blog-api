@@ -59,11 +59,7 @@ const validateCreateUser = (): RequestHandler => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      next({
-        status: 422,
-        message: "Unprocessable Content",
-        errors: errors.mapped(),
-      });
+      next({ status: "fail", code: 422, data: errors.mapped() });
     }
 
     next();

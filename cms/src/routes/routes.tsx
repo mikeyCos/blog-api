@@ -18,9 +18,13 @@ import ProtectedRoute from "./ProtectedRoute";
 const routes = [
   {
     id: "root",
-    path: "/?",
+    path: "/",
     element: <DefaultLayout />,
-    errorElement: <Error />,
+    errorElement: (
+      <DefaultLayout>
+        <Error />
+      </DefaultLayout>
+    ),
     children: [
       {
         path: "/dashboard",
@@ -45,7 +49,7 @@ const routes = [
     ],
   },
   {
-    path: "login",
+    path: "/login",
     element: <Login />,
   },
 ];

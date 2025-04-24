@@ -11,6 +11,7 @@ const app: Application = express();
 app.use(cors());
 
 import "./config/passport";
+import { AddressInfo } from "net";
 
 // Parses incoming requests with JSON payloads
 app.use(express.json());
@@ -49,7 +50,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use(errorHandler);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
+  const { address, port } = server.address() as AddressInfo;
   console.log(`App running on port ${port}.`);
 });
 

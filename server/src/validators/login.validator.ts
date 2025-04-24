@@ -24,7 +24,8 @@ const authSchema = {
 
 const validateLogin = (): RequestHandler => {
   const loginValidator: RequestHandler = asyncHandler(
-    async (req, res, next) => {
+    async (req, res, next): Promise<any> => {
+      console.log("req.body:", req.body);
       await checkSchema(authSchema, ["body"]).run(req);
       const errors = validationResult(req);
 
@@ -32,7 +33,7 @@ const validateLogin = (): RequestHandler => {
         // TODO
         // Send errors to client
         // May need to map errors; errors.mapped()
-        next({ status: 401, message: "Unauthorized" });
+        next({ status: "fail", code: 401, data: errors.mapped() });
       }
 
       next();

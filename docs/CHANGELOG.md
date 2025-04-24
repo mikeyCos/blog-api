@@ -1,8 +1,18 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 23 APR 2025
+- Invalid `LoginForm` requests will render errors.
+- Created `config` subdirectory and module.
+- Created `errors` module in `types` subdirectory.
+- In the backend, validation errors are now passed to the `errorHandler` middleware with  `status`, `code`, and `data` properties.
+- Deleted `Main` component module.
+- Navigating to an undefined route will render the `errorElement` inside the layout. 
+- Added optional `children` prop to `DefaultLayout` component.
+---
 ### 22 APR 2025
-- 
+- Created `useAuth` and `useLocalStorage` hooks.
+- Created `ProtectedRoute` module.
 ---
 ### 21 APR 2025
 - Created `src` subdirectories and it's children subdirectories in `cms` directory.
