@@ -2,6 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 24 APR 2025
+- Merged `cms-init` branch to `main`.
 - Renamed `config` files to `env.config`.
 ---
 ### 23 APR 2025
