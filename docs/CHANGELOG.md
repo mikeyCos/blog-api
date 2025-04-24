@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 24 APR 2025
+- Renamed `config` files to `env.config`.
+---
 ### 23 APR 2025
 - Invalid `LoginForm` requests will render errors.
 - Created `config` subdirectory and module.

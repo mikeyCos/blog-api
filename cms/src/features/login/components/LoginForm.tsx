@@ -1,7 +1,7 @@
 import React, { FormEventHandler, useState } from "react";
 
 import { LoginFormError } from "../../../types/errors";
-// import config from "../../../config/config";
+import config from "../../../config/env.config";
 
 const LoginForm: React.FC = () => {
   const [errors, setErrors] = useState<LoginFormError>();
@@ -9,9 +9,8 @@ const LoginForm: React.FC = () => {
   const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     console.log("form submit handler running...");
-    console.log("e.currentTarget:", e.currentTarget);
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    const formElement = e.currentTarget;
+    const formData = new FormData(formElement);
     const body = new URLSearchParams();
     for (const input of formData.entries()) {
       console.log(input);
@@ -21,16 +20,14 @@ const LoginForm: React.FC = () => {
       // value is type FormDataEntryValue which can be a string or File object
       body.append(key, value as string);
     }
-    await fetch(`${import.meta.env.VITE_BLOG_API_BASE}/auth/login`, {
+    await fetch(`${config.blogAPIBase}/auth/login`, {
       method: "POST",
       mode: "cors",
       body,
     }).then(async (res) => {
-      console.log("res:", res);
       const result = await res.json();
       if (!res.ok) {
         setErrors(result.data);
-        console.log(result.data);
       }
     });
   };

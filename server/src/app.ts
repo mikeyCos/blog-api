@@ -1,6 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
-import config from "./config/config";
+import config from "./config/env.config";
 import routes from "./routes/routes";
 import errorHandler from "./middleware/errorHandler";
 
@@ -50,6 +50,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use(errorHandler);
 
+// For a server listening on a pipe or Unix domain socket, the name is returned as a string.
+// https://nodejs.org/dist/latest-v12.x/docs/api/net.html#net_server_address
 const server = app.listen(port, () => {
   const { address, port } = server.address() as AddressInfo;
   console.log(`App running on port ${port}.`);
