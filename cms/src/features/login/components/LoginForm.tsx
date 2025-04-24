@@ -34,7 +34,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <form
-      action={`${import.meta.env.VITE_BLOG_API_BASE}/auth/login`}
+      action={`${config.blogAPIBase}/auth/login`}
       method="POST"
       onSubmit={submitHandler}
     >
