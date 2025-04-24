@@ -5,6 +5,7 @@ import Faq from "../features/faq/Faq";
 import Error from "../features/error/Error";
 import Dashboard from "../features/dashboard/Dashboard";
 import Login from "../features/login/Login";
+import SignUp from "../features/signup/SignUp";
 
 import ProtectedRoute from "./ProtectedRoute";
 
@@ -51,6 +52,10 @@ const routes = [
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
   },
 ];
 

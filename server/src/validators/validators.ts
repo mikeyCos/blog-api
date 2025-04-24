@@ -1,3 +1,3 @@
-import validateCreateUser from "./createUser.validator";
+import validateSignUp from "./signup.validator";
 
-export { validateCreateUser };
+export { validateSignUp };

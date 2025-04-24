@@ -1,12 +1,37 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
-### 24 APR 2025
+### 24 APR 202- Changed 
+- Invalid `SignUpForm` `POST` requests will render errors.
+- Changed `error` object in the application-level middleware when no routes match;
+  
+  from
+
+  ```js
+  {
+    status: 404,
+    message: "Resource not found",
+  }
+  ```
+
+  to
+  
+  ```js
+  {
+    status: "fail",
+    code: 404,
+    data: { message: "Resource not found" },
+  }
+  ```
+- Added `email` field to `User` model.
+- Created `SignUp` and `SignUpForm` components.
+- Renamed `createUser.validator` to `signup.validator`. 
+- Created `cms-feature-sign-up` branch.
 - Merged `cms-init` branch to `main`.
 - Renamed `config` files to `env.config`.
 ---
 ### 23 APR 2025
-- Invalid `LoginForm` requests will render errors.
+- Invalid `LoginForm` `POST` requests will render errors.
 - Created `config` subdirectory and module.
 - Created `errors` module in `types` subdirectory.
 - In the backend, validation errors are now passed to the `errorHandler` middleware with  `status`, `code`, and `data` properties.

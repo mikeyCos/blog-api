@@ -4,16 +4,12 @@ import validateParams, { userSchema } from "../validators/params.validator";
 
 const userRoutes = () => {
   const userRouter = Router();
-  const { createUser, getUser, getUsers, deleteUser } = userController;
+  const { getUser, getUsers, deleteUser } = userController;
 
   // GET requests
   // curl -w "\n" -X GET http://localhost:3001/user/:userId
   userRouter.get("/:userId", validateParams(userSchema), getUser);
   userRouter.get("/", getUsers);
-
-  // POST requests
-  // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/user -d '{"username":"squinton", "password":"passWord123"}'
-  userRouter.post("/", createUser);
 
   // PUT requests
 

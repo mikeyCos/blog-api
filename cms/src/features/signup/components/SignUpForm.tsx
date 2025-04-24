@@ -1,10 +1,10 @@
 import React, { FormEventHandler, useState } from "react";
 
-import { LoginFormError } from "../../../types/errors";
+import { SignUpFormError } from "../../../types/errors";
 import config from "../../../config/env.config";
 
-const LoginForm: React.FC = () => {
-  const [errors, setErrors] = useState<LoginFormError>();
+const SignUpForm: React.FC = () => {
+  const [errors, setErrors] = useState<SignUpFormError>();
 
   const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -18,7 +18,7 @@ const LoginForm: React.FC = () => {
       // value is type FormDataEntryValue which can be a string or File object
       body.append(key, value as string);
     }
-    await fetch(`${config.blogAPIBase}/auth/login`, {
+    await fetch(`${config.blogAPIBase}/auth/signup`, {
       method: "POST",
       mode: "cors",
       body,
@@ -32,7 +32,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <form
-      action={`${config.blogAPIBase}/auth/login`}
+      action={`${config.blogAPIBase}/auth/signup`}
       method="POST"
       onSubmit={submitHandler}
     >
@@ -43,17 +43,33 @@ const LoginForm: React.FC = () => {
           {errors?.username && <p>{errors.username.msg}</p>}
         </li>
         <li>
+          <label htmlFor="email">email</label>
+          <input type="email" name="email" id="email" />
+          {errors?.email && <p>{errors.email.msg}</p>}
+        </li>
+        <li>
           <label htmlFor="password">password</label>
-          <input type="text" name="password" id="password" />
+          <input type="password" name="password" id="password" />
           {errors?.password && <p>{errors.password.msg}</p>}
         </li>
         <li>
+          <label htmlFor="password-confirmation">confirm password</label>
+          <input
+            type="password"
+            name="password-confirmation"
+            id="password-confirmation"
+          />
+          {errors?.["password-confirmation"] && (
+            <p>{errors["password-confirmation"].msg}</p>
+          )}
+        </li>
+        <li>
           {errors?.message && <p>{errors.message}</p>}
-          <button type="submit">Sign in</button>
+          <button type="submit">Sign up</button>
         </li>
       </ul>
     </form>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;

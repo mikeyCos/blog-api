@@ -4,6 +4,14 @@ export interface LoginFormError {
   message?: string;
 }
 
+export interface SignUpFormError {
+  username: ValidationError;
+  email: ValidationError;
+  password: ValidationError;
+  ["password-confirmation"]: ValidationError;
+  message?: string;
+}
+
 interface ValidationError<InputType = string> {
   location: string;
   msg: string;

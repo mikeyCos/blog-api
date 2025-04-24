@@ -203,7 +203,7 @@ Project Link: [https://#](https://#)
 
 ## Questions
 
-1. Lorem ipsum?
+1. Do all blogs need a comment section? At what point, in production or development, are blog post comments helpful?
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

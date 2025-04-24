@@ -5,6 +5,7 @@ model User {
   comments  Comment[]
   role      Role      @default(USER)
   username  String    @unique
+  email     String    @unique
   password  String
   timestamp DateTime  @default(now())
 }

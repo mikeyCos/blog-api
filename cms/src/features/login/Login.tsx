@@ -2,13 +2,13 @@ import React from "react";
 
 import LoginForm from "./components/LoginForm";
 
-const Login: React.FC = () => {
+const SignIn: React.FC = () => {
   return (
     <section>
-      <h2>login</h2>
+      <h2>Sign in</h2>
       <LoginForm />
     </section>
   );
 };
 
-export default Login;
+export default SignIn;

@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction } from "express";
+import express, { Application } from "express";
 import cors from "cors";
 import config from "./config/env.config";
 import routes from "./routes/routes";
@@ -24,13 +24,13 @@ app.use(express.urlencoded({ extended: true }));
 }); */
 
 // Application-level
-app.use("/", (req: Request, res: Response, next: NextFunction) => {
+app.use("/", (req, res, next) => {
   console.log("Application-level middleware running...");
   next();
 });
 
 // curl -w "\n" -X GET http://localhost:3000/helloWorld
-app.get("/helloWorld", (req: Request, res: Response, next: NextFunction) => {
+app.get("/helloWorld", (req, res, next) => {
   console.log("Testing");
   res.json({ msg: "hello world" });
 });
@@ -39,10 +39,11 @@ app.get("/helloWorld", (req: Request, res: Response, next: NextFunction) => {
 routes(app);
 
 // No routes match
-app.use((req: Request, res: Response, next: NextFunction) => {
+app.use((req, res, next) => {
   const error = {
-    status: 404,
-    message: "Resource not found",
+    status: "fail",
+    code: 404,
+    data: { message: "Resource not found" },
   };
 
   next(error);
