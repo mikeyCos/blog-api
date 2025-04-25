@@ -1,7 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
-### 24 APR 202- Changed 
+### 25 APR 2025
+- Signing up with valid form inputs will log in the user and send a JSON response with the following content: `{ status: "success", code: 200, data: { token } }`.
+- Added `NavAnchor` component with `pathname="/signup"` prop to `Header` component.
+- Added `NavAnchor` component to `SignIn` component; optionally, a user can sign up instead of signing in.
+---
+### 24 APR 2025 
 - Invalid `SignUpForm` `POST` requests will render errors.
 - Changed `error` object in the application-level middleware when no routes match;
   

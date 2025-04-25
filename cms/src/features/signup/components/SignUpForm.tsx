@@ -27,6 +27,8 @@ const SignUpForm: React.FC = () => {
       if (!res.ok) {
         setErrors(result.data);
       }
+      console.log("res:", res);
+      console.log("result:", result);
     });
   };
 
@@ -63,7 +65,7 @@ const SignUpForm: React.FC = () => {
             <p>{errors["password-confirmation"].msg}</p>
           )}
         </li>
-        <li>
+        <li className="form-controls">
           {errors?.message && <p>{errors.message}</p>}
           <button type="submit">Sign up</button>
         </li>

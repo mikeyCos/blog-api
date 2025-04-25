@@ -40,7 +40,7 @@ const authController: authController = {
             // Create a private accessToken
             const expiresIn = 30; // seconds
             const token = jwt.sign({ user }, "secretKey", { expiresIn });
-            return res.json({ token });
+            return res.json({ status: "success", code: 200, data: { token } });
           });
         }
       )(req, res, next);
@@ -53,18 +53,14 @@ const authController: authController = {
         onlyValidData: true,
       });
 
-      // TODO
-      // When would hashedPassword be undefined?
-      bcrypt.hash(password, 10, async (err, hashedPassword) => {
-        if (err || !hashedPassword) return next(err);
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await createUser({ password: hashedPassword, ...rest });
 
-        const user = await createUser({ password: hashedPassword, ...rest });
-
-        req.login(user, { session: false }, (err) => {
-          const expiresIn = 30; // seconds
-          const token = jwt.sign({ user }, "secretKey", { expiresIn });
-          return res.json({ token });
-        });
+      // Log in user when they sign up
+      req.login(user, { session: false }, (err) => {
+        const expiresIn = 30; // seconds
+        const token = jwt.sign({ user }, "secretKey", { expiresIn });
+        return res.json({ status: "success", code: 200, data: { token } });
       });
     }),
   ],

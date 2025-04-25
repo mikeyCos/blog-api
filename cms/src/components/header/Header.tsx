@@ -27,6 +27,10 @@ const Header: React.FC = () => {
           <li>
             <NavAnchor pathname="/login" textContent="login" />
           </li>
+
+          <li>
+            <NavAnchor pathname="/signup" textContent="sign up" />
+          </li>
         </ul>
       </nav>
     </header>

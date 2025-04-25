@@ -3,10 +3,11 @@ import { User, UserId, Username, CreateUser } from "../interfaces/user";
 import { Prisma } from "../prisma/generated/prisma";
 
 // How can I throw error from services to endpoint?
-export const createUser = async ({ username, password }: CreateUser) => {
+export const createUser = async ({ username, email, password }: CreateUser) => {
   const user = await prisma.user.create({
     data: {
       username,
+      email,
       password,
       blog: {
         create: {},

@@ -1,5 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
+import passport from "passport";
+
 import config from "./config/env.config";
 import routes from "./routes/routes";
 import errorHandler from "./middleware/errorHandler";
@@ -23,16 +25,13 @@ app.use(express.urlencoded({ extended: true }));
   res.sendStatus(204);
 }); */
 
+// Testing...
+app.use(passport.initialize());
+
 // Application-level
 app.use("/", (req, res, next) => {
   console.log("Application-level middleware running...");
   next();
-});
-
-// curl -w "\n" -X GET http://localhost:3000/helloWorld
-app.get("/helloWorld", (req, res, next) => {
-  console.log("Testing");
-  res.json({ msg: "hello world" });
 });
 
 // Routes

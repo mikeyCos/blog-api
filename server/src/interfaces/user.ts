@@ -1,9 +1,10 @@
 export interface User {
   id: UserId;
+  username: Username;
+  email: string;
+  password: string;
   role: Role;
   timestamp: Date;
-  username: Username;
-  password: string;
 }
 
 // TODO

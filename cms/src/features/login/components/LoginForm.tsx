@@ -23,10 +23,13 @@ const LoginForm: React.FC = () => {
       mode: "cors",
       body,
     }).then(async (res) => {
+      console.log("res:", res);
       const result = await res.json();
       if (!res.ok) {
         setErrors(result.data);
       }
+
+      console.log("result:", result);
     });
   };
 
@@ -47,7 +50,7 @@ const LoginForm: React.FC = () => {
           <input type="text" name="password" id="password" />
           {errors?.password && <p>{errors.password.msg}</p>}
         </li>
-        <li>
+        <li className="form-controls">
           {errors?.message && <p>{errors.message}</p>}
           <button type="submit">Sign in</button>
         </li>
