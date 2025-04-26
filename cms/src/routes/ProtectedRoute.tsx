@@ -8,8 +8,8 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   // If token does not exists
   //  Redirect to login page
-  const [user, setUser] = useAuth();
-  if (!user) return <Navigate to="/login" />;
+  const { token } = useAuth();
+  if (!token) return <Navigate to="/login" />;
 
   return <>{children}</>;
 };

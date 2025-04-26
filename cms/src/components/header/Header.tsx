@@ -1,9 +1,13 @@
 import React from "react";
 import { Link } from "react-router";
+
 import NavAnchor from "../navAnchor/NavAnchor";
 import styles from "./Header.module.css";
+import { useAuth } from "../../hooks/useAuth";
 
 const Header: React.FC = () => {
+  const { token } = useAuth();
+
   return (
     <header>
       <nav>
@@ -24,13 +28,21 @@ const Header: React.FC = () => {
             <NavAnchor pathname="/faq" textContent="faq" />
           </li>
 
-          <li>
-            <NavAnchor pathname="/login" textContent="login" />
-          </li>
+          {token ? (
+            <li>
+              <NavAnchor pathname="/logout" textContent="logout" />
+            </li>
+          ) : (
+            <>
+              <li>
+                <NavAnchor pathname="/login" textContent="login" />
+              </li>
 
-          <li>
-            <NavAnchor pathname="/signup" textContent="sign up" />
-          </li>
+              <li>
+                <NavAnchor pathname="/signup" textContent="sign up" />
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>

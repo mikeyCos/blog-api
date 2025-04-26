@@ -27,8 +27,14 @@ const SignUpForm: React.FC = () => {
       if (!res.ok) {
         setErrors(result.data);
       }
+
       console.log("res:", res);
       console.log("result:", result);
+      // Extract token from result
+      // Store token in local storage
+      // Redirect user to dashboard
+      const { token } = result.data;
+      console.log("token:", token);
     });
   };
 

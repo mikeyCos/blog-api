@@ -1,25 +1,45 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
+import useLocalStorage from "./useLocalStorage";
 // TODO
 // Need to set type for createContext, useState, and user
 // https://reacttraining.com/blog/react-context-with-typescript
-const AuthContext = createContext<any>(null);
+type Login = (newToken: string) => void;
+type Logout = () => void;
+
+interface AuthContext {
+  login: Login;
+  logout: Logout;
+  token: string;
+}
+
+const AuthContext = createContext<AuthContext>({} as AuthContext);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<any>(null);
+  const [token, setToken] = useLocalStorage("token", null);
 
-  const login = (user: any) => {
-    setUser(user);
+  const login: Login = async (newToken) => {
+    setToken(newToken);
   };
 
-  const logout = () => {
-    setUser(null);
+  const logout: Logout = () => {
+    setToken(null);
   };
+
+  const providerValue = useMemo(() => {
+    return {
+      login,
+      logout,
+      token,
+    };
+  }, [token]);
 
   return (
-    <AuthContext.Provider value={{ login }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={providerValue}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

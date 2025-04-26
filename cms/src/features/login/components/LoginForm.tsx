@@ -2,9 +2,11 @@ import React, { FormEventHandler, useState } from "react";
 
 import { LoginFormError } from "../../../types/errors";
 import config from "../../../config/env.config";
+import { useAuth } from "../../../hooks/useAuth";
 
 const LoginForm: React.FC = () => {
   const [errors, setErrors] = useState<LoginFormError>();
+  const { login } = useAuth();
 
   const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -18,6 +20,7 @@ const LoginForm: React.FC = () => {
       // value is type FormDataEntryValue which can be a string or File object
       body.append(key, value as string);
     }
+
     await fetch(`${config.blogAPIBase}/auth/login`, {
       method: "POST",
       mode: "cors",
@@ -27,9 +30,13 @@ const LoginForm: React.FC = () => {
       const result = await res.json();
       if (!res.ok) {
         setErrors(result.data);
+      } else {
+        // Extract token from result
+        // Store token in local storage
+        // Redirect user to dashboard
+        console.log("result.data.token:", result.data.token);
+        login(JSON.stringify(result.data.token));
       }
-
-      console.log("result:", result);
     });
   };
 
@@ -47,7 +54,7 @@ const LoginForm: React.FC = () => {
         </li>
         <li>
           <label htmlFor="password">password</label>
-          <input type="text" name="password" id="password" />
+          <input type="password" name="password" id="password" />
           {errors?.password && <p>{errors.password.msg}</p>}
         </li>
         <li className="form-controls">

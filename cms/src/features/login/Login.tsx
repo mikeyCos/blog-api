@@ -2,8 +2,14 @@ import React from "react";
 
 import NavAnchor from "../../components/navAnchor/NavAnchor";
 import LoginForm from "./components/LoginForm";
+import { useAuth } from "../../hooks/useAuth";
+import { Navigate } from "react-router";
 
 const SignIn: React.FC = () => {
+  const { token } = useAuth();
+  console.log(token);
+  if (token) return <Navigate to="/dashboard" />;
+
   return (
     <section>
       <h2>Sign in</h2>

@@ -2,6 +2,9 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 25 APR 2025
+- If a user is logged in and tries to go to `/login` or `/signup` they are redirected to `/dashboard`. 
+- The resolved object from `res.json()` is stringified into `AuthContext` provider's `login` function.
+- Logging in will direct logged in user to the dashboard.
 - Signing up with valid form inputs will log in the user and send a JSON response with the following content: `{ status: "success", code: 200, data: { token } }`.
 - Added `NavAnchor` component with `pathname="/signup"` prop to `Header` component.
 - Added `NavAnchor` component to `SignIn` component; optionally, a user can sign up instead of signing in.
