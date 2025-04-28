@@ -1,12 +1,19 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router";
 
 import NavAnchor from "../navAnchor/NavAnchor";
 import styles from "./Header.module.css";
 import { useAuth } from "../../hooks/useAuth";
 
 const Header: React.FC = () => {
-  const { token } = useAuth();
+  const { isAuthorized, logout } = useAuth();
+  // const navigate = useNavigate();
+  const logoutHandler = () => {
+    console.log("logoutHandler running...");
+    logout();
+    // navigate("/");
+    console.log("isAuthorized in logoutHandler:", isAuthorized);
+  };
 
   return (
     <header>
@@ -28,10 +35,19 @@ const Header: React.FC = () => {
             <NavAnchor pathname="/faq" textContent="faq" />
           </li>
 
-          {token ? (
-            <li>
-              <NavAnchor pathname="/logout" textContent="logout" />
-            </li>
+          {isAuthorized ? (
+            <>
+              <li>
+                <NavAnchor pathname="/dashboard" textContent="dashboard" />
+              </li>
+
+              <li>
+                {/* <NavAnchor pathname="/logout" textContent="logout" /> */}
+                <button type="button" onClick={logoutHandler}>
+                  Log out
+                </button>
+              </li>
+            </>
           ) : (
             <>
               <li>

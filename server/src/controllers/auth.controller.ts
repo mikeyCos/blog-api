@@ -11,11 +11,15 @@ import { matchedData } from "express-validator";
 import { createUser } from "../services/user";
 
 interface authController {
+  verify: RequestHandler;
   login: RequestHandler[];
   signup: RequestHandler[];
 }
 
 const authController: authController = {
+  verify: asyncHandler(async (req, res) => {
+    res.json({ status: "success", code: 200 });
+  }),
   login: [
     validateLogin(),
     asyncHandler(async (req, res, next) => {
@@ -38,6 +42,7 @@ const authController: authController = {
           return req.login(user, { session: false }, (err) => {
             // TODO
             // Create a private accessToken
+            // Do not send private user properties
             const expiresIn = 30; // seconds
             const token = jwt.sign({ user }, "secretKey", { expiresIn });
             return res.json({ status: "success", code: 200, data: { token } });

@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 27 APR 2025
+- A user can log out but they are currently directed back to `/login` if they are in a protected route.
+- Added `[isAuthorized, setIsAuthorized]` state in `AuthProvider` to only provide a read value for protected routes.
+---
 ### 25 APR 2025
 - If a user is logged in and tries to go to `/login` or `/signup` they are redirected to `/dashboard`. 
 - The resolved object from `res.json()` is stringified into `AuthContext` provider's `login` function.

@@ -1,11 +1,13 @@
 import { Router } from "express";
 import authController from "../controllers/auth.controller";
+import authenticateToken from "../middleware/authenticateToken";
 
 const authRoutes = () => {
-  const { login, signup } = authController;
+  const { verify, login, signup } = authController;
   const authRouter = Router();
 
   // GET requests
+  authRouter.get("/", authenticateToken, verify);
 
   // POST requests
   // curl -w "\n" -X POST http://localhost:3001/auth
