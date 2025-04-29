@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 28 APR 2025
+- 
+---
 ### 27 APR 2025
 - A user can log out but they are currently directed back to `/login` if they are in a protected route.
 - Added `[isAuthorized, setIsAuthorized]` state in `AuthProvider` to only provide a read value for protected routes.

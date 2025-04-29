@@ -11,13 +11,13 @@ import { matchedData } from "express-validator";
 import { createUser } from "../services/user";
 
 interface authController {
-  verify: RequestHandler;
+  authorize: RequestHandler;
   login: RequestHandler[];
   signup: RequestHandler[];
 }
 
 const authController: authController = {
-  verify: asyncHandler(async (req, res) => {
+  authorize: asyncHandler(async (req, res) => {
     res.json({ status: "success", code: 200 });
   }),
   login: [
@@ -44,8 +44,22 @@ const authController: authController = {
             // Create a private accessToken
             // Do not send private user properties
             const expiresIn = 30; // seconds
-            const token = jwt.sign({ user }, "secretKey", { expiresIn });
-            return res.json({ status: "success", code: 200, data: { token } });
+            const accessToken = jwt.sign({ user }, "secretKey", { expiresIn });
+            const refreshToken = jwt.sign({ user }, "apples", {
+              expiresIn: "30d",
+            });
+
+            res.cookie("access_token", refreshToken, {
+              httpOnly: true,
+              sameSite: true,
+              maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+            });
+
+            return res.json({
+              status: "success",
+              code: 200,
+              data: { access_token: accessToken },
+            });
           });
         }
       )(req, res, next);
@@ -65,7 +79,11 @@ const authController: authController = {
       req.login(user, { session: false }, (err) => {
         const expiresIn = 30; // seconds
         const token = jwt.sign({ user }, "secretKey", { expiresIn });
-        return res.json({ status: "success", code: 200, data: { token } });
+        return res.json({
+          status: "success",
+          code: 200,
+          data: { access_token: token },
+        });
       });
     }),
   ],

@@ -9,10 +9,10 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   // Need to verify token on the server?
   // If token does not exists
   //  Redirect to login page
-  const { token, isAuthorized } = useAuth();
+  const { token } = useAuth();
 
-  console.log("isAuthorized in ProtectedRoute:", isAuthorized);
-  if (!isAuthorized) return <Navigate to="/login" />;
+  // if (isLoggedOut) return <Navigate to="/" />;
+  // if (!isAuthorized) return <Navigate to="/login" />;
 
   return <>{children}</>;
 };

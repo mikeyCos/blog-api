@@ -6,9 +6,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { Navigate } from "react-router";
 
 const SignIn: React.FC = () => {
-  const { token, isAuthorized } = useAuth();
-  console.log(token);
-  if (isAuthorized) return <Navigate to="/dashboard" />;
+  const { accessToken } = useAuth();
+
+  console.log("accessToken:", accessToken);
 
   return (
     <section>

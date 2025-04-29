@@ -1,7 +1,16 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
+import axios from "axios";
 
 import useLocalStorage from "./useLocalStorage";
-import { useNavigate } from "react-router";
+
+import config from "../config/env.config";
 // TODO
 // Need to set type for createContext, useState, and user
 // https://reacttraining.com/blog/react-context-with-typescript
@@ -11,8 +20,7 @@ type Logout = () => void;
 interface AuthContext {
   login: Login;
   logout: Logout;
-  token: string;
-  isAuthorized: boolean;
+  accessToken: string | null;
 }
 
 const AuthContext = createContext<AuthContext>({} as AuthContext);
@@ -20,29 +28,56 @@ const AuthContext = createContext<AuthContext>({} as AuthContext);
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [token, setToken] = useLocalStorage("token", null);
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [accessToken, setAccessToken] = useState(null);
 
   const login: Login = async (newToken) => {
-    setToken(newToken);
-    setIsAuthorized(true);
+    console.log("login from AuthProvider running...");
+    // setToken(newToken);
+    // setIsAuthorized(true);
+    // setIsLoggedOut(false);
   };
 
   const logout: Logout = async () => {
-    setToken(null);
-    setIsAuthorized(false);
+    console.log("logout from AuthProvider running...");
+    // setToken(null);
+    // setIsAuthorized(false);
+    // setIsLoggedOut(true);
   };
 
-  console.log("AuthProvider token:", token);
+  useEffect(() => {
+    const fetchToken = async () => {
+      await fetch(`${config.blogAPIBase}/auth`, {
+        method: "GET",
+        headers: {
+          authorization: `${accessToken}`,
+        },
+      }).then(async (res) => {
+        if (!res.ok) return setAccessToken(null);
+        const result = await res.json();
+        setAccessToken(result.data.access_token);
+      });
+
+      /* await axios({
+        method: "GET",
+        url: `${config.blogAPIBase}/auth`,
+        headers: { Authorization: accessToken },
+      }).then(async (res) => {
+        console.log(res);
+      }); */
+    };
+
+    if (accessToken) {
+      fetchToken();
+    }
+  }, []);
 
   const providerValue = useMemo(() => {
     return {
       login,
       logout,
-      token,
-      isAuthorized,
+      accessToken,
     };
-  }, [token]);
+  }, [accessToken]);
 
   return (
     <AuthContext.Provider value={providerValue}>

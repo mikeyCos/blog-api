@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 import passport from "passport";
+import cookieParser from "cookie-parser";
 
 import config from "./config/env.config";
 import routes from "./routes/routes";
@@ -20,6 +21,7 @@ app.use(express.json());
 
 // Parses form data
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 /* app.get("/favicon.ico", (req: Request, res: Response) => {
   res.sendStatus(204);

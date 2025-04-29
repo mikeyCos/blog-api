@@ -6,13 +6,13 @@ import styles from "./Header.module.css";
 import { useAuth } from "../../hooks/useAuth";
 
 const Header: React.FC = () => {
-  const { isAuthorized, logout } = useAuth();
-  // const navigate = useNavigate();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
   const logoutHandler = () => {
     console.log("logoutHandler running...");
     logout();
     // navigate("/");
-    console.log("isAuthorized in logoutHandler:", isAuthorized);
   };
 
   return (
@@ -34,6 +34,30 @@ const Header: React.FC = () => {
           <li>
             <NavAnchor pathname="/faq" textContent="faq" />
           </li>
+          <li>
+            <NavAnchor pathname="/login" textContent="login" />
+          </li>
+
+          <li>
+            <NavAnchor pathname="/signup" textContent="sign up" />
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
+};
+
+export default Header;
+
+/* 
+<ul className={styles["nav-right"]}>
+          <li>
+            <NavAnchor pathname="/home" textContent="home" />
+          </li>
+
+          <li>
+            <NavAnchor pathname="/faq" textContent="faq" />
+          </li>
 
           {isAuthorized ? (
             <>
@@ -42,7 +66,6 @@ const Header: React.FC = () => {
               </li>
 
               <li>
-                {/* <NavAnchor pathname="/logout" textContent="logout" /> */}
                 <button type="button" onClick={logoutHandler}>
                   Log out
                 </button>
@@ -59,10 +82,4 @@ const Header: React.FC = () => {
               </li>
             </>
           )}
-        </ul>
-      </nav>
-    </header>
-  );
-};
-
-export default Header;
+*/
