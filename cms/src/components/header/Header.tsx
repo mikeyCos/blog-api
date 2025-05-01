@@ -6,12 +6,12 @@ import styles from "./Header.module.css";
 import { useAuth } from "../../hooks/useAuth";
 
 const Header: React.FC = () => {
-  const { logout } = useAuth();
+  const { accessToken, logout } = useAuth();
   const navigate = useNavigate();
 
   const logoutHandler = () => {
     console.log("logoutHandler running...");
-    logout();
+    // logout();
     // navigate("/");
   };
 
@@ -34,13 +34,30 @@ const Header: React.FC = () => {
           <li>
             <NavAnchor pathname="/faq" textContent="faq" />
           </li>
-          <li>
-            <NavAnchor pathname="/login" textContent="login" />
-          </li>
 
-          <li>
-            <NavAnchor pathname="/signup" textContent="sign up" />
-          </li>
+          {accessToken ? (
+            <>
+              <li>
+                <NavAnchor pathname="/dashboard" textContent="dashboard" />
+              </li>
+
+              <li>
+                <button type="button" onClick={logoutHandler}>
+                  Log out
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <NavAnchor pathname="/login" textContent="login" />
+              </li>
+
+              <li>
+                <NavAnchor pathname="/signup" textContent="sign up" />
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>

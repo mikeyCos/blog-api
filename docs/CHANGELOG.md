@@ -1,8 +1,16 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 30 APR 2025
+- Created `deserializeUser` middleware; extracts `accessToken` and `refreshToken` and verifies the existing token.
+- Removed `serializeUser` and `deserializeUser` from `passport` module.
+- Created `request` module in `interfaces` subdirectory; allows optional custom properties on the `req` object.
+- Renamed `server` directory to `api`.
+---
 ### 28 APR 2025
-- 
+- Created `[formData, setFormData]` state in `LoginForm` component.
+- Created `axios.config` module.
+- Installed `axios` package to dependencies.
 ---
 ### 27 APR 2025
 - A user can log out but they are currently directed back to `/login` if they are in a protected route.

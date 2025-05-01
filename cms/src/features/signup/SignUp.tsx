@@ -5,8 +5,9 @@ import SignUpForm from "./components/SignUpForm";
 import { useAuth } from "../../hooks/useAuth";
 
 const SignUp: React.FC = () => {
-  const { token } = useAuth();
-  if (token) return <Navigate to="/dashboard" />;
+  const { accessToken } = useAuth();
+
+  if (accessToken) return <Navigate to={"/dashboard"} />;
 
   return (
     <section>

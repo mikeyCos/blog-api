@@ -44,19 +44,3 @@ const jwtStrategyOptions = {
 // const strategy = new JwtStrategy(jwtStrategyOptions, verifyCallback);
 const strategy = new LocalStrategy(verifyCallback);
 passport.use(strategy);
-
-passport.serializeUser((user, done) => {
-  console.log("passport.serializeUser");
-  console.log("user:", user);
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id: UserId, done) => {
-  console.log("passport.deserializeUser");
-  try {
-    const user = await getUser(id);
-    done(null, user);
-  } catch (err) {
-    done(err);
-  }
-});

@@ -91,13 +91,14 @@ const LoginForm: React.FC = () => {
 
     await axios.post("/auth/login", body).then(
       (res) => {
-        console.log(res);
+        console.log("res:", res);
         // res.response.data.data["access-token"]
+        login(res.data.data["accessToken"]);
         setFormData(initialFormData);
         setErrors(null);
       },
       (rej) => {
-        console.log(rej);
+        console.log("rej:", rej);
         setErrors(rej.response.data.data);
       }
     );

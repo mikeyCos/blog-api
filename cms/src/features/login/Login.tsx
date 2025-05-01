@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import NavAnchor from "../../components/navAnchor/NavAnchor";
 import LoginForm from "./components/LoginForm";
 import { useAuth } from "../../hooks/useAuth";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
-const SignIn: React.FC = () => {
+const SignIn = () => {
+  const navigate = useNavigate();
   const { accessToken } = useAuth();
 
+  console.log("SignIn component");
   console.log("accessToken:", accessToken);
+  if (accessToken) return <Navigate to={"/dashboard"} />;
 
   return (
     <section>
