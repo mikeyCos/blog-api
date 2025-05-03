@@ -8,8 +8,15 @@ import validateLogin from "../validators/login.validator";
 import { validateSignUp } from "../validators/validators";
 import { User, CreateUser } from "../interfaces/user";
 import { matchedData } from "express-validator";
-import { createUser } from "../services/user";
+import { createUser, getUser } from "../services/user";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
+
+/* declare module "express-serve-static-core" {
+  interface Request {
+    user?: User;
+    accessToken?: string;
+  }
+} */
 
 interface authController {
   authorize: RequestHandler;
@@ -28,6 +35,14 @@ const authController: authController = {
     /* const refreshToken = jwt.sign({ user }, "apples", {
       expiresIn: "30d",
     }); */
+    // Create new accessToken
+    if (req.user) {
+      // console.log("typeof req.user:", typeof req.user)
+      const userRefresh = req.user as User;
+      console.log("userRefresh:", userRefresh);
+      const user = await getUser(userRefresh.id);
+      console.log(user);
+    }
   }),
   login: [
     validateLogin(),
@@ -48,22 +63,31 @@ const authController: authController = {
               data: { message: info.message },
             });
 
-          return req.login(user, { session: false }, (err) => {
+          return req.login(user, { session: false }, async (err) => {
             // TODO
             // Create a private accessToken
             // Do not send private user properties
             const { id, username, role } = user;
             const expiresIn = 30; // seconds
-            const accessToken = signJWT(
+            const accessToken = await signJWT(
               { user: { username, role } },
               { expiresIn }
             );
-            const refreshToken = signJWT(
-              { user: { id, username, role } },
-              {
-                expiresIn: "30d",
-              }
+            const refreshToken = await Promise.resolve(
+              signJWT(
+                { user: { id } },
+                {
+                  expiresIn: "30d",
+                }
+              )
             );
+
+            console.log("refreshToken:", refreshToken);
+            console.log("accessToken:", accessToken);
+
+            if (accessToken) {
+              verifyJWT(accessToken);
+            }
 
             res.cookie("refreshToken", refreshToken, {
               httpOnly: true,

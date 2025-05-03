@@ -1,6 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 02 MAY 2025
+- Changed all fle extensions in `interfaces` subdirectory from `.ts` to `.d.ts`.
+- The asynchronous function `verifyJWT` can return a `Promise` with object properties `payload` of type `null` or `JwtPayload` and `expired` of type `boolean`.
+- The asynchronous function `signJWT` can return a `Promise` with type `string` or `null`.
+- Changed `declare namespace Express` to `declare module "express-serve-static-core"` and imported `User` interface in `request` module.
+---
 ### 30 APR 2025
 - Created `deserializeUser` middleware; extracts `accessToken` and `refreshToken` and verifies the existing token.
 - Removed `serializeUser` and `deserializeUser` from `passport` module.

@@ -19,7 +19,25 @@ export const createUser = async ({ username, email, password }: CreateUser) => {
 };
 
 // Should I throw error if both arguments are falsy values?
-export const getUser = async (userId: UserId, username?: Username) => {
+export const getUser = async (
+  userId: UserId,
+  username?: Username
+): Promise<{
+  blog: {
+    id: string;
+    authorId: string;
+  } | null;
+  posts: {
+    id: string;
+    authorId: string;
+    blogId: string;
+    createdAt: Date;
+    updatedAt: Date;
+    title: string;
+    content: string;
+  }[];
+  comments: any[];
+} | null> => {
   if (!userId && !username) {
     throw new Error("Failed to execute 'getUser' 1 argument required.");
   }

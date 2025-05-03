@@ -1,22 +1,18 @@
+import { Blog } from "./blog";
+import { Post } from "./post";
+import { Comment } from "./comment";
+
 export interface User {
   id: UserId;
+  role?: Role;
   username?: Username;
   email?: string;
   password?: string;
-  role?: Role;
   timestamp?: Date;
+  blog?: Blog | null;
+  posts?: Post[];
+  comments?: Comment[] | null;
 }
-
-// TODO
-// For now, this fixes the error for passport.serializeUser; Express.User
-/* declare global {
-  namespace Express {
-    interface User {
-      id?: UserId;
-      username?: Username;
-    }
-  }
-} */
 
 type Role = "USER" | "AUTHOR" | "ADMIN";
 

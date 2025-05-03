@@ -55,7 +55,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     // What if accessToken is null?
     const fetchToken = async () => {
       await axios
-        .get("/auth", {
+        .get("/auth/refresh", {
           headers: {
             ...(accessToken && {}),
           },

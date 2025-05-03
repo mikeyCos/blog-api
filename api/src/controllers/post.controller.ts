@@ -23,18 +23,17 @@ const postController: PostController = {
     // createPost needs blogId and authorId
     // blogId and authorId should be accessible from
     console.log("createPost running...");
-    console.log("res.locals.token:", res.locals.token);
-    console.log("res.locals.user:", res.locals.user);
+    console.log("res.user:", req.user);
     const { title, content } = req.body;
-    const { user } = res.locals;
-    const newPost = await createPost({
+    const user = req.user;
+    /* const newPost = await createPost({
       blogId: user.blog.id,
       authorId: user.id,
       title,
       content,
     });
 
-    res.json({ newPost });
+    res.json({ newPost });*/
   }),
   createPostComment: asyncHandler(async (req, res) => {
     // const newPostComment = await createComment({...req.body, });

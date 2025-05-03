@@ -26,7 +26,7 @@ const authenticateToken: RequestHandler = (req, res, next) => {
     // Will need to split bearerHeader, and use the element at index 1
     // bearHeader.split(" ")[1];
     const accessToken = bearerHeader;
-    res.locals.accessToken = accessToken;
+    // req.accessToken = accessToken;
     // TODO
     // Type verify callback
     // For now, err: VerifyErrors | null and authData: any
@@ -42,7 +42,6 @@ const authenticateToken: RequestHandler = (req, res, next) => {
         } else {
           const { user } = authData;
           console.log("authData:", authData);
-          // res.locals.user = { ...user };
           req.user = user;
           next();
         }
