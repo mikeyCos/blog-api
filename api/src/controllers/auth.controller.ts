@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Response } from "express";
 import asyncHandler from "express-async-handler";
 import passport from "passport";
 // import jwt from "jsonwebtoken";
@@ -31,17 +31,40 @@ const authController: authController = {
     console.log("authorize");
     res.json({ status: "success", code: 200 });
   }),
-  refreshAccessToken: asyncHandler(async (req, res, next) => {
-    /* const refreshToken = jwt.sign({ user }, "apples", {
-      expiresIn: "30d",
-    }); */
+  refreshAccessToken: asyncHandler(async (req, res) => {
     // Create new accessToken
-    if (req.user) {
-      // console.log("typeof req.user:", typeof req.user)
-      const userRefresh = req.user as User;
-      console.log("userRefresh:", userRefresh);
-      const user = await getUser(userRefresh.id);
-      console.log(user);
+    console.log("refreshAccessToken middleware running...");
+
+    // TS compiler will be angry without type assertion
+    const userRefresh = req.user as User;
+    const user = userRefresh && (await getUser(userRefresh.id));
+    console.log("userRefresh:", userRefresh);
+    console.log("user:", user);
+    const newAccessToken =
+      user &&
+      (await signJWT(
+        { user: { username: user.username, role: user.role } },
+        {
+          expiresIn: "30d",
+        }
+      ));
+    console.log("newAccessToken:", newAccessToken);
+
+    if (newAccessToken) {
+      res.json({
+        status: "success",
+        code: 200,
+        data: {
+          accessToken: newAccessToken,
+          user: { username: user.username, role: user.role },
+        },
+      });
+    } else {
+      res.status(401).json({
+        status: "fail",
+        code: 401,
+        data: { accessToken: null, user: null },
+      });
     }
   }),
   login: [

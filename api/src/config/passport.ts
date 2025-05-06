@@ -17,7 +17,9 @@ const verifyCallback = async (
     console.log("password:", password);
     const user = await getUser(null, username);
     console.log("user:", user);
-    const match = user && (await bcrypt.compare(password, user.password));
+
+    // user.password should not be undefined/null if the user exists
+    const match = user && (await bcrypt.compare(password, user.password!));
 
     if (!user || !match) {
       return done(null, false, { message: "Invalid username or password" });

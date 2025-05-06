@@ -30,6 +30,7 @@ const AuthContext = createContext<AuthContext>({} as AuthContext);
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  console.log("AuthProvider running...");
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const login: Login = async (newToken) => {
@@ -62,6 +63,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         })
         .then(async (res) => {
           console.log("res:", res);
+          const { status, data } = res.data;
+          if (status === "success") return setAccessToken(data.accessToken);
+          return setAccessToken(null);
         });
     };
 

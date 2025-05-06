@@ -1,6 +1,20 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 05 MAY 2025
+- If the response `status` equals `"success"`, then the new access token is passed into `setAccessToken()`, otherwise `null` is passed into `setAccessToken()`.
+- Temporarily set up `refreshAccessToken` in `auth.controller` module will send a JSON response 
+  ```js
+  {
+    status: "fail",
+    code: 401,
+    data: { accessToken: null, user: null },
+  }
+  ```
+  if `newAccessToken` is falsy.
+- Asserted `User` type for `req.user` in `auth.controller` module's `refreshAccessToken` method.
+- Replaced `if...else` block from `refreshAccessToken` in `auth.controller` module with logical `AND (&&)`. 
+---
 ### 02 MAY 2025
 - Changed all fle extensions in `interfaces` subdirectory from `.ts` to `.d.ts`.
 - The asynchronous function `verifyJWT` can return a `Promise` with object properties `payload` of type `null` or `JwtPayload` and `expired` of type `boolean`.

@@ -22,22 +22,7 @@ export const createUser = async ({ username, email, password }: CreateUser) => {
 export const getUser = async (
   userId: UserId,
   username?: Username
-): Promise<{
-  blog: {
-    id: string;
-    authorId: string;
-  } | null;
-  posts: {
-    id: string;
-    authorId: string;
-    blogId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    title: string;
-    content: string;
-  }[];
-  comments: any[];
-} | null> => {
+): Promise<User | null> => {
   if (!userId && !username) {
     throw new Error("Failed to execute 'getUser' 1 argument required.");
   }
