@@ -29,17 +29,32 @@ interface authController {
 const authController: authController = {
   authorize: asyncHandler(async (req, res) => {
     console.log("authorize");
+    const { user, accessToken } = req;
+    // if (!user && !accessToken)
     res.json({ status: "success", code: 200 });
   }),
   refreshAccessToken: asyncHandler(async (req, res) => {
-    // Create new accessToken
+    // Create new accessToken unless the current accessToken is still valid
     console.log("refreshAccessToken middleware running...");
 
-    // TS compiler will be angry without type assertion
-    const userRefresh = req.user as User;
-    const user = userRefresh && (await getUser(userRefresh.id));
-    console.log("userRefresh:", userRefresh);
-    console.log("user:", user);
+    const { accessToken, user: userPayload } = req;
+
+    console.log("userPayload:", userPayload);
+    console.log("accessToken:", accessToken);
+    if (accessToken && userPayload) {
+      res.json({
+        status: "success",
+        code: 200,
+        data: {
+          accessToken,
+          user: { username: userPayload.username, role: userPayload.role },
+        },
+      });
+      return;
+    }
+
+    const user = userPayload && (await getUser(userPayload.id));
+
     const newAccessToken =
       user &&
       (await signJWT(
@@ -60,9 +75,9 @@ const authController: authController = {
         },
       });
     } else {
-      res.status(401).json({
+      res.status(403).json({
         status: "fail",
-        code: 401,
+        code: 403,
         data: { accessToken: null, user: null },
       });
     }
@@ -91,7 +106,7 @@ const authController: authController = {
             // Create a private accessToken
             // Do not send private user properties
             const { id, username, role } = user;
-            const expiresIn = 30; // seconds
+            const expiresIn = 60; // seconds
             const accessToken = await signJWT(
               { user: { username, role } },
               { expiresIn }
@@ -116,7 +131,8 @@ const authController: authController = {
               httpOnly: true,
               secure: true,
               sameSite: "strict",
-              maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+              // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+              maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
             });
 
             return res.json({

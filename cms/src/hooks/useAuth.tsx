@@ -9,12 +9,14 @@ import React, {
 
 // import axios from "axios";
 import axios from "../config/axios.config";
+import useRefreshToken from "./useRefreshToken";
 
 // TODO
 // Need to set type for createContext, useState, and user
 // https://reacttraining.com/blog/react-context-with-typescript
 type Login = (newToken: string) => void;
-type Logout = () => void;
+type Logout = () => Promise<null>;
+// type Logout = () => void;
 
 interface AuthContext {
   login: Login;
@@ -32,6 +34,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   console.log("AuthProvider running...");
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const refresh = useRefreshToken();
 
   const login: Login = async (newToken) => {
     console.log("login from AuthProvider running...");
@@ -44,29 +47,39 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout: Logout = async () => {
     console.log("logout from AuthProvider running...");
-    setAccessToken(null);
-    // setToken(null);
-    // setIsAuthorized(false);
-    // setIsLoggedOut(true);
+    /* return new Promise(async (res) => {
+      const response = await axios.post("/auth/logout");
+      console.log("response:", response);
+      setAccessToken(null);
+      setTimeout(() => res(null), 0);
+    }); */
+
+    return axios.post("/auth/logout").then((resolve) => {
+      return new Promise(async (res) => {
+        setAccessToken(null);
+        setTimeout(() => res(null), 0);
+      });
+    });
   };
 
   useEffect(() => {
-    console.log("useEffect in useAuth running...");
-    console.log(accessToken);
+    console.log("AuthProvider mounted...");
+    console.log("accessToken:", accessToken);
+    console.log("setAccessToken:", setAccessToken);
     // What if accessToken is null?
     const fetchToken = async () => {
-      await axios
-        .get("/auth/refresh", {
+      try {
+        const response = await axios.post("/auth/refresh", {
           headers: {
             ...(accessToken && {}),
           },
-        })
-        .then(async (res) => {
-          console.log("res:", res);
-          const { status, data } = res.data;
-          if (status === "success") return setAccessToken(data.accessToken);
-          return setAccessToken(null);
         });
+        console.log("response:", response);
+        setAccessToken(response.data.data.accessToken);
+      } catch (err) {
+        console.log("err:", err);
+        setAccessToken(null);
+      }
     };
 
     fetchToken();

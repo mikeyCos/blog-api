@@ -33,11 +33,14 @@
     // "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
     // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
-    // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/interfaces"
-    ] /* Specify multiple folders that act like './node_modules/@types'. */,
+    // "rootDirs": [
+    //   "./node_modules/@types",
+    //   "./src/interfaces"
+    // ] /* Allow multiple folders to be treated as one when resolving modules. */,
+    // "typeRoots": [
+    //   "./node_modules/@types",
+    //   "./src/interfaces"
+    // ] /* Specify multiple folders that act like './node_modules/@types'. */,
     // "types": [] /* Specify type package names to be included without being referenced in a source file. */,
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
     // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
@@ -115,6 +118,12 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["./src/**/*", ".src/types/request.d.ts"],
+  "exclude": ["./node_modules"],
+  "files": ["./src/interfaces/request.d.ts"]
 }
+
+/* I do not know why I need to explicitly define the path for request.d.ts.
+ * I tried declaring request.d.ts in ./src/types and defining "./src/types" in "typeRoots" but this did not work.
+ * I tried changing declare module "express-serve-static-core" to declare module "express" but this did not work.
+ */

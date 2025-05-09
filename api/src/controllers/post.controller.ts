@@ -33,7 +33,7 @@ const postController: PostController = {
       content,
     });
 
-    res.json({ newPost });*/
+    res.json({ newPost }); */
   }),
   createPostComment: asyncHandler(async (req, res) => {
     // const newPostComment = await createComment({...req.body, });

@@ -4,23 +4,30 @@ import { getUser } from "../services/user";
 import { User } from "../interfaces/user";
 
 const deserializeUser: RequestHandler = async (req, res, next) => {
-  const { accessToken, refreshToken } = req.cookies;
+  console.log("req.headers:", req.headers);
+  console.log("req.headers['authorization']:", req.headers["authorization"]);
+  const bearerHeader = req.headers["authorization"];
+  const accessToken = bearerHeader && bearerHeader.split(" ")[1];
+  const { refreshToken } = req.cookies;
 
   if (!accessToken && !refreshToken) return next();
 
   // TODO
   // What if both accessToken and refreshToken exist?
-  console.log("accessToken:", accessToken);
-  const { payload, expired } = await verifyJWT(accessToken);
-  console.log("payload:", payload);
-  if (payload) {
-    // req.user = payload;
-    return next();
-  }
-
+  // accessToken should never be undefined
+  const { payload, expired } = await verifyJWT(accessToken!);
+  // accessToken is valid
   console.log("-----------------------------------------------");
   console.log("refreshToken:", refreshToken); // Not a falsy value
   console.log("expired:", expired);
+
+  if (payload) {
+    req.accessToken = accessToken;
+    req.user = payload.user;
+    // req.payload = payload;
+    return next();
+  }
+
   console.log("expired && refreshToken:", expired && refreshToken);
   // What if payload and expired are falsy values but refreshToken is truthy?
   const { payload: refresh } = await (expired && refreshToken

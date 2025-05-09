@@ -204,6 +204,7 @@ Project Link: [https://#](https://#)
 ## Questions
 
 1. Do all blogs need a comment section? At what point, in production or development, are blog post comments helpful?
+2. Should the access token be valid if the refresh token is invalid? In other words, a new access token is generated right before a refresh token expires, should the newly generated access token be valid? Since the refresh token expired, a new access token will not be generated and the most recent generated access token will expire. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

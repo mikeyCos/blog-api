@@ -22,7 +22,7 @@ export const verifyJWT = async (
   token: string
 ): Promise<{ payload: null | JwtPayload; expired: boolean }> => {
   console.log("verifyJWT");
-  console.log("token:", token);
+  console.log("token in verifyJWT:", token);
   return await new Promise((res, rej) => {
     jwt.verify(token, "secretKey", (err, decoded) => {
       if (err) {

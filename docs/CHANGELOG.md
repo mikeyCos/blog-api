@@ -1,6 +1,16 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 08 MAY 2025
+- Deleted `useAxiosPrivate` module.
+- If `accessToken` is valid , `req.user` will be assigned the `payload.user` value; reuses `accessToken` generated when a user first logged in. 
+- The `id` property for `User` object is not optional.
+- `Authorization` header added to `axios` instance if `accessToken` exists in `ProtectedLayout` module.
+---
+### 07 MAY 2025
+- Logging out will keep the user on the path where they logged out, expect if they are in a protected/private route.
+- Deleted `useLocalStorage` module.
+---
 ### 05 MAY 2025
 - If the response `status` equals `"success"`, then the new access token is passed into `setAccessToken()`, otherwise `null` is passed into `setAccessToken()`.
 - Temporarily set up `refreshAccessToken` in `auth.controller` module will send a JSON response 

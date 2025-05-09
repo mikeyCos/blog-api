@@ -8,6 +8,7 @@ import Login from "../features/login/Login";
 import SignUp from "../features/signup/SignUp";
 
 import ProtectedRoute from "./ProtectedRoute";
+import ProtectedLayout from "../layouts/ProtectedLayout";
 
 // If no user is logged in
 //  Go to home page
@@ -28,12 +29,13 @@ const routes = [
     ),
     children: [
       {
-        path: "/dashboard",
-        element: (
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        ),
+        element: <ProtectedLayout />,
+        children: [
+          {
+            path: "/dashboard",
+            element: <Dashboard />,
+          },
+        ],
       },
       {
         path: "/home?",

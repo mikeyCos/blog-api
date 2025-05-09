@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 import NavAnchor from "../navAnchor/NavAnchor";
 import styles from "./Header.module.css";
@@ -7,12 +7,16 @@ import { useAuth } from "../../hooks/useAuth";
 
 const Header: React.FC = () => {
   const { accessToken, logout } = useAuth();
+  const location = useLocation();
+  const from = location.pathname;
   const navigate = useNavigate();
 
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     console.log("logoutHandler running...");
-    // logout();
-    // navigate("/");
+    await logout();
+    console.log("location:", location);
+    // navigate("/login", { state: { from: location }, replace: true });
+    navigate(from, { replace: true });
   };
 
   return (
@@ -28,7 +32,7 @@ const Header: React.FC = () => {
 
         <ul className={styles["nav-right"]}>
           <li>
-            <NavAnchor pathname="/home" textContent="home" />
+            <NavAnchor pathname="/" textContent="home" />
           </li>
 
           <li>

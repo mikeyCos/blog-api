@@ -1,5 +1,4 @@
 import { User } from "./user";
-
 // Declaration Merging
 // https://www.typescriptlang.org/docs/handbook/declaration-merging.html
 // https://stackoverflow.com/questions/71122741/how-do-i-add-custom-property-to-express-request-in-typescript

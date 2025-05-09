@@ -27,4 +27,14 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   return <>{children}</>;
 };
 
+/* const ProtectedRoute: React.FC<{
+  children: (props: { text: string }) => React.ReactNode;
+}> = ({ children }) => {
+  const { accessToken } = useAuth();
+
+  if (!accessToken) return <Navigate to="/login" />;
+
+  return <>{children}</>;
+}; */
+
 export default ProtectedRoute;

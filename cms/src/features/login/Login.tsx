@@ -11,7 +11,7 @@ const SignIn = () => {
 
   console.log("SignIn component");
   console.log("accessToken:", accessToken);
-  if (accessToken) return <Navigate to={"/dashboard"} />;
+  // if (accessToken) return <Navigate to={"/dashboard"} />;
 
   return (
     <section>

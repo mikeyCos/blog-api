@@ -12,12 +12,14 @@ import axios from "../../../config/axios.config";
 import { LoginFormError } from "../../../types/errors";
 // import config from "../../../config/env.config";
 import { useAuth } from "../../../hooks/useAuth";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const LoginForm: React.FC = () => {
   const userRef = useRef<HTMLInputElement | null>(null);
 
   const { login } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
   const initialFormData = {
     username: {
@@ -53,42 +55,6 @@ const LoginForm: React.FC = () => {
       body.append(input, formData[input as keyof typeof formData].value);
     }
 
-    /* const formElement = e.currentTarget;
-    const formData = new FormData(formElement);
-    const body = new URLSearchParams();
-
-    for (const input of formData) {
-      const [key, value] = input;
-      // value is type FormDataEntryValue which can be a string or File object
-      body.append(key, value as string);
-    }*/
-
-    /* await fetch(`${config.blogAPIBase}/auth/login`, {
-      method: "POST",
-      mode: "cors",
-      body,
-    }).then(async (res) => {
-      console.log("res:", res);
-      const result = await res.json();
-      if (!res.ok) {
-        setErrors(result.data);
-      } else {
-        // Extract token from result
-        // Store token in local storage
-        // Redirect user to dashboard
-        // console.log("result.data.token:", result.data["access_token"]);
-        // login(JSON.stringify(result.data["access_token"]));
-        // navigate("/dashboard");
-
-        console.log("result:", result);
-        // Store access_token in state
-        setFormData(initialFormData);
-        setErrors(null);
-
-        // login(JSON.stringify(result.data["access_token"]));
-      }
-    }); */
-
     await axios.post("/auth/login", body).then(
       (res) => {
         console.log("res:", res);
@@ -96,6 +62,7 @@ const LoginForm: React.FC = () => {
         login(res.data.data["accessToken"]);
         setFormData(initialFormData);
         setErrors(null);
+        navigate(from, { replace: true });
       },
       (rej) => {
         console.log("rej:", rej);
