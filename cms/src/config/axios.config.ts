@@ -6,7 +6,8 @@ export default axios.create({
   withCredentials: true,
 });
 
-export const axiosPrivate = axios.create({
+export const axiosInit = axios.create({
   baseURL: config.blogAPIBase,
   withCredentials: true,
+  validateStatus: (status) => status < 500,
 });

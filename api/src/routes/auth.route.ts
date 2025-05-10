@@ -1,6 +1,8 @@
 import { Router } from "express";
 import authController from "../controllers/auth.controller";
 import authenticateToken from "../middleware/authenticateToken";
+import { initSchema } from "../validators/query.validator";
+import { validateQuery } from "../validators/validators";
 
 const authRoutes = () => {
   const { authorize, refreshAccessToken, login, logout, signup } =
@@ -14,7 +16,7 @@ const authRoutes = () => {
   // curl -w "\n" -X POST http://localhost:3001/auth
   authRouter.post("/login", login);
   authRouter.post("/logout", logout);
-  authRouter.post("/refresh", refreshAccessToken);
+  authRouter.post("/refresh", validateQuery(initSchema), refreshAccessToken);
   authRouter.post("/signup", signup);
 
   // curl -w "\n" -X POST http://localhost:3001/pizza/:id

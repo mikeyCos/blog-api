@@ -1,6 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 09 MAY 2025
+- Logging in will direct user to the dashboard.
+- Added `init=true` query parameter to the post request url in `useAuth` module.
+- Created `query.validator` module; validates optional `init` query parameter.
+- Renamed `axiosPrivate` to `axiosInit` and added `validateStatus` config option.
+---
 ### 08 MAY 2025
 - Deleted `useAxiosPrivate` module.
 - If `accessToken` is valid , `req.user` will be assigned the `payload.user` value; reuses `accessToken` generated when a user first logged in. 

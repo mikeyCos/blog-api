@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 
 import NavAnchor from "../navAnchor/NavAnchor";
@@ -13,10 +13,12 @@ const Header: React.FC = () => {
 
   const logoutHandler = async () => {
     console.log("logoutHandler running...");
+    // navigate(from, { replace: true });
     await logout();
-    console.log("location:", location);
+    // navigate(from, { replace: true });
+    // console.log("location:", location);
     // navigate("/login", { state: { from: location }, replace: true });
-    navigate(from, { replace: true });
+    // navigate("/");
   };
 
   return (

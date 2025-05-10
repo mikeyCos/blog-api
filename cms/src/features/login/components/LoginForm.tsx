@@ -19,7 +19,7 @@ const LoginForm: React.FC = () => {
 
   const { login } = useAuth();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/dashboard";
   const navigate = useNavigate();
   const initialFormData = {
     username: {
@@ -62,6 +62,7 @@ const LoginForm: React.FC = () => {
         login(res.data.data["accessToken"]);
         setFormData(initialFormData);
         setErrors(null);
+        console.log("location:", location);
         navigate(from, { replace: true });
       },
       (rej) => {

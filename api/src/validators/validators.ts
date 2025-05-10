@@ -1,3 +1,5 @@
 import validateSignUp from "./signup.validator";
+import validateQuery from "./query.validator";
+import validateParams from "./params.validator";
 
-export { validateSignUp };
+export { validateParams, validateSignUp, validateQuery };

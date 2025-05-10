@@ -7,20 +7,20 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
 }) => {
   console.log("ProtectedLayout running");
-  const location = useLocation();
-  const navigate = useNavigate();
-  // const axiosPrivate = useAxiosPrivate();
   const { accessToken, setAccessToken } = useAuth();
+  const location = useLocation();
+  console.log(location);
+  if (!accessToken)
+    return <Navigate to="/login" state={{ from: location }} replace />;
+
+  const navigate = useNavigate();
   console.log("accessToken:", accessToken);
-  // if (!accessToken) return <Navigate to="/login" />;
 
   useEffect(() => {
     console.log("ProtectedLayout mounted...");
     //   /* if (!accessToken)
     //     navigate("/login", { state: { from: location }, replace: true }); */
     const authorize = async () => {
-      console.log("authorize running...");
-      console.log("accessToken in authorize():", accessToken);
       try {
         console.log("accessToken in authorize():", accessToken);
 

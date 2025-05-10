@@ -7,9 +7,7 @@ import React, {
   useState,
 } from "react";
 
-// import axios from "axios";
-import axios from "../config/axios.config";
-import useRefreshToken from "./useRefreshToken";
+import axios, { axiosInit } from "../config/axios.config";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -34,7 +32,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   console.log("AuthProvider running...");
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const refresh = useRefreshToken();
 
   const login: Login = async (newToken) => {
     console.log("login from AuthProvider running...");
@@ -47,19 +44,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout: Logout = async () => {
     console.log("logout from AuthProvider running...");
-    /* return new Promise(async (res) => {
-      const response = await axios.post("/auth/logout");
-      console.log("response:", response);
-      setAccessToken(null);
-      setTimeout(() => res(null), 0);
-    }); */
-
     return axios.post("/auth/logout").then((resolve) => {
       return new Promise(async (res) => {
         setAccessToken(null);
         setTimeout(() => res(null), 0);
       });
     });
+    /* await axios.post("/auth/logout");
+    setAccessToken(null); */
   };
 
   useEffect(() => {
@@ -67,22 +59,32 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log("accessToken:", accessToken);
     console.log("setAccessToken:", setAccessToken);
     // What if accessToken is null?
-    const fetchToken = async () => {
-      try {
-        const response = await axios.post("/auth/refresh", {
-          headers: {
-            ...(accessToken && {}),
-          },
-        });
-        console.log("response:", response);
-        setAccessToken(response.data.data.accessToken);
-      } catch (err) {
+    /* const responseInterceptor = axiosInit.interceptors.response.use(
+      (res) => res,
+      (err) => {
         console.log("err:", err);
-        setAccessToken(null);
+        return Promise.resolve(err);
+      }
+    ); */
+
+    const fetchToken = async () => {
+      if (accessToken)
+        axiosInit.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessToken}`;
+      try {
+        const response = await axiosInit.post("/auth/refresh?init=true");
+        setAccessToken(response.data.data.accessToken);
+        console.log("response:", response);
+      } catch (err) {
+        console.log("error:", err);
       }
     };
 
     fetchToken();
+    /* return () => {
+      axiosInit.interceptors.response.eject(responseInterceptor);
+    }; */
   }, []);
 
   const providerValue = useMemo(() => {

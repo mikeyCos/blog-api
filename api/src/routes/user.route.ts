@@ -1,6 +1,7 @@
 import { Router } from "express";
 import userController from "../controllers/user.controller";
-import validateParams, { userSchema } from "../validators/params.validator";
+import { validateParams } from "../validators/validators";
+import { userSchema } from "../validators/params.validator";
 
 const userRoutes = () => {
   const userRouter = Router();

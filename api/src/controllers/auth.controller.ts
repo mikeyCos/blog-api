@@ -36,7 +36,8 @@ const authController: authController = {
   refreshAccessToken: asyncHandler(async (req, res) => {
     // Create new accessToken unless the current accessToken is still valid
     console.log("refreshAccessToken middleware running...");
-
+    // TODO
+    // Refactor this endpoint
     const { accessToken, user: userPayload } = req;
 
     console.log("userPayload:", userPayload);
@@ -60,7 +61,7 @@ const authController: authController = {
       (await signJWT(
         { user: { username: user.username, role: user.role } },
         {
-          expiresIn: "30d",
+          expiresIn: 60,
         }
       ));
     console.log("newAccessToken:", newAccessToken);
@@ -75,6 +76,22 @@ const authController: authController = {
         },
       });
     } else {
+      const { init } = matchedData<{ init: boolean }>(req, {
+        onlyValidData: true,
+      });
+
+      console.log("init:", init);
+      console.log("typeof init:", typeof init);
+
+      if (init) {
+        res.json({
+          status: "success",
+          code: 200,
+          data: { accessToken: null, user: null },
+        });
+        return;
+      }
+
       res.status(403).json({
         status: "fail",
         code: 403,
