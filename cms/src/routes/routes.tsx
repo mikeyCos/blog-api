@@ -1,3 +1,5 @@
+import { Outlet, RouteObject } from "react-router";
+
 import DefaultLayout from "../layouts/DefaultLayout";
 import Home from "../features/home/Home";
 import About from "../features/about/About";
@@ -9,6 +11,7 @@ import SignUp from "../features/signup/SignUp";
 
 import ProtectedRoute from "./ProtectedRoute";
 import ProtectedLayout from "../layouts/ProtectedLayout";
+import PrevLocationProvider from "../hooks/usePrevLocation";
 
 // If no user is logged in
 //  Go to home page
@@ -17,11 +20,19 @@ import ProtectedLayout from "../layouts/ProtectedLayout";
 //  Go to dashboard
 //  If user goes to the sign in page, they are redirected to their dashboard
 
-const routes = [
+const RootLayout: React.FC = () => {
+  return (
+    <>
+      <PrevLocationProvider>
+        <Outlet />
+      </PrevLocationProvider>
+    </>
+  );
+};
+
+const routes: RouteObject[] = [
   {
-    id: "root",
-    path: "/",
-    element: <DefaultLayout />,
+    element: <RootLayout />,
     errorElement: (
       <DefaultLayout>
         <Error />
@@ -29,35 +40,41 @@ const routes = [
     ),
     children: [
       {
-        element: <ProtectedLayout />,
+        path: "/",
+        element: <DefaultLayout />,
         children: [
           {
-            path: "/dashboard",
-            element: <Dashboard />,
+            element: <ProtectedLayout />,
+            children: [
+              {
+                path: "/dashboard",
+                element: <Dashboard />,
+              },
+            ],
+          },
+          {
+            path: "/home?",
+            element: <Home />,
+          },
+          {
+            path: "/About",
+            element: <About />,
+          },
+          {
+            path: "/faq",
+            element: <Faq />,
           },
         ],
       },
       {
-        path: "/home?",
-        element: <Home />,
+        path: "/login",
+        element: <Login />,
       },
       {
-        path: "/About",
-        element: <About />,
-      },
-      {
-        path: "/faq",
-        element: <Faq />,
+        path: "/signup",
+        element: <SignUp />,
       },
     ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
   },
 ];
 

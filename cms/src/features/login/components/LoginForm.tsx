@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   ChangeEventHandler,
   FormEventHandler,
+  RefObject,
   useEffect,
   useRef,
   useState,
@@ -14,12 +15,11 @@ import { LoginFormError } from "../../../types/errors";
 import { useAuth } from "../../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router";
 
-const LoginForm: React.FC = () => {
+const LoginForm: React.FC<{ prevLocation: string | null }> = ({
+  prevLocation,
+}) => {
   const userRef = useRef<HTMLInputElement | null>(null);
-
   const { login } = useAuth();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/dashboard";
   const navigate = useNavigate();
   const initialFormData = {
     username: {
@@ -45,6 +45,7 @@ const LoginForm: React.FC = () => {
 
   const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    const from = prevLocation ?? "/dashboard";
     console.log("form submit handler running...");
     const body = new URLSearchParams();
 
@@ -72,8 +73,11 @@ const LoginForm: React.FC = () => {
     );
   };
 
+  // console.log("prevLocationRef in LoginForm component:", prevLocationRef);
   useEffect(() => {
     userRef.current?.focus();
+    console.log("LoginForm mounted");
+    console.log("prevLocation:", prevLocation);
   }, []);
 
   // Do I really need to erase inputs after successful POSt request?

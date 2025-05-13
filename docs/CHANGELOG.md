@@ -1,6 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 12 NAT 2925
+- If a user is on the FAQ page, then they login, they will be redirected back to the FAQ page.
+- Restructured `routes` array by defining a `RootLayout`; this allows context providers to be below a router.
+- Defined `RouteObject[]` type for `routes` in `routes` module.
+- Created `usePrevLocation` module; records and provides `prevLocation` for routes.
+---
 ### 09 MAY 2025
 - Logging in will direct user to the dashboard.
 - Added `init=true` query parameter to the post request url in `useAuth` module.
