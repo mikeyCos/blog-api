@@ -1,17 +1,20 @@
 import { Outlet, RouteObject } from "react-router";
 
 import DefaultLayout from "../layouts/DefaultLayout";
-import Home from "../features/home/Home";
-import About from "../features/about/About";
-import Faq from "../features/faq/Faq";
+import Home from "../pages/home/Home";
+import About from "../pages/about/About";
+import Faq from "../pages/faq/Faq";
 import Error from "../features/error/Error";
-import Dashboard from "../features/dashboard/Dashboard";
+import Dashboard from "../pages/dashboard/Dashboard";
 import Login from "../features/login/Login";
 import SignUp from "../features/signup/SignUp";
 
 import ProtectedRoute from "./ProtectedRoute";
 import ProtectedLayout from "../layouts/ProtectedLayout";
 import PrevLocationProvider from "../hooks/usePrevLocation";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Posts from "../features/posts/Posts";
+import Comments from "../features/comments/Comments";
 
 // If no user is logged in
 //  Go to home page
@@ -20,6 +23,7 @@ import PrevLocationProvider from "../hooks/usePrevLocation";
 //  Go to dashboard
 //  If user goes to the sign in page, they are redirected to their dashboard
 
+// useLocation hook can be used on all routes
 const RootLayout: React.FC = () => {
   return (
     <>
@@ -47,8 +51,21 @@ const routes: RouteObject[] = [
             element: <ProtectedLayout />,
             children: [
               {
-                path: "/dashboard",
-                element: <Dashboard />,
+                element: <DashboardLayout />,
+                children: [
+                  {
+                    path: "/dashboard",
+                    element: <Dashboard />,
+                  },
+                  {
+                    path: "/posts",
+                    element: <Posts />,
+                  },
+                  {
+                    path: "/comments",
+                    element: <Comments />,
+                  },
+                ],
               },
             ],
           },

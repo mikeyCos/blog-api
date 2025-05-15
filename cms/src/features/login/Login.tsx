@@ -9,12 +9,12 @@ import { usePrevLocation } from "../../hooks/usePrevLocation";
 const SignIn = () => {
   const navigate = useNavigate();
   const { accessToken } = useAuth();
-  // const { prevLocationRef } = usePrevLocation();
   const { prevLocation } = usePrevLocation();
   console.log("SignIn component");
   console.log("accessToken:", accessToken);
-  // if (accessToken) return <Navigate to={"/dashboard"} />;
-  // console.log("prevLocationRef in SignIn component:", prevLocationRef);
+  console.log("prevLocation:", prevLocation);
+  if (accessToken)
+    return <Navigate to={!prevLocation ? "/dashboard" : prevLocation} />;
 
   return (
     <section>

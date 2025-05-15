@@ -1,7 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
-### 12 NAT 2925
+### 14 MAY 2025
+- Created `DashboardLayout`, `Comments`, `Posts` and `dashboardNavBar` modules.
+- Added `@tinymce/tinymce-react`, `tinymce`, and `fs-extra` packages to dependencies.
+- Moved `about`, `dashboard`, `faq`, and `home` subdirectories into `pages` subdirectory.
+- Recreated `pages` subdirectory.
+---
+### 12 NAT 2025
 - If a user is on the FAQ page, then they login, they will be redirected back to the FAQ page.
 - Restructured `routes` array by defining a `RootLayout`; this allows context providers to be below a router.
 - Defined `RouteObject[]` type for `routes` in `routes` module.

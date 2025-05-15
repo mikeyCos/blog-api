@@ -10,12 +10,6 @@ const DefaultLayout: React.FC<{ children?: React.ReactNode }> = ({
 }) => {
   console.log("DefaultLayout running..");
 
-  /*  const navigate = useNavigate();
-  const location = useLocation();
-  useEffect(() => {
-    console.log("DefaultLayout location:", location);
-  }, []); */
-
   return (
     <>
       <Header />

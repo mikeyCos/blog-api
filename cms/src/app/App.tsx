@@ -9,11 +9,11 @@ import {
 
 import AuthProvider from "../hooks/useAuth";
 import DefaultLayout from "../layouts/DefaultLayout";
-import Dashboard from "../features/dashboard/Dashboard";
+import Dashboard from "../pages/dashboard/Dashboard";
 
-import Home from "../features/home/Home";
-import About from "../features/about/About";
-import Faq from "../features/faq/Faq";
+import Home from "../pages/home/Home";
+import About from "../pages/about/About";
+import Faq from "../pages/faq/Faq";
 import ProtectedLayout from "../layouts/ProtectedLayout";
 
 interface Props {

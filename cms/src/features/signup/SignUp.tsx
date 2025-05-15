@@ -7,8 +7,6 @@ import { usePrevLocation } from "../../hooks/usePrevLocation";
 
 const SignUp: React.FC = () => {
   const { accessToken } = useAuth();
-  // const { prevLocationRef } = usePrevLocation();
-  // console.log("prevLocationRef in SignUp component:", prevLocationRef);
   const { prevLocation } = usePrevLocation();
   console.log("prevLocation:", prevLocation);
   if (accessToken) return <Navigate to={"/dashboard"} />;

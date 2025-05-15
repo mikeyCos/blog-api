@@ -1,8 +1,6 @@
 import React, {
-  ChangeEvent,
   ChangeEventHandler,
   FormEventHandler,
-  RefObject,
   useEffect,
   useRef,
   useState,
@@ -47,6 +45,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
     e.preventDefault();
     const from = prevLocation ?? "/dashboard";
     console.log("form submit handler running...");
+    console.log("from:", from);
     const body = new URLSearchParams();
 
     // '...expression of type string cannot be used to index...'
@@ -63,7 +62,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
         login(res.data.data["accessToken"]);
         setFormData(initialFormData);
         setErrors(null);
-        console.log("location:", location);
+        console.log("from:", from);
         navigate(from, { replace: true });
       },
       (rej) => {

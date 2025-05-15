@@ -57,7 +57,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     console.log("AuthProvider mounted...");
     console.log("accessToken:", accessToken);
-    console.log("setAccessToken:", setAccessToken);
     // What if accessToken is null?
     /* const responseInterceptor = axiosInit.interceptors.response.use(
       (res) => res,
