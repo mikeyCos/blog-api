@@ -61,7 +61,7 @@ const authController: authController = {
       (await signJWT(
         { user: { username: user.username, role: user.role } },
         {
-          expiresIn: 60,
+          expiresIn: 10,
         }
       ));
     console.log("newAccessToken:", newAccessToken);
@@ -123,7 +123,7 @@ const authController: authController = {
             // Create a private accessToken
             // Do not send private user properties
             const { id, username, role } = user;
-            const expiresIn = 60; // seconds
+            const expiresIn = 10; // seconds
             const accessToken = await signJWT(
               { user: { username, role } },
               { expiresIn }
@@ -149,6 +149,7 @@ const authController: authController = {
               secure: true,
               sameSite: "strict",
               // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+              // maxAge: 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
               maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
             });
 

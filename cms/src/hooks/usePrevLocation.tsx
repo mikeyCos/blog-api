@@ -31,6 +31,7 @@ const PrevLocationProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   console.log("PrevLocationProvider running...");
   const location = useLocation();
+  // No need to use /login
   const prevLocation = usePrevious(location.pathname);
 
   const providerValue = useMemo(() => {

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import axios from "../config/axios.config";
+import { usePrevLocation } from "../hooks/usePrevLocation";
 
 const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -9,9 +10,10 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   console.log("ProtectedLayout running");
   const { accessToken, setAccessToken } = useAuth();
   const location = useLocation();
-  console.log(location);
-  if (!accessToken)
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  // const {prevLocation} = usePrevLocation();
+  // console.log(prevLocation);
+  // if (!accessToken)
+  //   return <Navigate to="/login" state={{ from: location }} replace />;
 
   const navigate = useNavigate();
   console.log("accessToken:", accessToken);
@@ -34,12 +36,13 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
         setAccessToken(response.data.data.accessToken);
       } catch (err) {
         console.log(err);
-        navigate("/login", { state: { from: location }, replace: true });
+        setAccessToken(null);
+        navigate("/login");
       }
     };
 
     authorize();
-  }, []);
+  }, [location, accessToken]);
 
   return (
     <>

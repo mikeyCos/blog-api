@@ -7,14 +7,23 @@ import { Navigate, useNavigate } from "react-router";
 import { usePrevLocation } from "../../hooks/usePrevLocation";
 
 const SignIn = () => {
-  const navigate = useNavigate();
   const { accessToken } = useAuth();
   const { prevLocation } = usePrevLocation();
   console.log("SignIn component");
   console.log("accessToken:", accessToken);
   console.log("prevLocation:", prevLocation);
+  // If accessToken exists (user is logged in)
+  //  Navigate the user to their dashboard or the previous location
   if (accessToken)
-    return <Navigate to={!prevLocation ? "/dashboard" : prevLocation} />;
+    return (
+      <Navigate
+        to={
+          !prevLocation || prevLocation === "/login"
+            ? "/dashboard"
+            : prevLocation
+        }
+      />
+    );
 
   return (
     <section>

@@ -4,22 +4,46 @@ import { Link, useLocation, useNavigate } from "react-router";
 import NavAnchor from "../navAnchor/NavAnchor";
 import styles from "./Header.module.css";
 import { useAuth } from "../../hooks/useAuth";
+import { usePrevLocation } from "../../hooks/usePrevLocation";
 
 const Header: React.FC = () => {
-  const { accessToken, logout } = useAuth();
+  const { accessToken, setAccessToken, logout } = useAuth();
   const location = useLocation();
   const from = location.pathname;
   const navigate = useNavigate();
-
+  const { prevLocation } = usePrevLocation();
+  const [isLoggedOut, setIsLoggedOut] = useState(false);
+  console.log("Header component rendering...");
+  console.log("prevLocation in Header component:", prevLocation);
+  console.log("from in Header component:", from);
+  console.log("accessToken in Header component:", accessToken);
+  // TODO
+  // Should the user be redirected to the home page or the page they are logging out from?
+  // Problem
+  //  accessToken is not getting updated right away
+  //  Cannot redirect user to page they are logging out from
+  //  For example,
+  //    Logging out from /faq should return the user to /faq, not /login
   const logoutHandler = async () => {
     console.log("logoutHandler running...");
-    // navigate(from, { replace: true });
-    await logout();
-    // navigate(from, { replace: true });
-    // console.log("location:", location);
-    // navigate("/login", { state: { from: location }, replace: true });
+    const isLogout = await logout();
+    console.group();
+    console.log("prevLocation:", prevLocation);
+    console.log("from:", from);
+    console.log("accessToken:", accessToken);
+    console.groupEnd();
+    console.log("isLogout:", isLogout);
+    // setAccessToken(null);
+    // navigate(prevLocation ?? "/");
+    navigate(from);
     // navigate("/");
   };
+
+  useEffect(() => {
+    console.log("Header component mounting...");
+    console.log("accessToken changed");
+    console.log("accessToken:", accessToken);
+  }, [accessToken, prevLocation, setAccessToken]);
 
   return (
     <header>

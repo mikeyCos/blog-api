@@ -50,8 +50,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setTimeout(() => res(null), 0);
       });
     });
-    /* await axios.post("/auth/logout");
-    setAccessToken(null); */
+    // setAccessToken(null);
   };
 
   useEffect(() => {
@@ -77,6 +76,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         console.log("response:", response);
       } catch (err) {
         console.log("error:", err);
+        setAccessToken(null);
       }
     };
 

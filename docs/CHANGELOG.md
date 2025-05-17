@@ -1,13 +1,17 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 16 MAY 2025
+- Currently, logging out does not immediately update the `accessToken`.
+- When both access and refresh tokens expire, the user will be redirected to the page they were previously on; in other words, if a user is on a protected route (`/comments`), then both tokens expire, the user is redirected to the login page, then the user logs in, and they are redirected back to the comments page.
+---
 ### 14 MAY 2025
 - Created `DashboardLayout`, `Comments`, `Posts` and `dashboardNavBar` modules.
 - Added `@tinymce/tinymce-react`, `tinymce`, and `fs-extra` packages to dependencies.
 - Moved `about`, `dashboard`, `faq`, and `home` subdirectories into `pages` subdirectory.
 - Recreated `pages` subdirectory.
 ---
-### 12 NAT 2025
+### 12 MAY 2025
 - If a user is on the FAQ page, then they login, they will be redirected back to the FAQ page.
 - Restructured `routes` array by defining a `RootLayout`; this allows context providers to be below a router.
 - Defined `RouteObject[]` type for `routes` in `routes` module.
