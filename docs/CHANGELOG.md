@@ -1,6 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 19 MAY 2025
+- The `signup` endpoint in `auth.controller` module now attaches a HTTP-only cookie and sends a JSON response to the client.
+- When a new user is created, their `accessToken` is stored in state and `refreshToken` is attached to a HTTP-only cookie, and they are redirected to the dashboard page.
+- All properties for `LoginFormError` and `SignUpFormError` interfaces are now optional.
+- Replaced `fetch` call with `axios.post` call in `SignUpForm` component.
+---
 ### 18 MAY 2025
 - Explicitly defined `if...else` conditional block in the `Login` component.
 - If a user logs out from a protected route, they will be redirected to the login page, then if they log back in, they will be redirected back to where they logged out from.

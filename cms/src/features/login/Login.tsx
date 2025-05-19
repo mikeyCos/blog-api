@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
-
 import NavAnchor from "../../components/navAnchor/NavAnchor";
 import LoginForm from "./components/LoginForm";
 import { useAuth } from "../../hooks/useAuth";
-import { Navigate, useLocation, useNavigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import { usePrevLocation } from "../../hooks/usePrevLocation";
 
 const SignIn = () => {

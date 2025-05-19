@@ -1,14 +1,14 @@
 export interface LoginFormError {
-  username: ValidationError;
-  password: ValidationError;
+  username?: ValidationError;
+  password?: ValidationError;
   message?: string;
 }
 
 export interface SignUpFormError {
-  username: ValidationError;
-  email: ValidationError;
-  password: ValidationError;
-  ["password-confirmation"]: ValidationError;
+  username?: ValidationError;
+  email?: ValidationError;
+  password?: ValidationError;
+  ["password-confirmation"]?: ValidationError;
   message?: string;
 }
 

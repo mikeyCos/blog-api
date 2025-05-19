@@ -2,9 +2,14 @@ import React, { FormEventHandler, useState } from "react";
 
 import { SignUpFormError } from "../../../types/errors";
 import config from "../../../config/env.config";
+import axios from "../../../config/axios.config";
+import { useAuth } from "../../../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const SignUpForm: React.FC = () => {
   const [errors, setErrors] = useState<SignUpFormError>();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -18,24 +23,21 @@ const SignUpForm: React.FC = () => {
       // value is type FormDataEntryValue which can be a string or File object
       body.append(key, value as string);
     }
-    await fetch(`${config.blogAPIBase}/auth/signup`, {
-      method: "POST",
-      mode: "cors",
-      body,
-    }).then(async (res) => {
-      const result = await res.json();
-      if (!res.ok) {
-        setErrors(result.data);
-      }
 
-      console.log("res:", res);
-      console.log("result:", result);
-      // Extract token from result
-      // Store token in local storage
-      // Redirect user to dashboard
-      const { token } = result.data;
-      console.log("token:", token);
-    });
+    await axios
+      .post("/auth/signup", body)
+      .then(async (res) => {
+        console.log("res:", res);
+
+        login(res.data.data.accessToken);
+        navigate("/dashboard", { replace: true });
+      })
+      .catch((err) => {
+        console.log("err:", err);
+        const { code, response } = err;
+        if (code === "ERR_NETWORK") return setErrors({ message: err.message });
+        setErrors(response.data.data);
+      });
   };
 
   return (

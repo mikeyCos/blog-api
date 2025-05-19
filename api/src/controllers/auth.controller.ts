@@ -140,10 +140,6 @@ const authController: authController = {
             console.log("refreshToken:", refreshToken);
             console.log("accessToken:", accessToken);
 
-            if (accessToken) {
-              verifyJWT(accessToken);
-            }
-
             res.cookie("refreshToken", refreshToken, {
               httpOnly: true,
               secure: true,
@@ -183,14 +179,37 @@ const authController: authController = {
       const hashedPassword = await bcrypt.hash(password, 10);
       const user = await createUser({ password: hashedPassword, ...rest });
 
+      // Should I redirect to '/auth/signup'?
       // Log in user when they sign up
-      req.login(user, { session: false }, (err) => {
-        const expiresIn = 30; // seconds
-        const token = signJWT({ user }, { expiresIn });
+      req.login(user, { session: false }, async (err) => {
+        const { id, username, role } = user;
+        const expiresIn = 10; // seconds
+        const accessToken = await signJWT(
+          { user: { username, role } },
+          { expiresIn }
+        );
+        const refreshToken = await Promise.resolve(
+          signJWT(
+            { user: { id } },
+            {
+              expiresIn: "30d",
+            }
+          )
+        );
+
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "strict",
+          // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+          // maxAge: 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+          maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
+        });
+
         return res.json({
           status: "success",
           code: 200,
-          data: { access_token: token },
+          data: { accessToken, user: { username, role } },
         });
       });
     }),
