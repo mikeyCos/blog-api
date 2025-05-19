@@ -2,6 +2,8 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 19 MAY 2025
+- 
+- Created `stable` branch from `main`.
 - Merged `cms-feature-sign-up` branch to `main`.
 - The `signup` endpoint in `auth.controller` module now attaches a HTTP-only cookie and sends a JSON response to the client.
 - When a new user is created, their `accessToken` is stored in state and `refreshToken` is attached to a HTTP-only cookie, and they are redirected to the dashboard page.
