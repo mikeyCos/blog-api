@@ -2,7 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 19 MAY 2025
-- 
+- Created `feature-post` branch from `stable`.
 - Created `stable` branch from `main`.
 - Merged `cms-feature-sign-up` branch to `main`.
 - The `signup` endpoint in `auth.controller` module now attaches a HTTP-only cookie and sends a JSON response to the client.
