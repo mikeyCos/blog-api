@@ -12,7 +12,6 @@ const Header: React.FC = () => {
   const from = location.pathname;
   const navigate = useNavigate();
   const { prevLocation } = usePrevLocation();
-  const [isLoggedOut, setIsLoggedOut] = useState(false);
   console.log("Header component rendering...");
   console.log("prevLocation in Header component:", prevLocation);
   console.log("from in Header component:", from);
@@ -26,17 +25,19 @@ const Header: React.FC = () => {
   //    Logging out from /faq should return the user to /faq, not /login
   const logoutHandler = async () => {
     console.log("logoutHandler running...");
-    const isLogout = await logout();
+    // const isLogout = await logout();
+    await logout();
     console.group();
     console.log("prevLocation:", prevLocation);
     console.log("from:", from);
     console.log("accessToken:", accessToken);
     console.groupEnd();
-    console.log("isLogout:", isLogout);
+    // console.log("isLogout:", isLogout);
     // setAccessToken(null);
     // navigate(prevLocation ?? "/");
-    navigate(from);
+    navigate(from), { replace: true };
     // navigate("/");
+    // logout();
   };
 
   useEffect(() => {

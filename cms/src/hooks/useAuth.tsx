@@ -8,6 +8,7 @@ import React, {
 } from "react";
 
 import axios, { axiosInit } from "../config/axios.config";
+import { useNavigate } from "react-router";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -32,6 +33,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   console.log("AuthProvider running...");
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const login: Login = async (newToken) => {
     console.log("login from AuthProvider running...");
@@ -50,7 +52,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setTimeout(() => res(null), 0);
       });
     });
-    // setAccessToken(null);
+
+    /* axios.post("/auth/logout");
+    setAccessToken(null);
+    navigate("/"); */
   };
 
   useEffect(() => {

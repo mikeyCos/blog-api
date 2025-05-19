@@ -9,7 +9,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Login from "../features/login/Login";
 import SignUp from "../features/signup/SignUp";
 
-import ProtectedRoute from "./ProtectedRoute";
+import AuthProvider from "../hooks/useAuth";
 import ProtectedLayout from "../layouts/ProtectedLayout";
 import PrevLocationProvider from "../hooks/usePrevLocation";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -27,9 +27,11 @@ import Comments from "../features/comments/Comments";
 const RootLayout: React.FC = () => {
   return (
     <>
-      <PrevLocationProvider>
-        <Outlet />
-      </PrevLocationProvider>
+      <AuthProvider>
+        <PrevLocationProvider>
+          <Outlet />
+        </PrevLocationProvider>
+      </AuthProvider>
     </>
   );
 };

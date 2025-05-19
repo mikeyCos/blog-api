@@ -1,6 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 18 MAY 2025
+- Explicitly defined `if...else` conditional block in the `Login` component.
+- If a user logs out from a protected route, they will be redirected to the login page, then if they log back in, they will be redirected back to where they logged out from.
+- Removed conditional block in `ProtectedLayout` component's `useEffect` hook.
+- Moved `AuthProvider` from `App` component to `RootLayout` component.
+---
 ### 16 MAY 2025
 - Currently, logging out does not immediately update the `accessToken`.
 - When both access and refresh tokens expire, the user will be redirected to the page they were previously on; in other words, if a user is on a protected route (`/comments`), then both tokens expire, the user is redirected to the login page, then the user logs in, and they are redirected back to the comments page.
