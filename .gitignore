@@ -148,4 +148,4 @@ fly.toml
 .github
 *.local
 **/generated/prisma
-/public/tinymce/
+**/public/tinymce/
