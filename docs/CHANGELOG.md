@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 21 MAY 2025
+- Removed `cms/public/tinymce` subdirectory from Git repository.
+---
 ### 20 MAY 2025
 - Added a title `input` in `PostForm` component.
 - Wrapped the `PostEditor` component with a `form` element.
