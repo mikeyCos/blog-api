@@ -3,12 +3,12 @@ import React from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 const Dashboard: React.FC = () => {
-  const { token } = useAuth();
+  const { accessToken } = useAuth();
   return (
     <section>
       <h2>Dashboard</h2>
       <p>
-        Token:<span>{token}</span>
+        Access Token:<span>{accessToken}</span>
       </p>
     </section>
   );

@@ -1,6 +1,14 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 20 MAY 2025
+- Added a title `input` in `PostForm` component.
+- Wrapped the `PostEditor` component with a `form` element.
+- Defined `editorRef` and `submitPost` in `PostForm` component and pass the reference down to the `PostEditor` component.
+- Created `post.validator.ts`, `postinstall.ts`, and `PostForm.tsx` modules.
+- In `cms` directory, added `"compilerOptions": { "esModuleInterop": true }` option in `tsconfig.json`.
+- In `cms` directory, removed `"type": "module"` option in `package.json`.
+---
 ### 19 MAY 2025
 - Created `feature-post` branch from `stable`.
 - Created `stable` branch from `main`.

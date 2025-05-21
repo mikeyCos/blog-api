@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import axios from "../config/axios.config";
-import { usePrevLocation } from "../hooks/usePrevLocation";
+// import { usePrevLocation } from "../hooks/usePrevLocation";
 
 const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,

@@ -11,7 +11,7 @@ import axios from "../../../config/axios.config";
 import { LoginFormError } from "../../../types/errors";
 // import config from "../../../config/env.config";
 import { useAuth } from "../../../hooks/useAuth";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const LoginForm: React.FC<{ prevLocation: string | null }> = ({
   prevLocation,

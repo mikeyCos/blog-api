@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import React from "react";
+import { Outlet } from "react-router";
 
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import PrevLocationProvider from "../hooks/usePrevLocation";
+// import PrevLocationProvider from "../hooks/usePrevLocation";
 
 const DefaultLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
