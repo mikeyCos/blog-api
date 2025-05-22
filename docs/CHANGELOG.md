@@ -2,6 +2,8 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 22 MAY 2025
+- Created `api-authorization` branch from `feature-post`.
+- Removed `init=true` request query in `fetchToken` asynchronous function.
 - Removed `validateQuery` from `/refresh` route.
 - Defined and added `refreshToken` to the `req` object. 
 ---
