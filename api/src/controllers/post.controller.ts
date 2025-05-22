@@ -4,6 +4,7 @@ import { matchedData } from "express-validator";
 import jwt from "jsonwebtoken";
 
 import { createPost, createComment, getPost, getPosts } from "../services/blog";
+import { User } from "../interfaces/user";
 
 interface PostController {
   createPost: RequestHandler;
@@ -23,9 +24,14 @@ const postController: PostController = {
     // createPost needs blogId and authorId
     // blogId and authorId should be accessible from
     console.log("createPost running...");
-    console.log("res.user:", req.user);
     const { title, content } = req.body;
-    const user = req.user;
+    console.log("title:", title);
+    console.log("content:", content);
+    console.log("res.user:", req.user);
+
+    // User is authenticated before reaching this endpoint
+    const user = req.user as User; // Type assertion
+    const { id } = user;
     /* const newPost = await createPost({
       blogId: user.blog.id,
       authorId: user.id,
@@ -34,6 +40,18 @@ const postController: PostController = {
     });
 
     res.json({ newPost }); */
+
+    res.json({
+      status: "success",
+      code: 200,
+      data: { message: "post created" },
+    });
+
+    /* res.json({
+      status: "success",
+      code: 200,
+      data: { message: "post created" },
+    }); */
   }),
   createPostComment: asyncHandler(async (req, res) => {
     // const newPostComment = await createComment({...req.body, });

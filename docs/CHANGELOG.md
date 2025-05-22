@@ -2,6 +2,10 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 21 MAY 2025
+- The `authenticateToken` middleware now checks if `user` exists on the `req` object; if `req.user` does not exist, then an err JSON response is sent and request execution ends.
+- Added conditional block in `verifyJWT` that checks if `token` is a falsy value.
+- Added optional `null` and `undefined` types for `verifyJWT` `token` parameter.
+- Temporarily changed `maxAge` for `refreshToken` from 20 seconds to 1 day.
 - Removed `cms/public/tinymce` subdirectory from Git repository.
 ---
 ### 20 MAY 2025

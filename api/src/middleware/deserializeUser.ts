@@ -4,7 +4,8 @@ import { getUser } from "../services/user";
 import { User } from "../interfaces/user";
 
 const deserializeUser: RequestHandler = async (req, res, next) => {
-  console.log("req.headers:", req.headers);
+  console.clear();
+  // console.log("req.headers:", req.headers);
   console.log("req.headers['authorization']:", req.headers["authorization"]);
   const bearerHeader = req.headers["authorization"];
   const accessToken = bearerHeader && bearerHeader.split(" ")[1];

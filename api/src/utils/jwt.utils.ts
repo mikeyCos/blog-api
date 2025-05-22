@@ -6,6 +6,10 @@ export const signJWT = async (
 ): Promise<string | null> => {
   return await new Promise((res, rej) => {
     jwt.sign(payload, "secretKey", options, (err, token) => {
+      console.log("signJWT");
+      console.log("token in signJWT:", token);
+      console.log("!token:", !token);
+      console.log("typeof token:", typeof token);
       if (err || !token) return res(null);
       return res(token);
     });
@@ -19,17 +23,22 @@ export const signJWT = async (
 
 // https://stackoverflow.com/questions/27726066/jwt-refresh-token-flow
 export const verifyJWT = async (
-  token: string
+  token: string | null | undefined
 ): Promise<{ payload: null | JwtPayload; expired: boolean }> => {
-  console.log("verifyJWT");
-  console.log("token in verifyJWT:", token);
   return await new Promise((res, rej) => {
+    if (!token) {
+      return res({
+        payload: null,
+        expired: true,
+      });
+    }
+
     jwt.verify(token, "secretKey", (err, decoded) => {
       if (err) {
         console.log("verifyJWT err:", err);
         return res({
           payload: null,
-          expired: !token ? true : err.name === "TokenExpiredError",
+          expired: err.name === "TokenExpiredError",
         });
       } else {
         return res({ payload: decoded as JwtPayload, expired: false });

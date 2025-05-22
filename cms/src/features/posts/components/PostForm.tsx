@@ -2,6 +2,7 @@ import { FormEventHandler, useRef } from "react";
 import { Editor as TinyMCEEditor } from "tinymce"; // TinyMCE Editor
 
 import PostEditor from "./PostEditor";
+import axios from "../../../config/axios.config";
 
 const PostForm = () => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
@@ -20,9 +21,11 @@ const PostForm = () => {
       for (const input of formData) {
         const [key, value] = input;
         console.log("input:", input);
-        // value is type FormDataEntryValue which can be a string or File object
-        // body.append(key, value as string);
+        body.append(key, value as string);
       }
+
+      body.append("content", editorContent);
+      await axios.post("/post", body);
       console.log("editorContent:", editorContent);
     }
   };

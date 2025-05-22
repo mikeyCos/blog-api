@@ -6,6 +6,17 @@ const authenticateToken: RequestHandler = (req, res, next) => {
   console.log("authenticateToken running...");
   // console.log(req.headers);
   // console.log(req.cookies);
+  console.log("req.user:", req.user);
+  if (!req.user) {
+    res.status(403).json({
+      status: "fail",
+      code: 403,
+      data: { accessToken: null, user: null },
+    });
+    return;
+  }
+
+  return next();
   const bearerHeader = req.headers["authorization"];
   const refreshToken = req.cookies["refreshToken"];
   // User is logged in

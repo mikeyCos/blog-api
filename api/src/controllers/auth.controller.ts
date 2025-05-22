@@ -42,6 +42,8 @@ const authController: authController = {
 
     console.log("userPayload:", userPayload);
     console.log("accessToken:", accessToken);
+    // If current accessToken is valid
+    // Return the accessToken and it's payload
     if (accessToken && userPayload) {
       res.json({
         status: "success",
@@ -66,6 +68,10 @@ const authController: authController = {
       ));
     console.log("newAccessToken:", newAccessToken);
 
+    // Previous accessToken is expired
+    //  Create new accessToken
+    // Otherwise, if the path is /auth/refresh?init=true
+    //  Return success JSON object with  data: { accessToken: null, user: null }
     if (newAccessToken) {
       res.json({
         status: "success",
@@ -123,16 +129,17 @@ const authController: authController = {
             // Create a private accessToken
             // Do not send private user properties
             const { id, username, role } = user;
-            const expiresIn = 10; // seconds
+            const accessTokenExpiresIn = 10; // 10 seconds
+            const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
             const accessToken = await signJWT(
               { user: { username, role } },
-              { expiresIn }
+              { expiresIn: accessTokenExpiresIn }
             );
             const refreshToken = await Promise.resolve(
               signJWT(
                 { user: { id } },
                 {
-                  expiresIn: "30d",
+                  expiresIn: `${refreshTokenExpiresIn}`,
                 }
               )
             );
@@ -144,9 +151,10 @@ const authController: authController = {
               httpOnly: true,
               secure: true,
               sameSite: "strict",
-              // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+              // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 30 days
+              maxAge: refreshTokenExpiresIn, // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
               // maxAge: 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-              maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
+              // maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
             });
 
             return res.json({
