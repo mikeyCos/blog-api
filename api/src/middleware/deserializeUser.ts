@@ -44,8 +44,23 @@ const deserializeUser: RequestHandler = async (req, res, next) => {
   // Create new accessToken
   console.log("refresh:", refresh);
   const { user } = refresh;
+  req.refreshToken = refreshToken;
   req.user = user;
 
+  return next();
+};
+
+// Extract tokens from request headers and cookies
+const deserializeTokens: RequestHandler = async (req, res, next) => {
+  console.clear();
+  // console.log("req.headers:", req.headers);
+  console.log("req.headers['authorization']:", req.headers["authorization"]);
+  const bearerHeader = req.headers["authorization"];
+  const accessToken = bearerHeader && bearerHeader.split(" ")[1];
+  const { refreshToken } = req.cookies;
+
+  req.accessToken = accessToken;
+  req.refreshToken = refreshToken;
   return next();
 };
 

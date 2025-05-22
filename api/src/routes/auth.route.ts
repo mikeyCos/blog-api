@@ -10,13 +10,13 @@ const authRoutes = () => {
   const authRouter = Router();
 
   // GET requests
-  authRouter.get("/", authorize);
+  authRouter.get("/", authenticateToken, authorize);
 
   // POST requests
   // curl -w "\n" -X POST http://localhost:3001/auth
   authRouter.post("/login", login);
   authRouter.post("/logout", logout);
-  authRouter.post("/refresh", validateQuery(initSchema), refreshAccessToken);
+  authRouter.post("/refresh", refreshAccessToken);
   authRouter.post("/signup", signup);
 
   // curl -w "\n" -X POST http://localhost:3001/pizza/:id

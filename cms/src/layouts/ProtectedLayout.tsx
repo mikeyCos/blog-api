@@ -22,30 +22,15 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     //   /* if (!accessToken)
     //     navigate("/login", { state: { from: location }, replace: true }); */
     const authorize = async () => {
-      /* if (accessToken) {
-        try {
-          console.log("accessToken in authorize():", accessToken);
-
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${accessToken}`;
-          const response = await axios.post("/auth/refresh");
-
-          console.log("response:", response);
-          setAccessToken(response.data.data.accessToken);
-        } catch (err) {
-          console.log(err);
-          setAccessToken(null);
-          navigate("/login");
-        }
-      } */
-
       try {
         console.log("accessToken in authorize():", accessToken);
 
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessToken}`;
+        if (accessToken) {
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${accessToken}`;
+        }
+
         const response = await axios.post("/auth/refresh");
 
         console.log("response:", response);

@@ -22,10 +22,15 @@ export const signJWT = async (
 }; */
 
 // https://stackoverflow.com/questions/27726066/jwt-refresh-token-flow
+// Is there another way to write verifyJWT?
 export const verifyJWT = async (
-  token: string | null | undefined
+  token: string | undefined
 ): Promise<{ payload: null | JwtPayload; expired: boolean }> => {
   return await new Promise((res, rej) => {
+    console.log("verifyJWT");
+    console.log("token in verifyJWT:", token);
+    console.log("!token:", !token);
+    console.log("typeof token:", typeof token);
     if (!token) {
       return res({
         payload: null,

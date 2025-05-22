@@ -1,12 +1,14 @@
 import { RequestHandler } from "express";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 
+import { verifyJWT } from "../utils/jwt.utils";
+
 const authenticateToken: RequestHandler = (req, res, next) => {
   // Get authorization header value
   console.log("authenticateToken running...");
   // console.log(req.headers);
   // console.log(req.cookies);
-  console.log("req.user:", req.user);
+  // console.log("req.user:", req.user);
   if (!req.user) {
     res.status(403).json({
       status: "fail",
@@ -17,51 +19,35 @@ const authenticateToken: RequestHandler = (req, res, next) => {
   }
 
   return next();
-  const bearerHeader = req.headers["authorization"];
-  const refreshToken = req.cookies["refreshToken"];
-  // User is logged in
-  //  req.cookies["refresh_token"] is defined
-  //  req.headers["authorization"] is defined
-  // User is not logged in
-  //  req.cookies["refresh_token"] is undefined
-  //  req.headers["authorization"] is undefined
+};
 
-  console.log(`req.headers["authorization"]:`, req.headers["authorization"]);
-  console.log("--------------------------");
-  console.log("req.cookies.refresh_token:", req.cookies["refreshToken"]);
-  console.log("--------------------------");
-  console.log("typeof bearerHeader:", typeof bearerHeader);
-  console.log("--------------------------");
+const authenticateTokens: RequestHandler = async (req, res, next) => {
+  // Get authorization header value
+  console.log("authenticateToken running...");
+  // console.log(req.headers);
+  // console.log(req.cookies);
+  // console.log("req.user:", req.user);
 
-  if (typeof bearerHeader !== "undefined" || refreshToken) {
-    // Will need to split bearerHeader, and use the element at index 1
-    // bearHeader.split(" ")[1];
-    const accessToken = bearerHeader;
-    // req.accessToken = accessToken;
-    // TODO
-    // Type verify callback
-    // For now, err: VerifyErrors | null and authData: any
-    jwt.verify(
-      accessToken ?? refreshToken,
-      "secretKey",
-      async (err: VerifyErrors | null, authData: any) => {
-        if (err) {
-          // If expired need to create new accessToken
-          // Otherwise, return 403
-          console.log(err);
-          return res.sendStatus(403);
-        } else {
-          const { user } = authData;
-          console.log("authData:", authData);
-          req.user = user;
-          next();
-        }
-      }
-    );
-  } else {
-    // Forbidden
-    res.sendStatus(401);
+  const failedResponse = {
+    status: "fail",
+    code: 403,
+    data: { accessToken: null, user: null },
+  };
+
+  const { accessToken, refreshToken } = req;
+
+  if (!accessToken && !refreshToken) {
+    res.status(403).json(failedResponse);
+    return;
   }
+
+  // Verify access and refresh tokens
+  const { payload, expired } = await verifyJWT(accessToken!);
+  const { payload: refresh } = await (expired && refreshToken
+    ? verifyJWT(refreshToken)
+    : Promise.resolve({ payload: null }));
+
+  return next();
 };
 
 export default authenticateToken;

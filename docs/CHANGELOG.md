@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 22 MAY 2025
+- Removed `validateQuery` from `/refresh` route.
+- Defined and added `refreshToken` to the `req` object. 
+---
 ### 21 MAY 2025
 - The `authenticateToken` middleware now checks if `user` exists on the `req` object; if `req.user` does not exist, then an err JSON response is sent and request execution ends.
 - Added conditional block in `verifyJWT` that checks if `token` is a falsy value.

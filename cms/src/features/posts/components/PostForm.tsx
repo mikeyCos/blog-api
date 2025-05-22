@@ -25,7 +25,14 @@ const PostForm = () => {
       }
 
       body.append("content", editorContent);
-      await axios.post("/post", body);
+      await axios
+        .post("/post", body)
+        .then((res) => {
+          console.log("res:", res);
+        })
+        .catch((err) => {
+          console.log("err:", err);
+        });
       console.log("editorContent:", editorContent);
     }
   };

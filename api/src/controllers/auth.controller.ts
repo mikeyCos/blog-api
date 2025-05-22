@@ -61,17 +61,17 @@ const authController: authController = {
     const newAccessToken =
       user &&
       (await signJWT(
-        { user: { username: user.username, role: user.role } },
+        { user: { id: user.id, username: user.username, role: user.role } },
         {
           expiresIn: 10,
         }
       ));
     console.log("newAccessToken:", newAccessToken);
 
-    // Previous accessToken is expired
+    // Previous accessToken is expired and refreshToken is valid
     //  Create new accessToken
     // Otherwise, if the path is /auth/refresh?init=true
-    //  Return success JSON object with  data: { accessToken: null, user: null }
+    //  Return success JSON object with data: { accessToken: null, user: null }
     if (newAccessToken) {
       res.json({
         status: "success",
@@ -82,22 +82,6 @@ const authController: authController = {
         },
       });
     } else {
-      const { init } = matchedData<{ init: boolean }>(req, {
-        onlyValidData: true,
-      });
-
-      console.log("init:", init);
-      console.log("typeof init:", typeof init);
-
-      if (init) {
-        res.json({
-          status: "success",
-          code: 200,
-          data: { accessToken: null, user: null },
-        });
-        return;
-      }
-
       res.status(403).json({
         status: "fail",
         code: 403,
@@ -132,7 +116,7 @@ const authController: authController = {
             const accessTokenExpiresIn = 10; // 10 seconds
             const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
             const accessToken = await signJWT(
-              { user: { username, role } },
+              { user: { id, username, role } },
               { expiresIn: accessTokenExpiresIn }
             );
             const refreshToken = await Promise.resolve(
@@ -193,7 +177,7 @@ const authController: authController = {
         const { id, username, role } = user;
         const expiresIn = 10; // seconds
         const accessToken = await signJWT(
-          { user: { username, role } },
+          { user: { id, username, role } },
           { expiresIn }
         );
         const refreshToken = await Promise.resolve(

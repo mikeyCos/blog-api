@@ -76,7 +76,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           "Authorization"
         ] = `Bearer ${accessToken}`;
       try {
-        const response = await axiosInit.post("/auth/refresh?init=true");
+        const response = await axiosInit.post("/auth/refresh");
         setAccessToken(response.data.data.accessToken);
         console.log("response:", response);
       } catch (err) {
