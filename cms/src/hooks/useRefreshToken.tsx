@@ -6,11 +6,7 @@ const useRefreshToken = () => {
 
   const refresh = async () => {
     console.log("refresh running...");
-    const response = await axios.post("/auth/refresh", {
-      headers: {
-        ...(accessToken && {}),
-      },
-    });
+    const response = await axios.post("/auth/refresh");
 
     console.log("response:", response);
     // setAccessToken((prev) => {

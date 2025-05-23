@@ -8,6 +8,7 @@ import config from "./config/env.config";
 import routes from "./routes/routes";
 import errorHandler from "./middleware/errorHandler";
 import deserializeUser from "./middleware/deserializeUser";
+import deserializeTokens from "./middleware/deserializeTokens";
 
 const port: number = config.port;
 const app: Application = express();
@@ -39,7 +40,8 @@ app.use(express.json());
 
 // Testing...
 app.use(passport.initialize());
-app.use(deserializeUser);
+// app.use(deserializeUser);
+app.use(deserializeTokens);
 
 // Application-level
 app.use("/", (req, res, next) => {

@@ -63,7 +63,21 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log("accessToken:", accessToken);
     // What if accessToken is null?
     /* const responseInterceptor = axiosInit.interceptors.response.use(
-      (res) => res,
+      (res) => {
+        console.log("res:", res);
+        return res;
+      },
+      (err) => {
+        console.log("err:", err);
+        return Promise.resolve(err);
+      }
+    ); */
+
+    /* const requestInterceptor = axiosInit.interceptors.request.use(
+      (res) => {
+        console.log("res:", res);
+        return res;
+      },
       (err) => {
         console.log("err:", err);
         return Promise.resolve(err);
@@ -77,8 +91,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         ] = `Bearer ${accessToken}`;
       try {
         const response = await axiosInit.post("/auth/refresh");
-        setAccessToken(response.data.data.accessToken);
         console.log("response:", response);
+        setAccessToken(response.data.data.accessToken);
       } catch (err) {
         console.log("error:", err);
         setAccessToken(null);
@@ -86,9 +100,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     fetchToken();
-    /* return () => {
-      axiosInit.interceptors.response.eject(responseInterceptor);
-    }; */
+    return () => {
+      // axiosInit.interceptors.response.eject(responseInterceptor);
+      // axiosInit.interceptors.request.eject(requestInterceptor);
+    };
   }, []);
 
   const providerValue = useMemo(() => {

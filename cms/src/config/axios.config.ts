@@ -9,5 +9,5 @@ export default axios.create({
 export const axiosInit = axios.create({
   baseURL: config.blogAPIBase,
   withCredentials: true,
-  validateStatus: (status) => status < 500,
+  // validateStatus: (status) => status < 500,
 });

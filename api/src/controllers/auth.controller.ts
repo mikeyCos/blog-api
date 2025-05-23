@@ -45,6 +45,7 @@ const authController: authController = {
     // If current accessToken is valid
     // Return the accessToken and it's payload
     if (accessToken && userPayload) {
+      console.log("accessToken && userPayload:", true);
       res.json({
         status: "success",
         code: 200,
@@ -81,13 +82,14 @@ const authController: authController = {
           user: { username: user.username, role: user.role },
         },
       });
-    } else {
-      res.status(403).json({
-        status: "fail",
-        code: 403,
-        data: { accessToken: null, user: null },
-      });
     }
+    // else {
+    //   res.status(403).json({
+    //     status: "fail",
+    //     code: 403,
+    //     data: { accessToken: null, user: null },
+    //   });
+    // }
   }),
   login: [
     validateLogin(),

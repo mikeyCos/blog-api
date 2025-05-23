@@ -2,6 +2,9 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 22 MAY 2025
+- Added `null` optional type for `request` object properties `accessToken` and `refreshToken`.
+- Renamed `authenticateToken` to `authenticateTokens`; authenticates tokens and extracts tokens' payloads.
+- Created `deserializeTokens.ts` module; extracts tokens from request cookies and headers.
 - Created `api-authorization` branch from `feature-post`.
 - Removed `init=true` request query in `fetchToken` asynchronous function.
 - Removed `validateQuery` from `/refresh` route.

@@ -12,7 +12,7 @@ import { User } from "./user";
 declare module "express-serve-static-core" {
   interface Request {
     user?: User;
-    accessToken?: string;
-    refreshToken?: string;
+    accessToken?: string | null;
+    refreshToken?: string | null;
   }
 }

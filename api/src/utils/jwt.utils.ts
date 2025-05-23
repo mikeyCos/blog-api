@@ -24,7 +24,7 @@ export const signJWT = async (
 // https://stackoverflow.com/questions/27726066/jwt-refresh-token-flow
 // Is there another way to write verifyJWT?
 export const verifyJWT = async (
-  token: string | undefined
+  token: string | null | undefined
 ): Promise<{ payload: null | JwtPayload; expired: boolean }> => {
   return await new Promise((res, rej) => {
     console.log("verifyJWT");
