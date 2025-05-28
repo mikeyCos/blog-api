@@ -73,22 +73,20 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     ); */
 
-    /* const requestInterceptor = axiosInit.interceptors.request.use(
-      (res) => {
-        console.log("res:", res);
-        return res;
+    const requestInterceptor = axiosInit.interceptors.request.use(
+      (config) => {
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
       },
       (err) => {
         console.log("err:", err);
-        return Promise.resolve(err);
+        return Promise.reject(err);
       }
-    ); */
+    );
 
     const fetchToken = async () => {
-      if (accessToken)
-        axiosInit.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessToken}`;
       try {
         const response = await axiosInit.post("/auth/refresh");
         console.log("response:", response);
@@ -102,7 +100,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchToken();
     return () => {
       // axiosInit.interceptors.response.eject(responseInterceptor);
-      // axiosInit.interceptors.request.eject(requestInterceptor);
+      axiosInit.interceptors.request.eject(requestInterceptor);
     };
   }, []);
 

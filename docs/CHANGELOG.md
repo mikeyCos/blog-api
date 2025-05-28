@@ -1,6 +1,11 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 27 MAY 2025
+- When an authenticated user revisits the `cms` page, a request to `/auth/refresh` will be sent and a new access token will be generated.
+- When an anonymous (not logged in) user initially visits the `cms` page, a request to `/auth/refresh` will be sent and a `401` error will occur with a message `Refresh token required`.
+- Created response and request Axios interceptors for the initial `GET` request in `ProtectedLayout` component.
+---
 ### 22 MAY 2025
 - Added `null` optional type for `request` object properties `accessToken` and `refreshToken`.
 - Renamed `authenticateToken` to `authenticateTokens`; authenticates tokens and extracts tokens' payloads.

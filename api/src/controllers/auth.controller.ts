@@ -11,13 +11,6 @@ import { matchedData } from "express-validator";
 import { createUser, getUser } from "../services/user";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
 
-/* declare module "express-serve-static-core" {
-  interface Request {
-    user?: User;
-    accessToken?: string;
-  }
-} */
-
 interface authController {
   authorize: RequestHandler;
   refreshAccessToken: RequestHandler;
@@ -29,15 +22,8 @@ interface authController {
 const authController: authController = {
   authorize: asyncHandler(async (req, res) => {
     console.log("authorize");
-    const { user, accessToken } = req;
+
     // if (!user && !accessToken)
-    res.json({ status: "success", code: 200 });
-  }),
-  refreshAccessToken: asyncHandler(async (req, res) => {
-    // Create new accessToken unless the current accessToken is still valid
-    console.log("refreshAccessToken middleware running...");
-    // TODO
-    // Refactor this endpoint
     const { accessToken, user: userPayload } = req;
 
     console.log("userPayload:", userPayload);
@@ -56,6 +42,13 @@ const authController: authController = {
       });
       return;
     }
+  }),
+  refreshAccessToken: asyncHandler(async (req, res) => {
+    // Create new accessToken unless the current accessToken is still valid
+    console.log("refreshAccessToken middleware running...");
+    // TODO
+    // Refactor this endpoint
+    const { accessToken, user: userPayload } = req;
 
     const user = userPayload && (await getUser(userPayload.id));
 
@@ -69,10 +62,6 @@ const authController: authController = {
       ));
     console.log("newAccessToken:", newAccessToken);
 
-    // Previous accessToken is expired and refreshToken is valid
-    //  Create new accessToken
-    // Otherwise, if the path is /auth/refresh?init=true
-    //  Return success JSON object with data: { accessToken: null, user: null }
     if (newAccessToken) {
       res.json({
         status: "success",
@@ -83,13 +72,6 @@ const authController: authController = {
         },
       });
     }
-    // else {
-    //   res.status(403).json({
-    //     status: "fail",
-    //     code: 403,
-    //     data: { accessToken: null, user: null },
-    //   });
-    // }
   }),
   login: [
     validateLogin(),

@@ -3,22 +3,50 @@ import jwt, { VerifyErrors } from "jsonwebtoken";
 
 import { verifyJWT } from "../utils/jwt.utils";
 
-const authenticateToken: RequestHandler = (req, res, next) => {
-  // Get authorization header value
-  console.log("authenticateToken running...");
-  // console.log(req.headers);
-  // console.log(req.cookies);
-  // console.log("req.user:", req.user);
-  if (!req.user) {
-    res.status(403).json({
+interface AuthenticateToken {
+  (tokenType?: "refresh" | "access"): RequestHandler;
+}
+
+const authenticateToken: AuthenticateToken = (tokenType = "access") => {
+  return async (req, res, next) => {
+    console.log("authenticateToken running...");
+
+    console.log("req.refreshToken:", req.refreshToken);
+    console.log("req.accessToken:", req.accessToken);
+    const defaultFailedResponse = {
       status: "fail",
       code: 403,
-      data: { accessToken: null, user: null },
-    });
-    return;
-  }
+      data: {
+        accessToken: null,
+        user: null,
+        msg: `Invalid or expired ${tokenType} token`,
+      },
+    };
 
-  return next();
+    const token = req[`${tokenType}Token`];
+
+    if (!token) {
+      return next({
+        ...defaultFailedResponse,
+        code: 401,
+        data: {
+          ...defaultFailedResponse.data,
+          msg: `${
+            tokenType.charAt(0).toUpperCase() + tokenType.slice(1)
+          } token required`,
+        },
+      });
+    }
+
+    const { payload } = await verifyJWT(token);
+
+    if (payload) {
+      req.user = payload.user;
+      return next();
+    }
+
+    return next(defaultFailedResponse);
+  };
 };
 
 // Authenticates tokens and extracts tokens' payloads
@@ -64,5 +92,4 @@ const authenticateTokens: RequestHandler = async (req, res, next) => {
   return next();
 };
 
-// export default authenticateToken;
-export default authenticateTokens;
+export default authenticateToken;
