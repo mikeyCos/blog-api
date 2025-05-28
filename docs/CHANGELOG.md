@@ -2,6 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 28 MAY 2025
+- Merged `api-authorization` branch to `feature-post`.
 - The refresh token is verified at the endpoint.
 - Renamed `refreshAccessToken` to `refreshToken` in `auth.controller` module. 
 - Reverted `authenticateToken` to authenticate only the access token.
