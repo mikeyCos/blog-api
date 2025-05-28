@@ -5,18 +5,17 @@ import { initSchema } from "../validators/query.validator";
 import { validateQuery } from "../validators/validators";
 
 const authRoutes = () => {
-  const { authorize, refreshAccessToken, login, logout, signup } =
-    authController;
+  const { authorize, refreshToken, login, logout, signup } = authController;
   const authRouter = Router();
 
   // GET requests
-  authRouter.get("/", authenticateToken(), authorize);
+  authRouter.get("/", authenticateToken, authorize);
 
   // POST requests
   // curl -w "\n" -X POST http://localhost:3001/auth
   authRouter.post("/login", login);
   authRouter.post("/logout", logout);
-  authRouter.post("/refresh", authenticateToken("refresh"), refreshAccessToken);
+  authRouter.post("/refresh", refreshToken);
   authRouter.post("/signup", signup);
 
   // curl -w "\n" -X POST http://localhost:3001/pizza/:id

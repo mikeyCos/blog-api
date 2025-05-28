@@ -25,14 +25,11 @@ const PostForm = () => {
       }
 
       body.append("content", editorContent);
-      await axios
-        .post("/post", body)
-        .then((res) => {
-          console.log("res:", res);
-        })
-        .catch((err) => {
-          console.log("err:", err);
-        });
+      const response = await axios.post("/post", body).catch((err) => {
+        console.log("err:", err);
+      });
+
+      console.log("response:", response);
       console.log("editorContent:", editorContent);
     }
   };

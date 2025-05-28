@@ -27,17 +27,17 @@ const postRoutes = () => {
   // POST requests
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'
   // blogId and authorId are required
-  postRouter.post("/", authenticateToken(), createPost); // Needs to be protected
+  postRouter.post("/", authenticateToken, createPost); // Needs to be protected
   postRouter.post("/:postId/comment", createPostComment);
 
   // PUT requests
-  postRouter.put("/", authenticateToken(), editPost);
+  postRouter.put("/", authenticateToken, editPost);
 
   // DELETE requests
-  postRouter.delete("/:postId", authenticateToken(), deletePost); // Needs to be protected
+  postRouter.delete("/:postId", authenticateToken, deletePost); // Needs to be protected
   postRouter.delete(
     "/:postId/comments/:commentId",
-    authenticateToken(),
+    authenticateToken,
     deletePostComment
   ); // Needs to be protected(?)
 

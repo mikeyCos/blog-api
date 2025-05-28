@@ -1,9 +1,14 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 28 MAY 2025
+- The refresh token is verified at the endpoint.
+- Renamed `refreshAccessToken` to `refreshToken` in `auth.controller` module. 
+- Reverted `authenticateToken` to authenticate only the access token.
+---
 ### 27 MAY 2025
 - When an authenticated user revisits the `cms` page, a request to `/auth/refresh` will be sent and a new access token will be generated.
-- When an anonymous (not logged in) user initially visits the `cms` page, a request to `/auth/refresh` will be sent and a `401` error will occur with a message `Refresh token required`.
+- When an anonymous (not logged in) user initially visits the `cms` page, a request to `/auth/refresh` will be sent and a `401` error will occur with a message `Refresh token required`; the error will appear in a browser's console.
 - Created response and request Axios interceptors for the initial `GET` request in `ProtectedLayout` component.
 ---
 ### 22 MAY 2025

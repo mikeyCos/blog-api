@@ -13,7 +13,7 @@ import { signJWT, verifyJWT } from "../utils/jwt.utils";
 
 interface authController {
   authorize: RequestHandler;
-  refreshAccessToken: RequestHandler;
+  refreshToken: RequestHandler;
   login: RequestHandler[];
   logout: RequestHandler;
   signup: RequestHandler[];
@@ -43,14 +43,38 @@ const authController: authController = {
       return;
     }
   }),
-  refreshAccessToken: asyncHandler(async (req, res) => {
+  refreshToken: asyncHandler(async (req, res, next) => {
     // Create new accessToken unless the current accessToken is still valid
     console.log("refreshAccessToken middleware running...");
     // TODO
     // Refactor this endpoint
-    const { accessToken, user: userPayload } = req;
+    console.log("req.refreshToken:", req.refreshToken);
+    const defaultFailedResponse = {
+      status: "fail",
+      code: 403,
+      data: {
+        accessToken: null,
+        user: null,
+        msg: `Invalid or expired refresh token`,
+      },
+    };
 
-    const user = userPayload && (await getUser(userPayload.id));
+    const { refreshToken } = req;
+
+    if (!refreshToken) {
+      return next({
+        ...defaultFailedResponse,
+        code: 401,
+        data: {
+          ...defaultFailedResponse.data,
+          msg: "Refresh token required",
+        },
+      });
+    }
+
+    const { payload } = await verifyJWT(refreshToken);
+
+    const user = payload && (await getUser(payload.user.id));
 
     const newAccessToken =
       user &&

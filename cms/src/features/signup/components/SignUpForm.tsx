@@ -7,6 +7,8 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router";
 
 const SignUpForm: React.FC = () => {
+  // TODO
+  // Create state for input
   const [errors, setErrors] = useState<SignUpFormError>();
   const { login } = useAuth();
   const navigate = useNavigate();
