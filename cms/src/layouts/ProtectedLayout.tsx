@@ -42,9 +42,6 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
 
     const requestInterceptor = axios.interceptors.request.use((config) => {
       if (accessToken) {
-        /* axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessToken}`; */
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
       return config;

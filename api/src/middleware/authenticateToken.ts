@@ -1,15 +1,7 @@
 import { RequestHandler } from "express";
-import jwt, { VerifyErrors } from "jsonwebtoken";
 
 import { verifyJWT } from "../utils/jwt.utils";
 
-/*
- * What is another way to write authenticateToken function involving access or refresh tokens without
- * returning a middleware and accepting a parameter?
- * Options:
- *  Request query or parameter
- *  Define two middlewares, each authenticates a specific token
- */
 const authenticateToken: RequestHandler = async (req, res, next) => {
   console.log("authenticateToken running...");
 
