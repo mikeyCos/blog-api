@@ -61,18 +61,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     console.log("AuthProvider mounted...");
     console.log("accessToken:", accessToken);
-    // What if accessToken is null?
-    /* const responseInterceptor = axiosInit.interceptors.response.use(
-      (res) => {
-        console.log("res:", res);
-        return res;
-      },
-      (err) => {
-        console.log("err:", err);
-        return Promise.resolve(err);
-      }
-    ); */
-
     const requestInterceptor = axiosInit.interceptors.request.use(
       (config) => {
         if (accessToken) {
@@ -80,10 +68,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         }
         return config;
       },
-      (err) => {
-        console.log("err:", err);
-        return Promise.reject(err);
-      }
+      (err) => Promise.reject(err)
     );
 
     const fetchToken = async () => {
@@ -99,6 +84,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     fetchToken();
     return () => {
+      console.log("useAuth clean up function running...");
       // axiosInit.interceptors.response.eject(responseInterceptor);
       axiosInit.interceptors.request.eject(requestInterceptor);
     };

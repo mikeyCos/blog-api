@@ -1,12 +1,18 @@
-import { FormEventHandler, useRef } from "react";
+import { FormEventHandler, useEffect, useRef } from "react";
 import { Editor as TinyMCEEditor } from "tinymce"; // TinyMCE Editor
 
 import PostEditor from "./PostEditor";
-import axios from "../../../config/axios.config";
+// import axios from "../../../config/axios.config";
+import { useAuth } from "../../../hooks/useAuth";
+
+import axios from "axios";
+import config from "../../../config/env.config";
+const { blogAPIBase } = config;
 
 const PostForm = () => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
-
+  const { accessToken } = useAuth();
+  // How to create new access token if current is expired on form submission?
   const submitPost: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     console.log("submitHandler running...");
@@ -25,9 +31,19 @@ const PostForm = () => {
       }
 
       body.append("content", editorContent);
-      const response = await axios.post("/post", body).catch((err) => {
+      console.log("accessToken:", accessToken);
+      /* const response = await axios.post("/post", body).catch((err) => {
         console.log("err:", err);
-      });
+      }); */
+
+      // Need to attach access token to authorization header
+      const response = await axios
+        .post(`${blogAPIBase}/post`, body, {
+          withCredentials: true,
+        })
+        .catch((err) => {
+          console.log("err:", err);
+        });
 
       console.log("response:", response);
       console.log("editorContent:", editorContent);
@@ -43,6 +59,33 @@ const PostForm = () => {
       console.log(editorRef.current.getContent());
     }
   };
+
+  useEffect(() => {
+    const requestInterceptor = axios.interceptors.request.use((config) => {
+      if (accessToken) {
+        console.log("accessToken attached to request header");
+        console.log("accessToken:", accessToken);
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+      return config;
+    });
+
+    const responseInterceptor = axios.interceptors.response.use(
+      async (response) => response,
+      async (err) => {
+        console.log("err:", err);
+        // return Promise.reject(err);
+        if (err.request.status === 403) {
+          return await axios.post("/auth/refresh");
+        }
+        return Promise.reject(err);
+      }
+    );
+
+    return () => {
+      axios.interceptors.request.eject(requestInterceptor);
+    };
+  }, [accessToken]);
 
   return (
     <form method="POST" onSubmit={submitPost}>

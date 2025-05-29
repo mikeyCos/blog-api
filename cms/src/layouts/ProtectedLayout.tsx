@@ -22,14 +22,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     /* if (!accessToken)
         navigate("/login", { state: { from: location }, replace: true }); */
     const responseInterceptor = axios.interceptors.response.use(
-      async (response) => {
-        console.log("response in responseInterceptor:", response);
-        /* if (response.data.status === "fail") {
-          return await axios.post("/auth/refresh");
-        } */
-
-        return response;
-      },
+      async (response) => response,
       async (err) => {
         console.log("err:", err);
         // return Promise.reject(err);
@@ -49,37 +42,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
 
     const authorize = async () => {
       try {
-        console.log("accessToken in authorize():", accessToken);
-
-        if (accessToken) {
-          console.log("accessToken exists");
-          // axios.defaults.headers.common[
-          //   "Authorization"
-          // ] = `Bearer ${accessToken}`;
-          setTimeout(async () => {
-            console.log('right before await axios.get("/auth") request');
-            console.log("accessToken:", accessToken);
-            // const response = await axios.get("/auth");
-            // console.log("response:", response);
-            // setAccessToken(response.data.data.accessToken);
-          }, 0);
-
-          // const response = await axios.get("/auth");
-          // // Need to intercept response, and send a new request to "/auth/refresh" (post request)
-          // // Only try one attempt each for both paths
-          // // If the response from "/auth/refresh" is bad
-          // //  Then set access token to null and redirect user to login page
-
-          // console.log("response:", response);
-          // setAccessToken(response.data.data.accessToken);
-        }
-
-        // // https://dikshantraj2001.medium.com/retry-failed-request-using-axios-interceptors-5472549dc57a
         const response = await axios.get("/auth");
-        // // Need to intercept response, and send a new request to "/auth/refresh" (post request)
-        // // Only try one attempt each for both paths
-        // // If the response from "/auth/refresh" is bad
-        // //  Then set access token to null and redirect user to login page
 
         console.log("authorize response:", response);
         setAccessToken(response.data.data.accessToken);

@@ -73,9 +73,7 @@ const authController: authController = {
     }
 
     const { payload } = await verifyJWT(refreshToken);
-
     const user = payload && (await getUser(payload.user.id));
-
     const newAccessToken =
       user &&
       (await signJWT(
@@ -84,7 +82,6 @@ const authController: authController = {
           expiresIn: 10,
         }
       ));
-    console.log("newAccessToken:", newAccessToken);
 
     if (newAccessToken) {
       res.json({

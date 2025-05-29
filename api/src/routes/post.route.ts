@@ -28,7 +28,7 @@ const postRoutes = () => {
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'
   // blogId and authorId are required
   postRouter.post("/", authenticateToken, createPost); // Needs to be protected
-  postRouter.post("/:postId/comment", createPostComment);
+  postRouter.post("/:postId/comment", authenticateToken, createPostComment);
 
   // PUT requests
   postRouter.put("/", authenticateToken, editPost);

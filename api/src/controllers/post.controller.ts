@@ -30,8 +30,9 @@ const postController: PostController = {
     console.log("res.user:", req.user);
 
     // User is authenticated before reaching this endpoint
-    const user = req.user as User; // Type assertion
-    const { id, username } = user;
+    // const user = req.user as User; // Type assertion
+    // const { id, username } = user;
+
     /* const newPost = await createPost({
       blogId: user.blog.id,
       authorId: user.id,

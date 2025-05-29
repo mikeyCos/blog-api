@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 29 MAY 2025
+- Temporarily created request and response Axios interceptors in `PostForm` component.
+---
 ### 28 MAY 2025
 - Merged `api-authorization` branch to `feature-post`.
 - The refresh token is verified at the endpoint.
