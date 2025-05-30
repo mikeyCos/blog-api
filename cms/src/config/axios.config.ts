@@ -1,13 +1,27 @@
 import axios from "axios";
 import config from "./env.config";
 
-export default axios.create({
+import { useAuth } from "../hooks/useAuth";
+
+const axiosDefault = axios.create({
   baseURL: config.blogAPIBase,
   withCredentials: true,
 });
 
-export const axiosInit = axios.create({
+const axiosInit = axios.create({
   baseURL: config.blogAPIBase,
   withCredentials: true,
   // validateStatus: (status) => status < 500,
 });
+
+const requestInterceptor = axiosDefault.interceptors.request.use((config) => {
+  return config;
+});
+
+const responseInterceptor = axiosDefault.interceptors.response.use(
+  (response) => {
+    return response;
+  }
+);
+
+export { axiosDefault as default, axiosInit };

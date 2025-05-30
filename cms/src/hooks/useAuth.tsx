@@ -8,6 +8,7 @@ import React, {
 } from "react";
 
 import axios, { axiosInit } from "../config/axios.config";
+import useRefreshToken from "./useRefreshToken";
 // import { useNavigate } from "react-router";
 
 // TODO
@@ -33,15 +34,13 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   console.log("AuthProvider running...");
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const refresh = useRefreshToken();
   // const navigate = useNavigate();
 
   const login: Login = (newToken) => {
     console.log("login from AuthProvider running...");
     console.log("newToken:", newToken);
     setAccessToken(newToken);
-    // setToken(newToken);
-    // setIsAuthorized(true);
-    // setIsLoggedOut(false);
   };
 
   const logout: Logout = async () => {
@@ -52,10 +51,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setTimeout(() => res(null), 0);
       });
     });
-
-    /* axios.post("/auth/logout");
-    setAccessToken(null);
-    navigate("/"); */
   };
 
   useEffect(() => {
@@ -73,7 +68,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const fetchToken = async () => {
       try {
-        const response = await axiosInit.post("/auth/refresh");
+        const response = await refresh();
         console.log("response:", response);
         setAccessToken(response.data.data.accessToken);
       } catch (err) {

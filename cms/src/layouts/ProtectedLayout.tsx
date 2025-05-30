@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-import axios from "../config/axios.config";
+import axiosDefault from "../config/axios.config";
 // import { usePrevLocation } from "../hooks/usePrevLocation";
+import useRefreshToken from "../hooks/useRefreshToken";
 
 const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -10,6 +11,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   console.log("ProtectedLayout running");
   const { accessToken, setAccessToken } = useAuth();
   const location = useLocation();
+  const refresh = useRefreshToken();
   // console.log(prevLocation);
   // if (!accessToken)
   //   return <Navigate to="/login" state={{ from: location }} replace />;
@@ -21,28 +23,32 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     console.log("ProtectedLayout mounted...");
     /* if (!accessToken)
         navigate("/login", { state: { from: location }, replace: true }); */
-    const responseInterceptor = axios.interceptors.response.use(
+
+    const responseInterceptor = axiosDefault.interceptors.response.use(
       async (response) => response,
       async (err) => {
         console.log("err:", err);
-        // return Promise.reject(err);
         if (err.request.status === 403) {
-          return await axios.post("/auth/refresh");
+          return await refresh();
         }
         return Promise.reject(err);
       }
     );
 
-    const requestInterceptor = axios.interceptors.request.use((config) => {
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
+    const requestInterceptor = axiosDefault.interceptors.request.use(
+      (config) => {
+        if (accessToken) {
+          config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
       }
-      return config;
-    });
+    );
 
     const authorize = async () => {
       try {
-        const response = await axios.get("/auth");
+        const response = await axiosDefault.get("/auth", {
+          withCredentials: true,
+        });
 
         console.log("authorize response:", response);
         setAccessToken(response.data.data.accessToken);
@@ -59,8 +65,8 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
 
     return () => {
       console.log("ProtectedLayout clean up function running...");
-      axios.interceptors.response.eject(responseInterceptor);
-      axios.interceptors.request.eject(requestInterceptor);
+      axiosDefault.interceptors.response.eject(responseInterceptor);
+      axiosDefault.interceptors.request.eject(requestInterceptor);
     };
   }, [location]);
 

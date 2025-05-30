@@ -1,7 +1,11 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+###
+---
 ### 29 MAY 2025
+- The custom hook `useRefreshToken` is used to request a new access token.
+- Created `useAxiosPrivate` module.
 - Created `cms-rewrite-axios-config` branch.
 - Temporarily created request and response Axios interceptors in `PostForm` component.
 ---

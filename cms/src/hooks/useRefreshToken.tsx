@@ -1,21 +1,26 @@
 import { useAuth } from "./useAuth";
-import axios from "../config/axios.config";
+import axiosDefault from "../config/axios.config";
 
 const useRefreshToken = () => {
-  const { accessToken, setAccessToken } = useAuth();
+  const { setAccessToken } = useAuth();
 
   const refresh = async () => {
     console.log("refresh running...");
-    const response = await axios.post("/auth/refresh");
+    const response = await axiosDefault.post("/auth/refresh");
 
     console.log("response:", response);
+    console.log(
+      "response.data.data.accessToken:",
+      response.data.data.accessToken
+    );
     // setAccessToken((prev) => {
     //   console.log("prev accessToken:", prev);
     //   console.log("new accessToken:", response.data.accessToken);
     //   console.log(response);
     //   return response.data.accessToken;
     // });
-    console.log("setAccessToken:", setAccessToken);
+    // console.log("setAccessToken:", setAccessToken);
+    // return response.data.data.accessToken;
     return response;
   };
 

@@ -7,7 +7,7 @@ import React, {
 } from "react";
 // import axios from "axios";
 
-import axios from "../../../config/axios.config";
+import axiosDefault from "../../../config/axios.config";
 import { LoginFormError } from "../../../types/errors";
 // import config from "../../../config/env.config";
 import { useAuth } from "../../../hooks/useAuth";
@@ -55,21 +55,23 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
       body.append(input, formData[input as keyof typeof formData].value);
     }
 
-    await axios.post("/auth/login", body).then(
-      (res) => {
-        console.log("res:", res);
-        // res.response.data.data["access-token"]
-        login(res.data.data["accessToken"]);
-        setFormData(initialFormData);
-        setErrors(null);
-        console.log("from:", from);
-        navigate(from, { replace: true });
-      },
-      (rej) => {
-        console.log("rej:", rej);
-        setErrors(rej.response.data.data);
-      }
-    );
+    await axiosDefault
+      .post("/auth/login", body, { withCredentials: true })
+      .then(
+        (res) => {
+          console.log("res:", res);
+          // res.response.data.data["access-token"]
+          login(res.data.data["accessToken"]);
+          setFormData(initialFormData);
+          setErrors(null);
+          console.log("from:", from);
+          navigate(from, { replace: true });
+        },
+        (rej) => {
+          console.log("rej:", rej);
+          setErrors(rej.response.data.data);
+        }
+      );
   };
 
   // console.log("prevLocationRef in LoginForm component:", prevLocationRef);
