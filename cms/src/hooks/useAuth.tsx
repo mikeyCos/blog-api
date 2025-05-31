@@ -34,7 +34,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   console.log("AuthProvider running...");
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const refresh = useRefreshToken();
+  // const refresh = useRefreshToken();
   // const navigate = useNavigate();
 
   const login: Login = (newToken) => {
@@ -56,7 +56,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     console.log("AuthProvider mounted...");
     console.log("accessToken:", accessToken);
-    const requestInterceptor = axiosInit.interceptors.request.use(
+    /* const requestInterceptor = axiosInit.interceptors.request.use(
       (config) => {
         if (accessToken) {
           config.headers.Authorization = `Bearer ${accessToken}`;
@@ -64,13 +64,15 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return config;
       },
       (err) => Promise.reject(err)
-    );
+    ); */
+    const refresh = useRefreshToken(setAccessToken);
 
     const fetchToken = async () => {
       try {
-        const response = await refresh();
-        console.log("response:", response);
-        setAccessToken(response.data.data.accessToken);
+        await refresh();
+        // const response = await refresh();
+        // console.log("response:", response);
+        // setAccessToken(response.data.data.accessToken);
       } catch (err) {
         console.log("error:", err);
         setAccessToken(null);
@@ -78,11 +80,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     fetchToken();
-    return () => {
+    /* return () => {
       console.log("useAuth clean up function running...");
       // axiosInit.interceptors.response.eject(responseInterceptor);
       axiosInit.interceptors.request.eject(requestInterceptor);
-    };
+    }; */
   }, []);
 
   const providerValue = useMemo(() => {

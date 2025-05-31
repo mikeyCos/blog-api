@@ -14,7 +14,12 @@ const axiosInit = axios.create({
   // validateStatus: (status) => status < 500,
 });
 
-const requestInterceptor = axiosDefault.interceptors.request.use((config) => {
+const axiosPrivate = axios.create({
+  baseURL: config.blogAPIBase,
+  withCredentials: true,
+});
+
+/* const requestInterceptor = axiosDefault.interceptors.request.use((config) => {
   return config;
 });
 
@@ -22,6 +27,6 @@ const responseInterceptor = axiosDefault.interceptors.response.use(
   (response) => {
     return response;
   }
-);
+); */
 
-export { axiosDefault as default, axiosInit };
+export { axiosDefault as default, axiosInit, axiosPrivate };

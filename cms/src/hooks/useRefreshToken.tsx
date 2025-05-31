@@ -1,9 +1,17 @@
-import { useAuth } from "./useAuth";
-import axiosDefault from "../config/axios.config";
+import { Dispatch } from "react";
+import axiosDefault, { axiosInit } from "../config/axios.config";
+import { AxiosResponse } from "axios";
 
-const useRefreshToken = () => {
-  const { setAccessToken } = useAuth();
+interface UseRefreshToken {
+  (
+    setAccessToken: Dispatch<
+      string | null | ((prevState: string | null) => string | null)
+    >
+  ): () => Promise<AxiosResponse>;
+}
 
+// What if accessToken already exists?
+const useRefreshToken: UseRefreshToken = (setAccessToken) => {
   const refresh = async () => {
     console.log("refresh running...");
     const response = await axiosDefault.post("/auth/refresh");
@@ -13,14 +21,19 @@ const useRefreshToken = () => {
       "response.data.data.accessToken:",
       response.data.data.accessToken
     );
-    // setAccessToken((prev) => {
-    //   console.log("prev accessToken:", prev);
-    //   console.log("new accessToken:", response.data.accessToken);
-    //   console.log(response);
-    //   return response.data.accessToken;
-    // });
+
+    // console.log("accessToken:", accessToken);
+    // console.log("setAccessToken:", setAccessToken);
+    // setAccessToken(response.data.accessToken);
+    setAccessToken((prev) => {
+      console.log("previous accessToken:", prev);
+      console.log("new accessToken:", response.data.data.accessToken);
+      //   console.log(response);
+      return response.data.data.accessToken;
+    });
     // console.log("setAccessToken:", setAccessToken);
     // return response.data.data.accessToken;
+
     return response;
   };
 

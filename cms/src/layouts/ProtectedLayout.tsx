@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-import axiosDefault from "../config/axios.config";
+// import axiosDefault from "../config/axios.config";
 // import { usePrevLocation } from "../hooks/usePrevLocation";
-import useRefreshToken from "../hooks/useRefreshToken";
+// import useRefreshToken from "../hooks/useRefreshToken";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -11,7 +12,8 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   console.log("ProtectedLayout running");
   const { accessToken, setAccessToken } = useAuth();
   const location = useLocation();
-  const refresh = useRefreshToken();
+  const axiosPrivate = useAxiosPrivate();
+  // const refresh = useRefreshToken();
   // console.log(prevLocation);
   // if (!accessToken)
   //   return <Navigate to="/login" state={{ from: location }} replace />;
@@ -24,7 +26,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     /* if (!accessToken)
         navigate("/login", { state: { from: location }, replace: true }); */
 
-    const responseInterceptor = axiosDefault.interceptors.response.use(
+    /*     const responseInterceptor = axiosDefault.interceptors.response.use(
       async (response) => response,
       async (err) => {
         console.log("err:", err);
@@ -42,21 +44,22 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
         }
         return config;
       }
-    );
+    ); */
 
     const authorize = async () => {
       try {
-        const response = await axiosDefault.get("/auth", {
+        /* const response = await axiosDefault.get("/auth", {
           withCredentials: true,
-        });
+        }); */
+        const response = await axiosPrivate.get("/auth");
 
         console.log("authorize response:", response);
-        setAccessToken(response.data.data.accessToken);
+        // setAccessToken(response.data.data.accessToken);
       } catch (err) {
         console.log("authorize err caught");
         console.log(location);
         console.log(err);
-        setAccessToken(null);
+        // setAccessToken(null);
         navigate("/login", { state: { prevLocation: location.pathname } });
       }
     };
@@ -65,8 +68,8 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
 
     return () => {
       console.log("ProtectedLayout clean up function running...");
-      axiosDefault.interceptors.response.eject(responseInterceptor);
-      axiosDefault.interceptors.request.eject(requestInterceptor);
+      /*       axiosDefault.interceptors.response.eject(responseInterceptor);
+      axiosDefault.interceptors.request.eject(requestInterceptor); */
     };
   }, [location]);
 
