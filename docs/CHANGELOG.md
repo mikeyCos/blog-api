@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 31 MAY 2025
+- Added `isAuthenticated` and `setIsAuthenticated` state in `useAuth` module; default value is `false` and changes when a user logs in or out.
+---
 ### 30 MAY 2025
 - Temporarily created `setAccessToken` parameter for `useRefreshToken` hook; allows `accessToken` to be set when an authenticated user refreshes or returns to the `cms` page.
 ---

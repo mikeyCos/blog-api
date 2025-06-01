@@ -7,15 +7,15 @@ import { useAuth } from "../../hooks/useAuth";
 import { usePrevLocation } from "../../hooks/usePrevLocation";
 
 const Header: React.FC = () => {
-  const { accessToken, setAccessToken, logout } = useAuth();
+  const { accessToken, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const from = location.pathname;
   const navigate = useNavigate();
   const { prevLocation } = usePrevLocation();
   console.log("Header component rendering...");
-  console.log("prevLocation in Header component:", prevLocation);
-  console.log("from in Header component:", from);
-  console.log("accessToken in Header component:", accessToken);
+  // console.log("prevLocation in Header component:", prevLocation);
+  // console.log("from in Header component:", from);
+  // console.log("accessToken in Header component:", accessToken);
   // TODO
   // Should the user be redirected to the home page or the page they are logging out from?
   // Problem
@@ -33,7 +33,6 @@ const Header: React.FC = () => {
     console.log("accessToken:", accessToken);
     console.groupEnd();
     // console.log("isLogout:", isLogout);
-    // setAccessToken(null);
     // navigate(prevLocation ?? "/");
     navigate(from), { replace: true };
     // navigate("/");
@@ -41,10 +40,11 @@ const Header: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Header component mounting...");
-    console.log("accessToken changed");
+    console.log("Header component mounted...");
+    console.log("isAuthenticated changed");
     console.log("accessToken:", accessToken);
-  }, [accessToken, prevLocation, setAccessToken]);
+    console.log("isAuthenticated:", isAuthenticated);
+  }, [isAuthenticated]);
 
   return (
     <header>
@@ -66,7 +66,7 @@ const Header: React.FC = () => {
             <NavAnchor pathname="/faq" textContent="faq" />
           </li>
 
-          {accessToken ? (
+          {isAuthenticated ? (
             <>
               <li>
                 <NavAnchor pathname="/dashboard" textContent="dashboard" />

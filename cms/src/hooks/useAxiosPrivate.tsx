@@ -20,6 +20,7 @@ const useAxiosPrivate = () => {
     );
 
     // What if access token expires when a user submits a form?
+    // Retry original request one time
     const responseInterceptor = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (err) => {

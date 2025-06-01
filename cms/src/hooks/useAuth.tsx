@@ -21,6 +21,7 @@ type Logout = () => Promise<null>;
 interface AuthContext {
   login: Login;
   logout: Logout;
+  isAuthenticated: boolean;
   accessToken: string | null;
   setAccessToken: Dispatch<
     string | null | ((prevState: string | null) => string | null)
@@ -33,6 +34,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   console.log("AuthProvider running...");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   // const refresh = useRefreshToken();
   // const navigate = useNavigate();
@@ -41,6 +43,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log("login from AuthProvider running...");
     console.log("newToken:", newToken);
     setAccessToken(newToken);
+    setIsAuthenticated(true);
   };
 
   const logout: Logout = async () => {
@@ -48,6 +51,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return axios.post("/auth/logout").then((_resolve) => {
       return new Promise(async (res) => {
         setAccessToken(null);
+        setIsAuthenticated(false);
         setTimeout(() => res(null), 0);
       });
     });
@@ -67,19 +71,21 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     ); */
     const refresh = useRefreshToken(setAccessToken);
 
-    const fetchToken = async () => {
+    const initAuth = async () => {
       try {
         await refresh();
+        setIsAuthenticated(true);
         // const response = await refresh();
         // console.log("response:", response);
         // setAccessToken(response.data.data.accessToken);
       } catch (err) {
-        console.log("error:", err);
+        console.log("useAuth error:", err);
         setAccessToken(null);
+        setIsAuthenticated(false);
       }
     };
 
-    fetchToken();
+    initAuth();
     /* return () => {
       console.log("useAuth clean up function running...");
       // axiosInit.interceptors.response.eject(responseInterceptor);
@@ -91,6 +97,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return {
       login,
       logout,
+      isAuthenticated,
       accessToken,
       setAccessToken,
     };
