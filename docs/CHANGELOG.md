@@ -2,7 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 03 JUN 2025
-- 
+- Merged `cms-rewrite-axios-config` branch to `feature-post`.
 - Removed `axiosInit` instance in `axios.config.ts` module.
 ---
 ### 02 JUN 2025
