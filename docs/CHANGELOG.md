@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 03 JUN 2025
+- 
+- Removed `axiosInit` instance in `axios.config.ts` module.
+---
 ### 02 JUN 2025
 - If the current access token is invalid when a user submits form data, a new access token is generated and the initial request is sent again.
 - Removed `setAccessToken` parameter from `useRefreshToken` hook.
