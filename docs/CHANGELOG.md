@@ -1,6 +1,11 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 02 JUN 2025
+- If the current access token is invalid when a user submits form data, a new access token is generated and the initial request is sent again.
+- Removed `setAccessToken` parameter from `useRefreshToken` hook.
+- The request in `useAxiosPrivate` is reattempted for HTTP codes `401` and `403`.
+---
 ### 31 MAY 2025
 - Added `isAuthenticated` and `setIsAuthenticated` state in `useAuth` module; default value is `false` and changes when a user logs in or out.
 ---

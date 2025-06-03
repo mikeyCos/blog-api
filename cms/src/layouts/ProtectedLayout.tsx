@@ -51,9 +51,8 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
         /* const response = await axiosDefault.get("/auth", {
           withCredentials: true,
         }); */
-        const response = await axiosPrivate.get("/auth");
+        await axiosPrivate.get("/auth");
 
-        console.log("authorize response:", response);
         // setAccessToken(response.data.data.accessToken);
       } catch (err) {
         console.log("authorize err caught");
