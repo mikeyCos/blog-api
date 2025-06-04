@@ -57,7 +57,7 @@ app.use((req, res, next) => {
   const error = {
     status: "fail",
     code: 404,
-    data: { message: "Resource not found" },
+    errors: { msg: "Resource not found" },
   };
 
   next(error);

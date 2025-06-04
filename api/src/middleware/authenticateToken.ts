@@ -9,11 +9,9 @@ const authenticateToken: RequestHandler = async (req, res, next) => {
   const defaultFailedResponse = {
     status: "fail",
     code: 403,
-    data: {
-      accessToken: null,
-      user: null,
-      msg: `Invalid or expired access token`,
-    },
+    accessToken: null,
+    user: null,
+    msg: `Invalid or expired access token`,
   };
 
   const { accessToken } = req;
@@ -22,10 +20,7 @@ const authenticateToken: RequestHandler = async (req, res, next) => {
     return next({
       ...defaultFailedResponse,
       code: 401,
-      data: {
-        ...defaultFailedResponse.data,
-        msg: "Access token required",
-      },
+      msg: "Access token required",
     });
   }
 

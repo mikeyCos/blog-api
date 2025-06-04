@@ -1,14 +1,35 @@
-import { FormEventHandler, useEffect, useRef } from "react";
+import {
+  ChangeEventHandler,
+  EventHandler,
+  FormEventHandler,
+  SyntheticEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Editor as TinyMCEEditor } from "tinymce"; // TinyMCE Editor
 
 import PostEditor from "./PostEditor";
 import { useAuth } from "../../../hooks/useAuth";
 
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import config from "../../../config/env.config";
-const { blogAPIBase } = config;
+import { PostFormError } from "../../../types/errors";
+
+const charCount = (editor: TinyMCEEditor) => {
+  return editor.plugins.wordcount.body.getCharacterCount();
+};
 
 const PostForm = () => {
+  const initialFormData = {
+    title: {
+      value: "",
+    },
+    content: {
+      value: "<p>This is the initial content of the editor.</p>",
+    },
+  };
+  const [formData, setFormData] = useState(initialFormData);
+  const [errors, setErrors] = useState<PostFormError>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const { accessToken } = useAuth();
   const axiosPrivate = useAxiosPrivate();
@@ -41,6 +62,10 @@ const PostForm = () => {
       //  Rerun original request
       const response = await axiosPrivate.post("/post", body).catch((err) => {
         console.log("err:", err);
+        if (err.response.data.errors) {
+          console.log("err.response.data.errors:", err.response.data.errors);
+          setErrors(err.response.data.errors);
+        }
       });
 
       console.log("response:", response);
@@ -58,19 +83,84 @@ const PostForm = () => {
     }
   };
 
+  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const input = e.currentTarget;
+    console.log("input:", input);
+    const { id, value } = input;
+    setFormData({
+      ...formData,
+      [id]: {
+        value,
+      },
+    });
+  };
+
+  /* Limit character amount
+   * https://github.com/tinymce/tinymce-react/pull/241
+   * https://www.tiny.cloud/docs/tinymce/latest/react-ref/#using-the-tinymce-react-component-as-a-controlled-component
+   * BUG: Holding a key down will keep rendering
+   *  additional characters until key is lifted up
+   */
+  const editorOnChangeHandler = (content: string, editor: TinyMCEEditor) => {
+    console.log("content:", content);
+    console.log("editor:", editor);
+    const currentCharCount = charCount(editor);
+    if (currentCharCount <= 50) {
+      setFormData({
+        ...formData,
+        content: {
+          value: content,
+        },
+      });
+    }
+  };
+
+  const editorOnBeforeAddUndoHandler = (e: any, editor: TinyMCEEditor) => {
+    const currentCharCount = charCount(editor);
+    console.log("e:", e);
+    if (currentCharCount < 50) {
+      e.preventDefault();
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log("PostForm mounted");
+  //   console.log("formData:", formData);
+  // }, [formData]);
+
   return (
     <form method="POST" onSubmit={submitPost}>
       <h3>Create Post</h3>
       <li className="form-item">
         <label htmlFor="title">Title</label>
-        <input id="title" name="title" type="text" />
+        <input
+          id="title"
+          name="title"
+          type="text"
+          onChange={onChangeHandler}
+          maxLength={300}
+        />
+        {errors?.title && <p>{errors.title.msg}</p>}
       </li>
 
       <li className="form-item">
-        <PostEditor editorRef={editorRef} />
+        <PostEditor
+          editorRef={editorRef}
+          onChange={editorOnChangeHandler}
+          onBeforeAddUndoHandler={editorOnBeforeAddUndoHandler}
+          editorValue={formData.content.value}
+        />
+        {errors?.content && <p>{errors.content.msg}</p>}
       </li>
 
-      <button type="submit">Post</button>
+      <button
+        type="submit"
+        disabled={
+          !(formData.content.value.length && formData.title.value.length)
+        }
+      >
+        Post
+      </button>
     </form>
   );
 };

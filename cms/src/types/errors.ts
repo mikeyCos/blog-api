@@ -1,7 +1,7 @@
 export interface LoginFormError {
   username?: ValidationError;
   password?: ValidationError;
-  message?: string;
+  msg?: string;
 }
 
 export interface SignUpFormError {
@@ -9,7 +9,12 @@ export interface SignUpFormError {
   email?: ValidationError;
   password?: ValidationError;
   ["password-confirmation"]?: ValidationError;
-  message?: string;
+  msg?: string;
+}
+
+export interface PostFormError {
+  title?: ValidationError;
+  content?: ValidationError;
 }
 
 interface ValidationError<InputType = string> {

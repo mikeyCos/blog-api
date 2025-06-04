@@ -2,6 +2,13 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 03 JUN 2025
+- Added maximum character limit for a post's title and content.
+- Updated npm packages for both `cms` and `api` subdirectories.
+- Created `PostEditorProps` interface for `PostEditor` component.
+- Added `formData` and `setFormData` in `PostForm` component.
+- Invalid `PostForm` `POST` requests will render errors.
+- Renamed form errors object property from `message` to `msg`. 
+- Removed `data` object property from all `res.json` methods; reduces `data` redundancy in `response` object with Axios. For example, `response.data.data.accessToken` versus `response.data.accessToken`.
 - Merged `cms-rewrite-axios-config` branch to `feature-post`.
 - Removed `axiosInit` instance in `axios.config.ts` module.
 ---

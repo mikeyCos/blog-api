@@ -1,20 +1,25 @@
 import { Editor } from "@tinymce/tinymce-react"; // React component Editor
 import { Editor as TinyMCEEditor } from "tinymce"; // TinyMCE Editor
+import React from "react";
 
-import React, { useRef } from "react";
-
-import config from "../../../config/env.config";
-// const { tinyMCEAPI } = config;
-
-const PostEditor: React.FC<{
+interface PostEditorProps {
   editorRef: React.RefObject<TinyMCEEditor | null>;
-}> = ({ editorRef }) => {
+  onChangeHandler: (content: string, editor: TinyMCEEditor) => void;
+  onBeforeAddUndoHandler: (e: any, editor: TinyMCEEditor) => void;
+  editorValue: string;
+}
+
+const PostEditor: React.FC<PostEditorProps> = ({
+  editorRef,
+  onChangeHandler,
+  onBeforeAddUndoHandler,
+  editorValue,
+}) => {
   // apiKey={tinyMCEAPI}
   // tinymceScriptSrc={'../../../' + '/tinymce/tinymce.min.js'}
   /*   const initHandler = (_evt, editor) => {
 
   } */
-  // onInit={(_evt, editor) => { if (editorRef) { (editorRef.current = editor)}}}
 
   return (
     <Editor
@@ -25,7 +30,7 @@ const PostEditor: React.FC<{
           editorRef.current = editor;
         }
       }}
-      initialValue="<p>This is the initial content of the editor.</p>"
+      // initialValue="<p>This is the initial content of the editor.</p>"
       init={{
         height: 500,
         menubar: false,
@@ -57,15 +62,11 @@ const PostEditor: React.FC<{
         content_style:
           "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
       }}
+      onEditorChange={onChangeHandler}
+      onBeforeAddUndo={onBeforeAddUndoHandler}
+      value={editorValue}
     />
   );
-
-  /* return (
-    <>
-      <p>PostEditor component</p>
-      <button onClick={logPublicUrl}>Log Public URL</button>
-    </>
-  ); */
 };
 
 export default PostEditor;

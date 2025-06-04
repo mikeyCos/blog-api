@@ -45,14 +45,8 @@ const postController: PostController = {
     res.json({
       status: "success",
       code: 200,
-      data: { message: "post created" },
+      msg: "post created",
     });
-
-    /* res.json({
-      status: "success",
-      code: 200,
-      data: { message: "post created" },
-    }); */
   }),
   createPostComment: asyncHandler(async (req, res) => {
     // const newPostComment = await createComment({...req.body, });

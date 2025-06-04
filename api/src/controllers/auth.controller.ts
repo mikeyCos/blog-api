@@ -35,10 +35,8 @@ const authController: authController = {
       res.json({
         status: "success",
         code: 200,
-        data: {
-          accessToken,
-          user: { username: userPayload.username, role: userPayload.role },
-        },
+        accessToken,
+        user: { username: userPayload.username, role: userPayload.role },
       });
       return;
     }
@@ -52,11 +50,9 @@ const authController: authController = {
     const defaultFailedResponse = {
       status: "fail",
       code: 403,
-      data: {
-        accessToken: null,
-        user: null,
-        msg: `Invalid or expired refresh token`,
-      },
+      accessToken: null,
+      user: null,
+      msg: `Invalid or expired refresh token`,
     };
 
     const { refreshToken } = req;
@@ -65,10 +61,7 @@ const authController: authController = {
       return next({
         ...defaultFailedResponse,
         code: 401,
-        data: {
-          ...defaultFailedResponse.data,
-          msg: "Refresh token required",
-        },
+        msg: "Refresh token required",
       });
     }
 
@@ -87,10 +80,8 @@ const authController: authController = {
       res.json({
         status: "success",
         code: 200,
-        data: {
-          accessToken: newAccessToken,
-          user: { username: user.username, role: user.role },
-        },
+        accessToken: newAccessToken,
+        user: { username: user.username, role: user.role },
       });
     }
   }),
@@ -110,7 +101,7 @@ const authController: authController = {
             return next({
               status: "fail",
               code: 422,
-              data: { message: info.message },
+              errors: { msg: info.message },
             });
 
           return req.login(user, { session: false }, async (err) => {
@@ -149,7 +140,8 @@ const authController: authController = {
             return res.json({
               status: "success",
               code: 200,
-              data: { accessToken, user: { username, role } },
+              accessToken,
+              user: { username, role },
             });
           });
         }
@@ -163,7 +155,8 @@ const authController: authController = {
     res.json({
       status: "success",
       code: 200,
-      data: { accessToken: null, user: null },
+      accessToken: null,
+      user: null,
     });
   }),
   signup: [
@@ -206,7 +199,8 @@ const authController: authController = {
         return res.json({
           status: "success",
           code: 200,
-          data: { accessToken, user: { username, role } },
+          accessToken,
+          user: { username, role },
         });
       });
     }),

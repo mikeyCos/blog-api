@@ -31,14 +31,14 @@ const SignUpForm: React.FC = () => {
       .then(async (res) => {
         console.log("res:", res);
 
-        login(res.data.data.accessToken);
+        login(res.data.accessToken);
         navigate("/dashboard", { replace: true });
       })
       .catch((err) => {
         console.log("err:", err);
         const { code, response } = err;
-        if (code === "ERR_NETWORK") return setErrors({ message: err.message });
-        setErrors(response.data.data);
+        if (code === "ERR_NETWORK") return setErrors({ msg: err.msg });
+        setErrors(response.data.errors);
       });
   };
 
@@ -76,7 +76,7 @@ const SignUpForm: React.FC = () => {
           )}
         </li>
         <li className="form-controls">
-          {errors?.message && <p>{errors.message}</p>}
+          {errors?.msg && <p>{errors.msg}</p>}
           <button type="submit">Sign up</button>
         </li>
       </ul>

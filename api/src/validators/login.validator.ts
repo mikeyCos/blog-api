@@ -33,7 +33,7 @@ const validateLogin = (): RequestHandler => {
         // TODO
         // Send errors to client
         // May need to map errors; errors.mapped()
-        next({ status: "fail", code: 401, data: errors.mapped() });
+        next({ status: "fail", code: 401, errors: errors.mapped() });
       }
 
       next();

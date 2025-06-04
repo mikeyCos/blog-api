@@ -5,7 +5,7 @@ const useRefreshToken = () => {
     console.log("refresh running...");
     const response = await axiosDefault.post("/auth/refresh");
 
-    return response.data.data.accessToken;
+    return response.data.accessToken;
   };
 
   return refresh;

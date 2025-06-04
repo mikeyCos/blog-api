@@ -61,7 +61,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
         (res) => {
           console.log("res:", res);
           // res.response.data.data["access-token"]
-          login(res.data.data["accessToken"]);
+          login(res.data["accessToken"]);
           setFormData(initialFormData);
           setErrors(null);
           console.log("from:", from);
@@ -69,7 +69,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
         },
         (rej) => {
           console.log("rej:", rej);
-          setErrors(rej.response.data.data);
+          setErrors(rej.response.data.errors);
         }
       );
   };
@@ -79,6 +79,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
     userRef.current?.focus();
     console.log("LoginForm mounted");
     console.log("prevLocation:", prevLocation);
+    // console.log("errors:", errors);
   }, []);
 
   // Do I really need to erase inputs after successful POSt request?
@@ -113,7 +114,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
           {errors?.password && <p>{errors.password.msg}</p>}
         </li>
         <li className="form-controls">
-          {errors?.message && <p>{errors.message}</p>}
+          {errors?.msg && <p>{errors.msg}</p>}
           <button type="submit">Sign in</button>
         </li>
       </ul>

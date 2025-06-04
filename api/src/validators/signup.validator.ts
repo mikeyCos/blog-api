@@ -32,6 +32,9 @@ const confirmPassword: CustomValidator = (password: string, { req }) => {
 const userSchema: Schema = {
   username: {
     trim: true,
+    notEmpty: {
+      bail: true,
+    },
     custom: {
       options: usernameValidator,
     },
@@ -42,7 +45,7 @@ const userSchema: Schema = {
   email: {
     trim: true,
     notEmpty: {
-      errorMessage: "Email cannot be empty",
+      errorMessage: "Email cannot be empty.",
       bail: true,
     },
     isEmail: {
@@ -87,7 +90,7 @@ const validateCreateUser = (): RequestHandler => {
     const errors = validationResult(req);
     console.log(errors);
     if (!errors.isEmpty()) {
-      next({ status: "fail", code: 422, data: errors.mapped() });
+      next({ status: "fail", code: 422, errors: errors.mapped() });
     }
 
     next();

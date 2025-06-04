@@ -22,7 +22,7 @@ const verifyCallback = async (
     const match = user && (await bcrypt.compare(password, user.password!));
 
     if (!user || !match) {
-      return done(null, false, { message: "Invalid username or password" });
+      return done(null, false, { msg: "Invalid username or password" });
     }
 
     return done(null, user);

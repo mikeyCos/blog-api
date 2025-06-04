@@ -23,28 +23,6 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
 
   useEffect(() => {
     console.log("ProtectedLayout mounted...");
-    /* if (!accessToken)
-        navigate("/login", { state: { from: location }, replace: true }); */
-
-    /*     const responseInterceptor = axiosDefault.interceptors.response.use(
-      async (response) => response,
-      async (err) => {
-        console.log("err:", err);
-        if (err.request.status === 403) {
-          return await refresh();
-        }
-        return Promise.reject(err);
-      }
-    );
-
-    const requestInterceptor = axiosDefault.interceptors.request.use(
-      (config) => {
-        if (accessToken) {
-          config.headers.Authorization = `Bearer ${accessToken}`;
-        }
-        return config;
-      }
-    ); */
 
     const authorize = async () => {
       try {
@@ -64,12 +42,6 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     };
 
     authorize();
-
-    return () => {
-      console.log("ProtectedLayout clean up function running...");
-      /*       axiosDefault.interceptors.response.eject(responseInterceptor);
-      axiosDefault.interceptors.request.eject(requestInterceptor); */
-    };
   }, [location]);
 
   return (

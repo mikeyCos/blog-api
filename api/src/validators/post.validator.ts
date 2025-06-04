@@ -2,22 +2,23 @@ import { RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import { checkSchema, Schema, validationResult } from "express-validator";
 import { getUser } from "../services/user";
+import { escape } from "querystring";
 
 const postSchema = {
-  username: {
+  title: {
     trim: true,
     isEmpty: {
       negated: true,
     },
-    errorMessage: "Username cannot be empty.",
+    errorMessage: "Title cannot be empty.",
     escape: true,
   },
-  password: {
+  content: {
     trim: true,
     isEmpty: {
       negated: true,
     },
-    errorMessage: "Password cannot be empty.",
+    errorMessage: "Post body cannot be empty.",
     escape: true,
   },
 };
@@ -33,7 +34,8 @@ const validatePost = (): RequestHandler => {
         // TODO
         // Send errors to client
         // May need to map errors; errors.mapped()
-        next({ status: "fail", code: 401, data: errors.mapped() });
+        console.log("errors.mapped():", errors.mapped());
+        next({ status: "fail", code: 422, errors: errors.mapped() });
       }
 
       next();

@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import postController from "../controllers/post.controller";
-import validateParams from "../validators/params.validator";
+import { validatePost } from "../validators/validators";
 import authenticateToken from "../middleware/authenticateToken";
 
 const postRoutes = () => {
@@ -27,7 +27,7 @@ const postRoutes = () => {
   // POST requests
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'
   // blogId and authorId are required
-  postRouter.post("/", authenticateToken, createPost); // Needs to be protected
+  postRouter.post("/", authenticateToken, validatePost(), createPost); // Needs to be protected
   postRouter.post("/:postId/comment", authenticateToken, createPostComment);
 
   // PUT requests

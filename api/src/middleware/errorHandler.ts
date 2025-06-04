@@ -4,8 +4,8 @@ import { ErrorRequestHandler } from "express";
 // Create error type
 // Error middleware function
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  const { status, code, data } = err;
-  res.status(code).json({ status, code, data });
+  const { status, code, errors } = err;
+  res.status(code).json({ status, code, errors });
 };
 
 export default errorHandler;
