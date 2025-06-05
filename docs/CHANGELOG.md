@@ -1,8 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 05 JUN 2025
+- Rewrote `params.validator` to catch thrown error in `isIdValid` custom validator and throw `BadRequestError` if `!errors.isEmpty()` is falsy.
+- Created `errors` subdirectory and `customErrors` module.
+- Created `api-errors-custom` branch from `feature-post`.
+---
 ### 04 JUN 2025
-
+- Defined `GetUser` interface for `getUser` function in `user` module service.
 - Created custom sanitizer, `contentSanitizer`, in `post.validator` module; sanitizes content submitted from `PostForm` component's TinyMCE editor.
 - Installed `JSDOM` and `DOMPurify` packages in `api` subdirectory.
 ---

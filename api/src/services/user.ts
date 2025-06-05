@@ -1,4 +1,5 @@
 import prisma from "../config/prisma";
+import { UserNotFoundError } from "../errors/customErrors";
 import { User, UserId, Username, CreateUser } from "../interfaces/user";
 import { Prisma } from "../prisma/generated/prisma";
 
@@ -19,7 +20,7 @@ export const createUser = async ({ username, email, password }: CreateUser) => {
 };
 
 interface GetUser {
-  (userId: UserId | null, username?: Username): Promise<User | null>;
+  (userId: UserId | null, username?: Username): Promise<User>;
 }
 
 // Should I throw error if both arguments are falsy values?
@@ -45,6 +46,12 @@ export const getUser: GetUser = async (userId, username) => {
       comments: true,
     },
   });
+
+  if (!user) {
+    const identifier = userId || username;
+    const isId = !!userId;
+    throw new UserNotFoundError(identifier!, isId);
+  }
 
   return user;
 };
