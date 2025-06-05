@@ -146,7 +146,7 @@ const PostForm = () => {
       <li className="form-item">
         <PostEditor
           editorRef={editorRef}
-          onChange={editorOnChangeHandler}
+          onChangeHandler={editorOnChangeHandler}
           onBeforeAddUndoHandler={editorOnBeforeAddUndoHandler}
           editorValue={formData.content.value}
         />

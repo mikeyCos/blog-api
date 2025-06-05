@@ -40,7 +40,6 @@ app.use(express.json());
 
 // Testing...
 app.use(passport.initialize());
-// app.use(deserializeUser);
 app.use(deserializeTokens);
 
 // Application-level

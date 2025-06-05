@@ -1,6 +1,11 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 04 JUN 2025
+
+- Created custom sanitizer, `contentSanitizer`, in `post.validator` module; sanitizes content submitted from `PostForm` component's TinyMCE editor.
+- Installed `JSDOM` and `DOMPurify` packages in `api` subdirectory.
+---
 ### 03 JUN 2025
 - Added maximum character limit for a post's title and content.
 - Updated npm packages for both `cms` and `api` subdirectories.

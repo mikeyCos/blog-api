@@ -5,7 +5,6 @@ import { getUser } from "../services/user";
 
 const isIdValid = async (id: string) => {
   const userExists = !!(await getUser(id));
-
   if (!userExists)
     return Promise.reject(`User with the id, ${id}, does not exist`);
 };

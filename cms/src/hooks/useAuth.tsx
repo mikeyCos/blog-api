@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 
-import axios, { axiosInit } from "../config/axios.config";
+import axios from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
 // import { useNavigate } from "react-router";
 
@@ -36,7 +36,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   console.log("AuthProvider running...");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  // const refresh = useRefreshToken();
   // const navigate = useNavigate();
 
   const login: Login = (newToken) => {
@@ -60,24 +59,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     console.log("AuthProvider mounted...");
     console.log("accessToken:", accessToken);
-    /* const requestInterceptor = axiosInit.interceptors.request.use(
-      (config) => {
-        if (accessToken) {
-          config.headers.Authorization = `Bearer ${accessToken}`;
-        }
-        return config;
-      },
-      (err) => Promise.reject(err)
-    ); */
     const refresh = useRefreshToken();
 
     const initAuth = async () => {
       try {
         const newAccessToken = await refresh();
         setIsAuthenticated(true);
-        // const response = await refresh();
-        // console.log("response:", response);
-        // setAccessToken(response.data.data.accessToken);
         setAccessToken(newAccessToken);
       } catch (err) {
         console.log("useAuth error:", err);
@@ -87,11 +74,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     initAuth();
-    /* return () => {
-      console.log("useAuth clean up function running...");
-      // axiosInit.interceptors.response.eject(responseInterceptor);
-      axiosInit.interceptors.request.eject(requestInterceptor);
-    }; */
   }, []);
 
   const providerValue = useMemo(() => {

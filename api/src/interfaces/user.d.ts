@@ -14,7 +14,11 @@ export interface User {
   comments?: Comment[] | null;
 }
 
-type Role = "USER" | "AUTHOR" | "ADMIN";
+export interface AuthenticatedUser {
+  id: string;
+  role: Role;
+  username: Username;
+}
 
 export interface CreateUser {
   username: string;
@@ -26,6 +30,8 @@ export interface UserIdParams {
   userId: UserId;
 }
 
-export type UserId = string | undefined | null;
+type Role = "USER" | "AUTHOR" | "ADMIN";
 
-export type Username = string | undefined | null;
+export type UserId = string;
+
+export type Username = string;

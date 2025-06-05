@@ -18,11 +18,12 @@ export const createUser = async ({ username, email, password }: CreateUser) => {
   return user;
 };
 
+interface GetUser {
+  (userId: UserId | null, username?: Username): Promise<User | null>;
+}
+
 // Should I throw error if both arguments are falsy values?
-export const getUser = async (
-  userId: UserId,
-  username?: Username
-): Promise<User | null> => {
+export const getUser: GetUser = async (userId, username) => {
   if (!userId && !username) {
     throw new Error("Failed to execute 'getUser' 1 argument required.");
   }

@@ -2,9 +2,21 @@ import { RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import { checkSchema, Schema, validationResult } from "express-validator";
 import { getUser } from "../services/user";
-import { escape } from "querystring";
 
-const postSchema = {
+import { JSDOM } from "jsdom";
+import DOMPurify from "dompurify";
+
+const contentSanitizer = (value: string) => {
+  console.log("contentSanitizer running...");
+  console.log("dirty value:", value);
+  const window = new JSDOM("").window;
+  const purify = DOMPurify(window);
+  const sanitizedValue = purify.sanitize(value);
+  console.log("sanitized value:", sanitizedValue);
+  return sanitizedValue;
+};
+
+const postSchema: Schema = {
   title: {
     trim: true,
     isEmpty: {
@@ -19,7 +31,9 @@ const postSchema = {
       negated: true,
     },
     errorMessage: "Post body cannot be empty.",
-    escape: true,
+    customSanitizer: {
+      options: contentSanitizer,
+    },
   },
 };
 

@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 import asyncHandler = require("express-async-handler");
 import { matchedData } from "express-validator";
-import jwt from "jsonwebtoken";
 
+import { getUser } from "../services/user";
 import { createPost, createComment, getPost, getPosts } from "../services/blog";
 import { User } from "../interfaces/user";
 
@@ -24,28 +24,31 @@ const postController: PostController = {
     // createPost needs blogId and authorId
     // blogId and authorId should be accessible from
     console.log("createPost running...");
-    const { title, content } = req.body;
+    const { title, content } = matchedData(req, {
+      onlyValidData: true,
+    });
+
     console.log("title:", title);
     console.log("content:", content);
     console.log("res.user:", req.user);
 
-    // User is authenticated before reaching this endpoint
-    // const user = req.user as User; // Type assertion
-    // const { id, username } = user;
+    // User has been authenticated before reaching this endpoint
+    const { id: userId } = req.user; // Type assertion
+    const user = (await getUser(userId!))!;
+    console.log("user:", user);
 
-    /* const newPost = await createPost({
-      blogId: user.blog.id,
-      authorId: user.id,
+    const newPost = await createPost({
+      blogId: user.blog!.id,
+      authorId: userId!,
       title,
       content,
     });
-
-    res.json({ newPost }); */
 
     res.json({
       status: "success",
       code: 200,
       msg: "post created",
+      post: newPost,
     });
   }),
   createPostComment: asyncHandler(async (req, res) => {

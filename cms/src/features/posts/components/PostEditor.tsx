@@ -30,7 +30,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
           editorRef.current = editor;
         }
       }}
-      // initialValue="<p>This is the initial content of the editor.</p>"
+      initialValue="<p>This is the initial content of the editor.</p>"
       init={{
         height: 500,
         menubar: false,

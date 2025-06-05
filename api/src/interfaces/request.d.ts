@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { User, AuthenticatedUser } from "./user";
 // Declaration Merging
 // https://www.typescriptlang.org/docs/handbook/declaration-merging.html
 // https://stackoverflow.com/questions/71122741/how-do-i-add-custom-property-to-express-request-in-typescript
@@ -11,7 +11,7 @@ import { User } from "./user";
 
 declare module "express-serve-static-core" {
   interface Request {
-    user?: User;
+    user: AuthenticatedUser;
     accessToken?: string | null;
     refreshToken?: string | null;
   }
