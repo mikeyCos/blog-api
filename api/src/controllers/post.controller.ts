@@ -19,7 +19,7 @@ interface PostController {
 }
 
 const postController: PostController = {
-  createPost: asyncHandler(async (req, res) => {
+  createPost: asyncHandler(async (req, res, next) => {
     // For now the req.body values are strings
     // createPost needs blogId and authorId
     // blogId and authorId should be accessible from
@@ -33,13 +33,14 @@ const postController: PostController = {
     console.log("res.user:", req.user);
 
     // User has been authenticated before reaching this endpoint
-    const { id: userId } = req.user; // Type assertion
-    const user = (await getUser(userId!))!;
+    const { id: userId } = req.user;
+    const user = await getUser(userId);
+
     console.log("user:", user);
 
     const newPost = await createPost({
-      blogId: user.blog!.id,
-      authorId: userId!,
+      blogId: user!.blog!.id,
+      authorId: userId,
       title,
       content,
     });
