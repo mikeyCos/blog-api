@@ -204,8 +204,10 @@ Project Link: [https://#](https://#)
 ## Questions
 
 1. Do all blogs need a comment section? At what point, in production or development, are blog post comments helpful?
-2. Should the access token be valid if the refresh token is invalid? In other words, a new access token is generated right before a refresh token expires, should the newly generated access token be valid? Since the refresh token expired, a new access token will not be generated and the most recent generated access token will expire. 
-3. What do payloads for access and refresh tokens include? What data should be excluded from token payloads?
+2. Should a new access token be created only when the current access token is expired or should the current access token be reused when a request is made to refresh an access token up until it expires?
+3. Should the access token be valid if the refresh token is invalid? In other words, a new access token is generated right before a refresh token expires, should the newly generated access token be valid? Since the refresh token expired, a new access token will not be generated and the most recent generated access token will expire. 
+4. What do payloads for access and refresh tokens include? What data should be excluded from token payloads?
+5. What are the pros and cons for throwing errors with `next({error})` versus `throw new [custom-error]`?
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

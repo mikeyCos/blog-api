@@ -2,6 +2,8 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 05 JUN 2025
+- Defined `APICustomError`, `UserNotFoundError`, and `BadRequestError` classes in `customError` module.
+- Replaced `next()` with `throw new BadRequestError()` throughout `api` subdirectory; instead of passing a custom object into `next()`, a custom `Error` object is thrown.
 - Rewrote `params.validator` to catch thrown error in `isIdValid` custom validator and throw `BadRequestError` if `!errors.isEmpty()` is falsy.
 - Created `errors` subdirectory and `customErrors` module.
 - Created `api-errors-custom` branch from `feature-post`.

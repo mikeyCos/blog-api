@@ -8,6 +8,7 @@ import {
 
 import prisma from "../config/prisma";
 import { getUser } from "../services/user";
+import { BadRequestError } from "../errors/customErrors";
 
 const usernameValidator: CustomValidator = async (username: string) => {
   // Test against regex
@@ -90,7 +91,12 @@ const validateCreateUser = (): RequestHandler => {
     const errors = validationResult(req);
     console.log(errors);
     if (!errors.isEmpty()) {
-      next({ status: "fail", code: 422, errors: errors.mapped() });
+      // next({ status: "fail", code: 422, errors: errors.mapped() });
+      throw new BadRequestError(
+        "Validation for user creation failed.",
+        422,
+        errors.mapped()
+      );
     }
 
     next();

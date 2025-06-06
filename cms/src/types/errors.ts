@@ -1,7 +1,7 @@
 export interface LoginFormError {
   username?: ValidationError;
   password?: ValidationError;
-  msg?: string;
+  message?: string;
 }
 
 export interface SignUpFormError {

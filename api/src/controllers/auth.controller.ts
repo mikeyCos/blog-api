@@ -10,6 +10,7 @@ import { User, CreateUser } from "../interfaces/user";
 import { matchedData } from "express-validator";
 import { createUser, getUser } from "../services/user";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
+import { BadRequestError } from "../errors/customErrors";
 
 interface authController {
   authorize: RequestHandler;
@@ -58,11 +59,12 @@ const authController: authController = {
     const { refreshToken } = req;
 
     if (!refreshToken) {
-      return next({
+      /* return next({
         ...defaultFailedResponse,
         code: 401,
         msg: "Refresh token required",
-      });
+      }); */
+      throw new BadRequestError("Refresh token required", 401);
     }
 
     const { payload } = await verifyJWT(refreshToken);
@@ -88,7 +90,77 @@ const authController: authController = {
   login: [
     validateLogin(),
     asyncHandler(async (req, res, next) => {
-      passport.authenticate(
+      console.log("login running...");
+      await new Promise((resolve, reject) => {
+        passport.authenticate(
+          "local",
+          { session: false },
+          (err: Error, user: User, info: any) => {
+            // User does not include blog, posts, or comments
+            // console.log("err:", err);
+            // console.log("user:", user);
+            // console.log("info:", info);
+            if (err) {
+              console.log("login err:", err);
+              // return next(err);
+              return reject(err);
+            }
+
+            if (!user) {
+              /* return next({
+                status: "fail",
+                code: 422,
+                errors: { msg: info.message },
+              }); */
+              return reject(
+                new BadRequestError("Login failed", 422, info.message)
+              );
+            }
+
+            return req.login(user, { session: false }, async (err) => {
+              // TODO
+              // Create a private accessToken
+              // Do not send private user properties
+              const { id, username, role } = user;
+              const accessTokenExpiresIn = 10; // 10 seconds
+              const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
+              const accessToken = await signJWT(
+                { user: { id, username, role } },
+                { expiresIn: accessTokenExpiresIn }
+              );
+              const refreshToken = await Promise.resolve(
+                signJWT(
+                  { user: { id } },
+                  {
+                    expiresIn: `${refreshTokenExpiresIn}`,
+                  }
+                )
+              );
+
+              console.log("refreshToken:", refreshToken);
+              console.log("accessToken:", accessToken);
+
+              res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 30 days
+                maxAge: refreshTokenExpiresIn, // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
+                // maxAge: 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+                // maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
+              });
+
+              return res.json({
+                status: "success",
+                code: 200,
+                accessToken,
+                user: { username, role },
+              });
+            });
+          }
+        )(req, res, next);
+      });
+      /* passport.authenticate(
         "local",
         { session: false },
         (err: Error, user: User, info: any) => {
@@ -96,13 +168,17 @@ const authController: authController = {
           // console.log("err:", err);
           // console.log("user:", user);
           // console.log("info:", info);
-          if (err) return next(err);
-          if (!user)
+          if (err) {
+            console.log("login err:", err);
+            return next(err);
+          }
+          if (!user) {
             return next({
               status: "fail",
               code: 422,
               errors: { msg: info.message },
             });
+          }
 
           return req.login(user, { session: false }, async (err) => {
             // TODO
@@ -145,7 +221,7 @@ const authController: authController = {
             });
           });
         }
-      )(req, res, next);
+      )(req, res, next); */
     }),
   ],
   logout: asyncHandler(async (req, res) => {

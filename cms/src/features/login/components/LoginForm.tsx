@@ -69,7 +69,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
         },
         (rej) => {
           console.log("rej:", rej);
-          setErrors(rej.response.data.errors);
+          setErrors(rej.response.data.message);
         }
       );
   };
@@ -114,7 +114,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
           {errors?.password && <p>{errors.password.msg}</p>}
         </li>
         <li className="form-controls">
-          {errors?.msg && <p>{errors.msg}</p>}
+          {errors?.message && <p>{errors.message}</p>}
           <button type="submit">Sign in</button>
         </li>
       </ul>

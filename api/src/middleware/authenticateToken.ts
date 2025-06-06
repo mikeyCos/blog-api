@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 
 import { verifyJWT } from "../utils/jwt.utils";
+import { BadRequestError } from "../errors/customErrors";
 
 const authenticateToken: RequestHandler = async (req, res, next) => {
   console.log("authenticateToken running...");
@@ -17,11 +18,12 @@ const authenticateToken: RequestHandler = async (req, res, next) => {
   const { accessToken } = req;
 
   if (!accessToken) {
-    return next({
+    /* return next({
       ...defaultFailedResponse,
       code: 401,
       msg: "Access token required",
-    });
+    }); */
+    throw new BadRequestError("Access token required.", 401);
   }
 
   const { payload } = await verifyJWT(accessToken);
@@ -31,7 +33,7 @@ const authenticateToken: RequestHandler = async (req, res, next) => {
     return next();
   }
 
-  return next(defaultFailedResponse);
+  throw new BadRequestError("Invalid or expired access token.", 403);
 };
 
 export default authenticateToken;

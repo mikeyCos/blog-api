@@ -4,7 +4,6 @@ import passport from "passport";
 import bcrypt from "bcryptjs";
 
 import { getUser } from "../services/user";
-import { User, UserId } from "../interfaces/user";
 
 const verifyCallback = async (
   username: string,

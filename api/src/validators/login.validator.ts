@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import { checkSchema, Schema, validationResult } from "express-validator";
 import { getUser } from "../services/user";
+import { BadRequestError } from "../errors/customErrors";
 
 const authSchema = {
   username: {
@@ -33,7 +34,8 @@ const validateLogin = (): RequestHandler => {
         // TODO
         // Send errors to client
         // May need to map errors; errors.mapped()
-        next({ status: "fail", code: 401, errors: errors.mapped() });
+        // next({ status: "fail", code: 401, errors: errors.mapped() });
+        throw new BadRequestError("Login failed", 401, errors.mapped());
       }
 
       next();
