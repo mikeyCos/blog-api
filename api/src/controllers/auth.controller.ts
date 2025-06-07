@@ -59,15 +59,11 @@ const authController: authController = {
     const { refreshToken } = req;
 
     if (!refreshToken) {
-      /* return next({
-        ...defaultFailedResponse,
-        code: 401,
-        msg: "Refresh token required",
-      }); */
       throw new BadRequestError("Refresh token required", 401);
     }
 
     const { payload } = await verifyJWT(refreshToken);
+    // Does reading the database upon creating a new access token defeats the purpose for access and refresh token?
     const user = payload && (await getUser(payload.user.id));
     const newAccessToken =
       user &&
@@ -101,17 +97,10 @@ const authController: authController = {
             // console.log("user:", user);
             // console.log("info:", info);
             if (err) {
-              console.log("login err:", err);
-              // return next(err);
               return reject(err);
             }
 
             if (!user) {
-              /* return next({
-                status: "fail",
-                code: 422,
-                errors: { msg: info.message },
-              }); */
               return reject(
                 new BadRequestError("Login failed", 422, info.message)
               );
@@ -160,68 +149,6 @@ const authController: authController = {
           }
         )(req, res, next);
       });
-      /* passport.authenticate(
-        "local",
-        { session: false },
-        (err: Error, user: User, info: any) => {
-          // User does not include blog, posts, or comments
-          // console.log("err:", err);
-          // console.log("user:", user);
-          // console.log("info:", info);
-          if (err) {
-            console.log("login err:", err);
-            return next(err);
-          }
-          if (!user) {
-            return next({
-              status: "fail",
-              code: 422,
-              errors: { msg: info.message },
-            });
-          }
-
-          return req.login(user, { session: false }, async (err) => {
-            // TODO
-            // Create a private accessToken
-            // Do not send private user properties
-            const { id, username, role } = user;
-            const accessTokenExpiresIn = 10; // 10 seconds
-            const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
-            const accessToken = await signJWT(
-              { user: { id, username, role } },
-              { expiresIn: accessTokenExpiresIn }
-            );
-            const refreshToken = await Promise.resolve(
-              signJWT(
-                { user: { id } },
-                {
-                  expiresIn: `${refreshTokenExpiresIn}`,
-                }
-              )
-            );
-
-            console.log("refreshToken:", refreshToken);
-            console.log("accessToken:", accessToken);
-
-            res.cookie("refreshToken", refreshToken, {
-              httpOnly: true,
-              secure: true,
-              sameSite: "strict",
-              // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 30 days
-              maxAge: refreshTokenExpiresIn, // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
-              // maxAge: 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-              // maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
-            });
-
-            return res.json({
-              status: "success",
-              code: 200,
-              accessToken,
-              user: { username, role },
-            });
-          });
-        }
-      )(req, res, next); */
     }),
   ],
   logout: asyncHandler(async (req, res) => {
@@ -250,6 +177,8 @@ const authController: authController = {
       req.login(user, { session: false }, async (err) => {
         const { id, username, role } = user;
         const expiresIn = 10; // seconds
+        const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
+        // const refreshTokenExpiresIn = 20 * 1000; // 20 seconds * 1000 milliseconds
         const accessToken = await signJWT(
           { user: { id, username, role } },
           { expiresIn }
@@ -258,7 +187,7 @@ const authController: authController = {
           signJWT(
             { user: { id } },
             {
-              expiresIn: "30d",
+              expiresIn: `${refreshTokenExpiresIn}`,
             }
           )
         );
@@ -269,7 +198,7 @@ const authController: authController = {
           sameSite: "strict",
           // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
           // maxAge: 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-          maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
+          maxAge: refreshTokenExpiresIn,
         });
 
         return res.json({

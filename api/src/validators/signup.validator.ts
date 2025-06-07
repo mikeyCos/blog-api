@@ -6,7 +6,6 @@ import {
   CustomValidator,
 } from "express-validator";
 
-import prisma from "../config/prisma";
 import { getUser } from "../services/user";
 import { BadRequestError } from "../errors/customErrors";
 
@@ -14,14 +13,19 @@ const usernameValidator: CustomValidator = async (username: string) => {
   // Test against regex
   // Make sure username is not taken
   const regex = new RegExp("^[a-zA-Z\\-\\_]{3,15}$");
-  const user = await getUser(null, username);
   const regexResult = regex.test(username);
 
   // If regexResult and user are falsy values
-  // Throw error or reject Promise
-  if (!regexResult) throw new Error();
-  if (user) throw new Error("Username taken.");
-  return Promise.resolve();
+  // Reject Promise
+  if (!regexResult) return Promise.reject();
+
+  // What instance would need to be thrown from getUser?
+  const user = await getUser(null, username).then(
+    (resolve) => resolve,
+    (reject) => false
+  );
+
+  if (user) return Promise.reject("Username taken.");
 };
 
 // TODO

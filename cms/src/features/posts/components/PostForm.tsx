@@ -53,22 +53,30 @@ const PostForm = () => {
 
       body.append("content", editorContent);
       console.log("accessToken:", accessToken);
-      /* const response = await axios.post("/post", body).catch((err) => {
-        console.log("err:", err);
-      }); */
 
       // If the access token expires
       //  Generate new access token
       //  Rerun original request
-      const response = await axiosPrivate.post("/post", body).catch((err) => {
+      try {
+        const response = await axiosPrivate.post("/post", body);
+        // Clear inputs
+
+        console.log("response:", response);
+      } catch (err: any) {
         console.log("err:", err);
         if (err.response.data.errors) {
           console.log("err.response.data.errors:", err.response.data.errors);
           setErrors(err.response.data.errors);
         }
-      });
+      }
+      /* const response = await axiosPrivate.post("/post", body).catch((err) => {
+        console.log("err:", err);
+        if (err.response.data.errors) {
+          console.log("err.response.data.errors:", err.response.data.errors);
+          setErrors(err.response.data.errors);
+        }
+      }); */
 
-      console.log("response:", response);
       console.log("editorContent:", editorContent);
     }
   };

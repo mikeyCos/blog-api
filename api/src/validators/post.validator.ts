@@ -1,10 +1,10 @@
 import { RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import { checkSchema, Schema, validationResult } from "express-validator";
-import { getUser } from "../services/user";
 
 import { JSDOM } from "jsdom";
 import DOMPurify from "dompurify";
+import { BadRequestError } from "../errors/customErrors";
 
 const contentSanitizer = (value: string) => {
   console.log("contentSanitizer running...");
@@ -45,11 +45,11 @@ const validatePost = (): RequestHandler => {
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        // TODO
-        // Send errors to client
-        // May need to map errors; errors.mapped()
-        console.log("errors.mapped():", errors.mapped());
-        next({ status: "fail", code: 422, errors: errors.mapped() });
+        throw new BadRequestError(
+          "Validation for post creation failed",
+          422,
+          errors.mapped()
+        );
       }
 
       next();

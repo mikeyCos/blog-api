@@ -36,7 +36,9 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
         console.log("authorize err caught");
         console.log(location);
         console.log(err);
-        // setAccessToken(null);
+        // What if an authenticated user is deleted and a /auth request is sent?
+        // Should the user be notified?
+        setAccessToken(null);
         navigate("/login", { state: { prevLocation: location.pathname } });
       }
     };

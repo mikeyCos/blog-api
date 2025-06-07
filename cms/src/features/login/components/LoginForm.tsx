@@ -69,7 +69,8 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
         },
         (rej) => {
           console.log("rej:", rej);
-          setErrors(rej.response.data.message);
+          const { data } = rej.response;
+          setErrors(data.errors || data);
         }
       );
   };

@@ -1,6 +1,11 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 06 JUN 2025
+- Created `useUserData` module.
+- Added `then()` method to `getUser()` in `usernameValidator` to return `false` if an error occurs from `getUser()`; may need to handle specific errors accordingly.
+- Reordered conditional statements in `usernameValidator` function.
+---
 ### 05 JUN 2025
 - Defined `APICustomError`, `UserNotFoundError`, and `BadRequestError` classes in `customError` module.
 - Replaced `next()` with `throw new BadRequestError()` throughout `api` subdirectory; instead of passing a custom object into `next()`, a custom `Error` object is thrown.

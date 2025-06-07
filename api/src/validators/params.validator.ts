@@ -10,12 +10,12 @@ const isIdValid = async (id: string) => {
     return Promise.reject(`User with the id, ${id}, does not exist`); */
   try {
     await getUser(id);
-  } catch (error) {
-    if (error instanceof UserNotFoundError) {
+  } catch (err) {
+    if (err instanceof UserNotFoundError) {
       console.log("UserNotFoundError");
       return Promise.reject(`User with the ID, ${id}, does not exist.`);
     }
-    throw error;
+    throw err;
   }
 };
 
