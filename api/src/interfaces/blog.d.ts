@@ -1,6 +1,6 @@
 export interface Blog {
   id: string;
-  authorId: string;
+  authorId?: string;
 }
 
 export interface CreatedAt {

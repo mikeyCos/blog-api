@@ -28,10 +28,12 @@ const useAxiosPrivate = () => {
         console.log("responseInterceptor err:", err);
         if (err.request.status === 403 || err.request.status === 401) {
           console.log("responseInterceptor accessToken:", accessToken);
-          const newAccessToken = await refresh();
-          console.log("newAccessToken:", newAccessToken);
-          err.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          setAccessToken(newAccessToken);
+          const refreshResponse = await refresh();
+          console.log("refreshResponse:", refreshResponse);
+          err.config.headers[
+            "Authorization"
+          ] = `Bearer ${refreshResponse.accessToken}`;
+          setAccessToken(refreshResponse.accessToken);
           return axiosPrivate(err.config);
         }
         return Promise.reject(err);

@@ -8,10 +8,15 @@ import React, {
 // import axios from "axios";
 
 import axiosDefault from "../../../config/axios.config";
-import { LoginFormError } from "../../../types/errors";
+import { LoginFormError } from "../../../interfaces/errors";
 // import config from "../../../config/env.config";
 import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router";
+import {
+  AuthSuccessResponse,
+  LoginErrorResponse,
+} from "../../../interfaces/responses";
+import { AxiosError, isAxiosError } from "axios";
 
 const LoginForm: React.FC<{ prevLocation: string | null }> = ({
   prevLocation,
@@ -55,31 +60,31 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
       body.append(input, formData[input as keyof typeof formData].value);
     }
 
-    await axiosDefault
-      .post("/auth/login", body, { withCredentials: true })
-      .then(
-        (res) => {
-          console.log("res:", res);
-          // res.response.data.data["access-token"]
-          login(res.data["accessToken"]);
-          setFormData(initialFormData);
-          setErrors(null);
-          console.log("from:", from);
-          navigate(from, { replace: true });
-        },
-        (rej) => {
-          console.log("rej:", rej);
-          const { data } = rej.response;
-          setErrors(data.errors || data);
-        }
+    try {
+      const response = await axiosDefault.post<AuthSuccessResponse>(
+        "/auth/login",
+        body,
+        { withCredentials: true }
       );
+      login(response.data.accessToken);
+      setFormData(initialFormData);
+      setErrors(null);
+      navigate(from, { replace: true });
+    } catch (err) {
+      if (isAxiosError<LoginErrorResponse>(err) && err.response) {
+        const { data } = err.response;
+        setErrors(data.errors || data);
+      } else {
+        console.error(err);
+      }
+    }
   };
 
   // console.log("prevLocationRef in LoginForm component:", prevLocationRef);
   useEffect(() => {
     userRef.current?.focus();
     console.log("LoginForm mounted");
-    console.log("prevLocation:", prevLocation);
+    // console.log("prevLocation:", prevLocation);
     // console.log("errors:", errors);
   }, []);
 

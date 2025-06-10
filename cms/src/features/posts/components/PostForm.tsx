@@ -13,7 +13,7 @@ import PostEditor from "./PostEditor";
 import { useAuth } from "../../../hooks/useAuth";
 
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import { PostFormError } from "../../../types/errors";
+import { PostFormError } from "../../../interfaces/errors";
 
 const charCount = (editor: TinyMCEEditor) => {
   return editor.plugins.wordcount.body.getCharacterCount();
@@ -25,7 +25,7 @@ const PostForm = () => {
       value: "",
     },
     content: {
-      value: "<p>This is the initial content of the editor.</p>",
+      value: "",
     },
   };
   const [formData, setFormData] = useState(initialFormData);
@@ -52,16 +52,15 @@ const PostForm = () => {
       }
 
       body.append("content", editorContent);
-      console.log("accessToken:", accessToken);
 
       // If the access token expires
       //  Generate new access token
       //  Rerun original request
       try {
-        const response = await axiosPrivate.post("/post", body);
+        // const response = await axiosPrivate.post("/post", body);
         // Clear inputs
-
-        console.log("response:", response);
+        setFormData(initialFormData);
+        // console.log("response:", response);
       } catch (err: any) {
         console.log("err:", err);
         if (err.response.data.errors) {

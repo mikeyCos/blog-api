@@ -1,10 +1,15 @@
 import React, { FormEventHandler, useState } from "react";
 
-import { SignUpFormError } from "../../../types/errors";
+import { SignUpFormError } from "../../../interfaces/errors";
 import config from "../../../config/env.config";
 import axios from "../../../config/axios.config";
 import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router";
+import {
+  AuthSuccessResponse,
+  SignupErrorResponse,
+} from "../../../interfaces/responses";
+import { isAxiosError } from "axios";
 
 const SignUpForm: React.FC = () => {
   // TODO
@@ -26,20 +31,24 @@ const SignUpForm: React.FC = () => {
       body.append(key, value as string);
     }
 
-    await axios
-      .post("/auth/signup", body)
-      .then(async (res) => {
-        console.log("res:", res);
-
-        login(res.data.accessToken);
-        navigate("/dashboard", { replace: true });
-      })
-      .catch((err) => {
-        console.log("err:", err);
-        const { code, response } = err;
-        if (code === "ERR_NETWORK") return setErrors({ msg: err.msg });
-        setErrors(response.data.errors);
-      });
+    try {
+      const response = await axios.post<AuthSuccessResponse>(
+        "/auth/signup",
+        body
+      );
+      login(response.data.accessToken);
+      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      if (isAxiosError<SignupErrorResponse>(err)) {
+        if (err.response) {
+          const { data } = err.response;
+          return setErrors(data.errors);
+        }
+        setErrors({ msg: err.message });
+      } else {
+        console.error(err);
+      }
+    }
   };
 
   return (

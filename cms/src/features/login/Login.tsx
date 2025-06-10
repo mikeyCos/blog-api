@@ -33,10 +33,16 @@ const SignIn = () => {
   return (
     <section>
       <h2>Sign in</h2>
+
       <LoginForm prevLocation={prevLocation} />
+
       <p>
         <span>New here? </span>
         <NavAnchor pathname="/signup" textContent="Sign up" />
+      </p>
+
+      <p>
+        <NavAnchor pathname="/" textContent="Home" />
       </p>
     </section>
   );

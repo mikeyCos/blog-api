@@ -1,5 +1,15 @@
-const userUserData = () => {
-  const userData = () => {};
+import { useState } from "react";
 
-  return userData;
+const useUserData = () => {
+  const [userData, setUserData] = useState();
+  const posts = null;
+
+  const addPost = (post: any) => {};
+
+  return {
+    posts,
+    addPost,
+  };
 };
+
+export default useUserData;

@@ -14,6 +14,16 @@ export const createUser = async ({ username, email, password }: CreateUser) => {
         create: {},
       },
     },
+    include: {
+      blog: {
+        include: {
+          posts: true,
+        },
+        omit: {
+          authorId: true,
+        },
+      },
+    },
   });
 
   return user;
@@ -41,7 +51,14 @@ export const getUser: GetUser = async (userId, username) => {
   const user = await prisma.user.findUnique({
     where: filter,
     include: {
-      blog: true,
+      blog: {
+        include: {
+          posts: true,
+        },
+        omit: {
+          authorId: true,
+        },
+      },
       posts: true,
       comments: true,
     },

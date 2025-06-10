@@ -32,7 +32,6 @@ const authController: authController = {
     // If current accessToken is valid
     // Return the accessToken and it's payload
     if (accessToken && userPayload) {
-      console.log("accessToken && userPayload:", true);
       res.json({
         status: "success",
         code: 200,
@@ -48,14 +47,6 @@ const authController: authController = {
     // TODO
     // Refactor this endpoint
     console.log("req.refreshToken:", req.refreshToken);
-    const defaultFailedResponse = {
-      status: "fail",
-      code: 403,
-      accessToken: null,
-      user: null,
-      msg: `Invalid or expired refresh token`,
-    };
-
     const { refreshToken } = req;
 
     if (!refreshToken) {
@@ -79,7 +70,7 @@ const authController: authController = {
         status: "success",
         code: 200,
         accessToken: newAccessToken,
-        user: { username: user.username, role: user.role },
+        user: { username: user.username, role: user.role, blog: user.blog },
       });
     }
   }),
@@ -110,7 +101,7 @@ const authController: authController = {
               // TODO
               // Create a private accessToken
               // Do not send private user properties
-              const { id, username, role } = user;
+              const { id, username, role, blog } = user;
               const accessTokenExpiresIn = 10; // 10 seconds
               const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
               const accessToken = await signJWT(
@@ -143,7 +134,7 @@ const authController: authController = {
                 status: "success",
                 code: 200,
                 accessToken,
-                user: { username, role },
+                user: { username, role, blog },
               });
             });
           }
@@ -175,7 +166,7 @@ const authController: authController = {
       // Should I redirect to '/auth/signup'?
       // Log in user when they sign up
       req.login(user, { session: false }, async (err) => {
-        const { id, username, role } = user;
+        const { id, username, role, blog } = user;
         const expiresIn = 10; // seconds
         const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
         // const refreshTokenExpiresIn = 20 * 1000; // 20 seconds * 1000 milliseconds
@@ -205,7 +196,7 @@ const authController: authController = {
           status: "success",
           code: 200,
           accessToken,
-          user: { username, role },
+          user: { username, role, blog },
         });
       });
     }),

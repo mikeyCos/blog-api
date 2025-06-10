@@ -30,7 +30,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
           editorRef.current = editor;
         }
       }}
-      initialValue="<p>This is the initial content of the editor.</p>"
+      initialValue=""
       init={{
         height: 500,
         menubar: false,
@@ -61,6 +61,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
           "removeformat | help",
         content_style:
           "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+        placeholder: "This is a placholder",
       }}
       onEditorChange={onChangeHandler}
       onBeforeAddUndo={onBeforeAddUndoHandler}

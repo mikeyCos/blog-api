@@ -63,9 +63,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const initAuth = async () => {
       try {
-        const newAccessToken = await refresh();
+        const refreshResponse = await refresh();
         setIsAuthenticated(true);
-        setAccessToken(newAccessToken);
+        setAccessToken(refreshResponse.accessToken);
       } catch (err) {
         console.log("useAuth error:", err);
         setAccessToken(null);

@@ -1,6 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 09 JUN 2025
+- Wrapped Axios request in `SignUpForm` component's `submitHandler` with a `try...catch` block; removed `Promise` `onFulfilled` handler and `catch` method.
+- Wrapped Axios request in `LoginForm` component's `submitHandler` with a `try...catch` block; removed `Promise` `onFulfilled` and `onRejected` handlers.
+- Defined `LoginErrorResponse` and `AuthSuccessResponse` in `response` interface module.
+- Created `responses` interface module.
+- Renamed `types` subdirectory to `interfaces`.
+---
 ### 06 JUN 2025
 - Created `useUserData` module.
 - Added `then()` method to `getUser()` in `usernameValidator` to return `false` if an error occurs from `getUser()`; may need to handle specific errors accordingly.
