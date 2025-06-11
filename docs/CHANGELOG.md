@@ -2,6 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 10 JUN 2025
+- Merged `api-errors-custom` branch to `feature-post`.
 - Removed `.d` suffix from `blog` and `user` interface module names.
 - Defined `/auth/user` API endpoint; returns authenticated user data only if `isAuthenticated` is truthy.
 - Added `UserProvider` component to the `RootLayout` in `routes` module.
