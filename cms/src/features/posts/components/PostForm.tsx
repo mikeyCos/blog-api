@@ -31,7 +31,6 @@ const PostForm = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState<PostFormError>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
-  const { accessToken } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   // How to create new access token if current is expired on form submission?
   const submitPost: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -60,6 +59,7 @@ const PostForm = () => {
         // const response = await axiosPrivate.post("/post", body);
         // Clear inputs
         setFormData(initialFormData);
+
         // console.log("response:", response);
       } catch (err: any) {
         console.log("err:", err);
@@ -68,14 +68,6 @@ const PostForm = () => {
           setErrors(err.response.data.errors);
         }
       }
-      /* const response = await axiosPrivate.post("/post", body).catch((err) => {
-        console.log("err:", err);
-        if (err.response.data.errors) {
-          console.log("err.response.data.errors:", err.response.data.errors);
-          setErrors(err.response.data.errors);
-        }
-      }); */
-
       console.log("editorContent:", editorContent);
     }
   };

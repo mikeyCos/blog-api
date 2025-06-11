@@ -48,10 +48,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout: Logout = async () => {
     console.log("logout from AuthProvider running...");
     return axios.post("/auth/logout").then((_resolve) => {
-      return new Promise(async (res) => {
+      return new Promise(async (resolve) => {
         setAccessToken(null);
         setIsAuthenticated(false);
-        setTimeout(() => res(null), 0);
+        setTimeout(() => resolve(null), 0);
       });
     });
   };
@@ -64,10 +64,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const initAuth = async () => {
       try {
         const refreshResponse = await refresh();
-        setIsAuthenticated(true);
-        setAccessToken(refreshResponse.accessToken);
+        login(refreshResponse.accessToken);
       } catch (err) {
-        console.log("useAuth error:", err);
+        console.error(err);
         setAccessToken(null);
         setIsAuthenticated(false);
       }

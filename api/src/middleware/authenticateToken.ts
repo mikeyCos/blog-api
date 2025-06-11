@@ -5,24 +5,10 @@ import { BadRequestError } from "../errors/customErrors";
 
 const authenticateToken: RequestHandler = async (req, res, next) => {
   console.log("authenticateToken running...");
-
   console.log("req.accessToken:", req.accessToken);
-  const defaultFailedResponse = {
-    status: "fail",
-    code: 403,
-    accessToken: null,
-    user: null,
-    msg: `Invalid or expired access token`,
-  };
-
   const { accessToken } = req;
 
   if (!accessToken) {
-    /* return next({
-      ...defaultFailedResponse,
-      code: 401,
-      msg: "Access token required",
-    }); */
     throw new BadRequestError("Access token required.", 401);
   }
 

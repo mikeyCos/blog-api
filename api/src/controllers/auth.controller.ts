@@ -14,6 +14,7 @@ import { BadRequestError } from "../errors/customErrors";
 
 interface authController {
   authorize: RequestHandler;
+  authenticatedUser: RequestHandler;
   refreshToken: RequestHandler;
   login: RequestHandler[];
   logout: RequestHandler;
@@ -35,13 +36,22 @@ const authController: authController = {
       res.json({
         status: "success",
         code: 200,
-        accessToken,
+      });
+      return;
+    }
+  }),
+  authenticatedUser: asyncHandler(async (req, res) => {
+    const { accessToken, user: userPayload } = req;
+    if (accessToken && userPayload) {
+      res.json({
+        status: "success",
+        code: 200,
         user: { username: userPayload.username, role: userPayload.role },
       });
       return;
     }
   }),
-  refreshToken: asyncHandler(async (req, res, next) => {
+  refreshToken: asyncHandler(async (req, res) => {
     // Create new accessToken unless the current accessToken is still valid
     console.log("refreshAccessToken middleware running...");
     // TODO
@@ -70,13 +80,12 @@ const authController: authController = {
         status: "success",
         code: 200,
         accessToken: newAccessToken,
-        user: { username: user.username, role: user.role, blog: user.blog },
       });
     }
   }),
   login: [
     validateLogin(),
-    asyncHandler(async (req, res, next) => {
+    asyncHandler(async (req, res) => {
       console.log("login running...");
       await new Promise((resolve, reject) => {
         passport.authenticate(
@@ -101,7 +110,7 @@ const authController: authController = {
               // TODO
               // Create a private accessToken
               // Do not send private user properties
-              const { id, username, role, blog } = user;
+              const { id, username, role } = user;
               const accessTokenExpiresIn = 10; // 10 seconds
               const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
               const accessToken = await signJWT(
@@ -134,11 +143,10 @@ const authController: authController = {
                 status: "success",
                 code: 200,
                 accessToken,
-                user: { username, role, blog },
               });
             });
           }
-        )(req, res, next);
+        )(req, res);
       });
     }),
   ],
@@ -166,7 +174,7 @@ const authController: authController = {
       // Should I redirect to '/auth/signup'?
       // Log in user when they sign up
       req.login(user, { session: false }, async (err) => {
-        const { id, username, role, blog } = user;
+        const { id, username, role } = user;
         const expiresIn = 10; // seconds
         const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
         // const refreshTokenExpiresIn = 20 * 1000; // 20 seconds * 1000 milliseconds
@@ -196,7 +204,6 @@ const authController: authController = {
           status: "success",
           code: 200,
           accessToken,
-          user: { username, role, blog },
         });
       });
     }),

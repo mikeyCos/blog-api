@@ -5,11 +5,13 @@ import { initSchema } from "../validators/query.validator";
 import { validateQuery } from "../validators/validators";
 
 const authRoutes = () => {
-  const { authorize, refreshToken, login, logout, signup } = authController;
+  const { authorize, authenticatedUser, refreshToken, login, logout, signup } =
+    authController;
   const authRouter = Router();
 
   // GET requests
   authRouter.get("/", authenticateToken, authorize);
+  authRouter.get("/user", authenticateToken, authenticatedUser);
 
   // POST requests
   // curl -w "\n" -X POST http://localhost:3001/auth

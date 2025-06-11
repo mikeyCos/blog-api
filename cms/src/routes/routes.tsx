@@ -10,6 +10,7 @@ import Login from "../features/login/Login";
 import SignUp from "../features/signup/SignUp";
 
 import AuthProvider from "../hooks/useAuth";
+import UserProvider from "../hooks/useUser";
 import ProtectedLayout from "../layouts/ProtectedLayout";
 import PrevLocationProvider from "../hooks/usePrevLocation";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -28,9 +29,11 @@ const RootLayout: React.FC = () => {
   return (
     <>
       <AuthProvider>
-        <PrevLocationProvider>
-          <Outlet />
-        </PrevLocationProvider>
+        <UserProvider>
+          <PrevLocationProvider>
+            <Outlet />
+          </PrevLocationProvider>
+        </UserProvider>
       </AuthProvider>
     </>
   );

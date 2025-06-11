@@ -24,10 +24,3 @@ interface ValidationError<InputType = string> {
   type: string;
   value: InputType;
 }
-
-export interface LoginErrorResponse {
-  code: number;
-  errors: Record<string, any>;
-  message: string;
-  status: "fail";
-}

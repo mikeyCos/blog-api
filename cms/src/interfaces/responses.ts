@@ -1,49 +1,26 @@
-export interface AuthSuccessResponse {
-  accessToken: string;
+import { User } from "./user";
+
+export interface AuthSuccessResponse<T = void> {
   code: 200;
   status: "success";
-  user: User;
+  accessToken: string;
+  user: T;
 }
 
 export interface LoginErrorResponse {
   code: number;
+  status: "fail";
   errors: Record<string, any>;
   message: string;
-  status: "fail";
 }
 
 export interface SignupErrorResponse {
   code: number;
+  status: "fail";
   errors: Record<string, any>;
   message: string;
-  status: "fail";
 }
 
-interface User {
-  id?: string;
-  role?: Role;
-  username?: string;
-  timestamp?: Date;
-  blog?: Blog | null;
-  // posts?: Post[];
-  // comments?: Comment[] | null;
+export interface NetworkErrorResponse {
+  code: string;
 }
-
-interface Blog {
-  id: string;
-  authorId?: string;
-  posts: Post[];
-}
-
-interface Post {
-  id: string;
-  authorId: string;
-  blogId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  title: string;
-  content: string;
-  // comments: Comment[];
-}
-
-type Role = "USER" | "AUTHOR" | "ADMIN";

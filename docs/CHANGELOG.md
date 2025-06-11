@@ -1,6 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 10 JUN 2025
+- Removed `.d` suffix from `blog` and `user` interface module names.
+- Defined `/auth/user` API endpoint; returns authenticated user data only if `isAuthenticated` is truthy.
+- Added `UserProvider` component to the `RootLayout` in `routes` module.
+- Renamed `useUserData` module to `useUser`.
+- Replaced React state setters in `initAuth` function's `try...catch` block by calling the `login` function.
+---
 ### 09 JUN 2025
 - Wrapped Axios request in `SignUpForm` component's `submitHandler` with a `try...catch` block; removed `Promise` `onFulfilled` handler and `catch` method.
 - Wrapped Axios request in `LoginForm` component's `submitHandler` with a `try...catch` block; removed `Promise` `onFulfilled` and `onRejected` handlers.
