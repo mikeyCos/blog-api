@@ -1,6 +1,15 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 11 JUN 2025
+- When a user successfully creates a new post, the new post is added to the database and the user's state is updated.
+- Defined `addPost` function for `UserProvider` in `useUser` module and made it available to the provider's context.
+- Defined a `SuccessResponse` interface to extend as a base interface.
+- The `PostList` component now requires a `data` prop of type `Post[]`.
+- The `PostCard` component now requires a `data` prop of type `Post`.
+- Renamed `Post` component to `PostCard`.
+- Fixed `axiosPrivate` instance in `useUser` by import `useAxiosPrivate`.
+---
 ### 10 JUN 2025
 - Merged `api-errors-custom` branch to `feature-post`.
 - Removed `.d` suffix from `blog` and `user` interface module names.

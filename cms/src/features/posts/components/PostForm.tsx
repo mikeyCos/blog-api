@@ -14,6 +14,8 @@ import { useAuth } from "../../../hooks/useAuth";
 
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { PostFormError } from "../../../interfaces/errors";
+import { useUser } from "../../../hooks/useUser";
+import { PostSuccessResponse } from "../../../interfaces/responses";
 
 const charCount = (editor: TinyMCEEditor) => {
   return editor.plugins.wordcount.body.getCharacterCount();
@@ -31,6 +33,7 @@ const PostForm = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState<PostFormError>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
+  const { addPost } = useUser();
   const axiosPrivate = useAxiosPrivate();
   // How to create new access token if current is expired on form submission?
   const submitPost: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -56,10 +59,13 @@ const PostForm = () => {
       //  Generate new access token
       //  Rerun original request
       try {
-        // const response = await axiosPrivate.post("/post", body);
+        const response = await axiosPrivate.post<PostSuccessResponse>(
+          "/post",
+          body
+        );
         // Clear inputs
         setFormData(initialFormData);
-
+        addPost(response.data.post);
         // console.log("response:", response);
       } catch (err: any) {
         console.log("err:", err);

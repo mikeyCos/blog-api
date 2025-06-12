@@ -41,12 +41,13 @@ const authController: authController = {
     }
   }),
   authenticatedUser: asyncHandler(async (req, res) => {
-    const { accessToken, user: userPayload } = req;
-    if (accessToken && userPayload) {
+    const { user: userPayload } = req;
+    const user = await getUser(userPayload.id);
+    if (user) {
       res.json({
         status: "success",
         code: 200,
-        user: { username: userPayload.username, role: userPayload.role },
+        user: { username: user.username, role: user.role, blog: user.blog },
       });
       return;
     }

@@ -5,9 +5,6 @@ import { AuthSuccessResponse } from "../interfaces/responses";
 const useRefreshToken = () => {
   const refresh = async () => {
     console.log("refresh running...");
-    /* const response: AxiosResponse<RefreshResponse> = await axiosDefault.post(
-      "/auth/refresh"
-    ); */
     const response = await axiosDefault.post<AuthSuccessResponse>(
       "/auth/refresh"
     );

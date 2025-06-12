@@ -48,7 +48,6 @@ const postController: PostController = {
     res.json({
       status: "success",
       code: 200,
-      msg: "post created",
       post: newPost,
     });
   }),
