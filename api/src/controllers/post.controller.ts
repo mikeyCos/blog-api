@@ -38,6 +38,8 @@ const postController: PostController = {
 
     console.log("user:", user);
 
+    // TODO
+    // Slugify title
     const newPost = await createPost({
       blogId: user!.blog!.id,
       authorId: userId,

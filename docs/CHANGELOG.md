@@ -1,6 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 13 JUN 2025
+- The `getPost` blog service function will throw a `PostNotFoundError` when a post does not exist in the database.
+- Created `PostNotFoundError` interface in `customErrors` module.
+- Created `postLoader` module in `post` subdirectory.
+- Removed `state` prop from `NavAnchor` component in `PostCard` component.
+---
 ### 12 JUN 2025
 - Raw HTML string from `post.content` is appended to it's parent element with `dangerouslySetInnerHTML`.
 - The post's data is passed into the `NavLink` component's state and is accessible in the `Post` page component by `useLocation` hook.

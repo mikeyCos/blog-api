@@ -1,4 +1,5 @@
 import prisma from "../config/prisma";
+import { PostNotFoundError } from "../errors/customErrors";
 
 interface PostContent {
   blogId: string;
@@ -69,6 +70,10 @@ export const getPost = async (postId: string) => {
       id: postId,
     },
   });
+
+  if (!post) {
+    throw new PostNotFoundError(postId);
+  }
 
   return post;
 };

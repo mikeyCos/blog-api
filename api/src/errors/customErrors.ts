@@ -23,6 +23,12 @@ export class UserNotFoundError extends APICustomError {
   }
 }
 
+export class PostNotFoundError extends APICustomError {
+  constructor(identifier: string) {
+    super(`Post with the ID, ${identifier} not found.`, 404);
+  }
+}
+
 export class BadRequestError extends APICustomError {
   details?: any;
 
