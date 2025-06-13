@@ -6,7 +6,7 @@ interface Props {
 }
 
 const PostCard: React.FC<Props> = ({ data }) => {
-  const { title, createdAt } = data;
+  const { id, title, createdAt } = data;
   const url = encodeURI(title);
   // TODO
   // Add
@@ -14,11 +14,7 @@ const PostCard: React.FC<Props> = ({ data }) => {
   //  Anchor heading
   return (
     <li>
-      <NavAnchor
-        pathname={`/post/${title}`}
-        textContent={title}
-        state={{ post: data }}
-      />
+      <NavAnchor pathname={`/post/${id}`} textContent={title} />
       <p>Posted on {createdAt.toString()}</p>
     </li>
   );

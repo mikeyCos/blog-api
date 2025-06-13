@@ -15,7 +15,10 @@ const isRouterError = (object: any): object is RouterError => {
  * May refactor later
  */
 const parseRouteError = (error: unknown): ParsedRouteError => {
+  console.log("parseRouteError running...");
+  console.log("error:", error);
   if (isRouteErrorResponse(error)) {
+    console.log("isRouteErrorResponse(error) is true");
     return { message: error.statusText, status: error.status };
   } else if (error != undefined && isRouterError(error)) {
     return { message: error.message, status: 400 };
@@ -27,6 +30,7 @@ const parseRouteError = (error: unknown): ParsedRouteError => {
 };
 
 const Error = () => {
+  console.log("Error component rendering...");
   const error = parseRouteError(useRouteError());
   return (
     <section>

@@ -1,4 +1,9 @@
-import { useLocation, useParams } from "react-router";
+import {
+  ErrorResponse,
+  useLoaderData,
+  useLocation,
+  useParams,
+} from "react-router";
 import { Post as PostProp } from "../../interfaces/blog";
 
 /* type PostParams = {
@@ -15,12 +20,10 @@ interface LocationState {
 }
 
 const Post = () => {
+  const data = useLoaderData();
+  console.log("data:", data);
   // const { postTitle } = useParams<PostParams>();
   // console.log("postTitle:", postTitle);
-  const location = useLocation();
-  const state = location.state as LocationState;
-  const { post } = state;
-  console.log("state:", state);
 
   // What if state is falsy?
   //  Should navigate to 404 page
@@ -29,9 +32,9 @@ const Post = () => {
     <section>
       <article>
         <header>
-          <h2>{post.title}</h2>
+          <h2>{data.title}</h2>
         </header>
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div dangerouslySetInnerHTML={{ __html: data.content }} />
       </article>
     </section>
   );

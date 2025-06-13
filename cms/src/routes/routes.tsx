@@ -17,6 +17,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Posts from "../features/posts/Posts";
 import Comments from "../features/comments/Comments";
 import Post from "../pages/post/Post";
+import postLoader from "../pages/post/postLoader";
 
 // If no user is logged in
 //  Go to home page
@@ -55,6 +56,7 @@ const routes: RouteObject[] = [
         children: [
           {
             element: <ProtectedLayout />,
+
             children: [
               {
                 element: <DashboardLayout />,
@@ -76,6 +78,7 @@ const routes: RouteObject[] = [
               {
                 path: "/post/:postTitle",
                 element: <Post />,
+                loader: postLoader,
               },
             ],
           },
