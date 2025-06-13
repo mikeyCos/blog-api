@@ -16,6 +16,7 @@ import PrevLocationProvider from "../hooks/usePrevLocation";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Posts from "../features/posts/Posts";
 import Comments from "../features/comments/Comments";
+import Post from "../pages/post/Post";
 
 // If no user is logged in
 //  Go to home page
@@ -71,6 +72,10 @@ const routes: RouteObject[] = [
                     element: <Comments />,
                   },
                 ],
+              },
+              {
+                path: "/post/:postTitle",
+                element: <Post />,
               },
             ],
           },

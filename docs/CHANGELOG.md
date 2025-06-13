@@ -1,6 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 12 JUN 2025
+- Raw HTML string from `post.content` is appended to it's parent element with `dangerouslySetInnerHTML`.
+- The post's data is passed into the `NavLink` component's state and is accessible in the `Post` page component by `useLocation` hook.
+- Defined `state` optional prop for `NavAnchor` component.
+- Defined `/post/:postTitle` route under `ProtectedLayout`.
+- Created `post` subdirectory in `pages` subdirectory.
+---
 ### 11 JUN 2025
 - When a user successfully creates a new post, the new post is added to the database and the user's state is updated.
 - Defined `addPost` function for `UserProvider` in `useUser` module and made it available to the provider's context.

@@ -1,3 +1,4 @@
+import NavAnchor from "../../../components/navAnchor/NavAnchor";
 import { Post } from "../../../interfaces/blog";
 
 interface Props {
@@ -6,11 +7,19 @@ interface Props {
 
 const PostCard: React.FC<Props> = ({ data }) => {
   const { title, createdAt } = data;
-
+  const url = encodeURI(title);
+  // TODO
+  // Add
+  //  Delete button
+  //  Anchor heading
   return (
     <li>
-      <h6>{title}</h6>
-      <p>{createdAt.toString()}</p>
+      <NavAnchor
+        pathname={`/post/${title}`}
+        textContent={title}
+        state={{ post: data }}
+      />
+      <p>Posted on {createdAt.toString()}</p>
     </li>
   );
 };
