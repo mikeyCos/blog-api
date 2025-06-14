@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 14 JUN 2025
+- Merged `rewrite-routes-providers` branch to `feature-post`.
+---
 ### 13 JUN 2025
 - Moved `AuthProvider` and `UserProvider` components from `routes` module into `App` component.
 - Created `rewrite-routes-providers` branch from `feature-post`.
