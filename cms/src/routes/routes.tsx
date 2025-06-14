@@ -29,15 +29,9 @@ import postLoader from "../pages/post/postLoader";
 // useLocation hook can be used on all routes
 const RootLayout: React.FC = () => {
   return (
-    <>
-      <AuthProvider>
-        <UserProvider>
-          <PrevLocationProvider>
-            <Outlet />
-          </PrevLocationProvider>
-        </UserProvider>
-      </AuthProvider>
-    </>
+    <PrevLocationProvider>
+      <Outlet />
+    </PrevLocationProvider>
   );
 };
 

@@ -30,7 +30,6 @@ const PostEditor: React.FC<PostEditorProps> = ({
           editorRef.current = editor;
         }
       }}
-      initialValue=""
       init={{
         height: 500,
         menubar: false,

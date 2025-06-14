@@ -96,38 +96,3 @@ const Header: React.FC = () => {
 };
 
 export default Header;
-
-/* 
-<ul className={styles["nav-right"]}>
-          <li>
-            <NavAnchor pathname="/home" textContent="home" />
-          </li>
-
-          <li>
-            <NavAnchor pathname="/faq" textContent="faq" />
-          </li>
-
-          {isAuthorized ? (
-            <>
-              <li>
-                <NavAnchor pathname="/dashboard" textContent="dashboard" />
-              </li>
-
-              <li>
-                <button type="button" onClick={logoutHandler}>
-                  Log out
-                </button>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <NavAnchor pathname="/login" textContent="login" />
-              </li>
-
-              <li>
-                <NavAnchor pathname="/signup" textContent="sign up" />
-              </li>
-            </>
-          )}
-*/

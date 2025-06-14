@@ -16,7 +16,7 @@ import {
   AuthSuccessResponse,
   LoginErrorResponse,
 } from "../../../interfaces/responses";
-import { AxiosError, isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 
 const LoginForm: React.FC<{ prevLocation: string | null }> = ({
   prevLocation,

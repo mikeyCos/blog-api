@@ -43,6 +43,7 @@ const authController: authController = {
   authenticatedUser: asyncHandler(async (req, res) => {
     const { user: userPayload } = req;
     const user = await getUser(userPayload.id);
+    // What if user does not have a blog?
     if (user) {
       res.json({
         status: "success",

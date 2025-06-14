@@ -2,6 +2,8 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 13 JUN 2025
+- Moved `AuthProvider` and `UserProvider` components from `routes` module into `App` component.
+- Created `rewrite-routes-providers` branch from `feature-post`.
 - The `getPost` blog service function will throw a `PostNotFoundError` when a post does not exist in the database.
 - Created `PostNotFoundError` interface in `customErrors` module.
 - Created `postLoader` module in `post` subdirectory.

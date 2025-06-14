@@ -36,7 +36,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   console.log("AuthProvider running...");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  // const navigate = useNavigate();
 
   const login: Login = (newToken) => {
     console.log("login from AuthProvider running...");

@@ -1,5 +1,8 @@
 import React from "react";
 import { DataRouter, RouterProvider } from "react-router";
+import AuthProvider from "../hooks/useAuth";
+import UserProvider from "../hooks/useUser";
+import PrevLocationProvider from "../hooks/usePrevLocation";
 
 interface Props {
   router: DataRouter;
@@ -8,7 +11,11 @@ interface Props {
 const App: React.FC<Props> = ({ router }) => {
   return (
     <div id="app">
-      <RouterProvider router={router} />
+      <AuthProvider>
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
+      </AuthProvider>
     </div>
   );
 };
