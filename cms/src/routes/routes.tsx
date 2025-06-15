@@ -66,12 +66,12 @@ const routes: RouteObject[] = [
                     path: "/comments",
                     element: <Comments />,
                   },
+                  {
+                    path: "/post/:postTitle",
+                    element: <Post />,
+                    loader: postLoader,
+                  },
                 ],
-              },
-              {
-                path: "/post/:postTitle",
-                element: <Post />,
-                loader: postLoader,
               },
             ],
           },

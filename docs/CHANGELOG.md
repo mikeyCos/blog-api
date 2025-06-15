@@ -2,6 +2,8 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 14 JUN 2025
+- Moved path `/post/:postTitle` from `<ProtectedLayout />` children's array to `<DashboardLayout />` children's array.
+- Added `codesample` TinyMCE plugin to `Editor` component in `PostEditor` component; enabled only HTML/XML, JavaScript and CSS `codesample_languages`.
 - Merged `rewrite-routes-providers` branch to `feature-post`.
 ---
 ### 13 JUN 2025

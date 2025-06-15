@@ -52,9 +52,15 @@ const PostEditor: React.FC<PostEditorProps> = ({
           "code",
           "help",
           "wordcount",
+          "codesample",
+        ],
+        codesample_languages: [
+          { text: "HTML/XML", value: "markup" },
+          { text: "JavaScript", value: "javascript" },
+          { text: "CSS", value: "css" },
         ],
         toolbar:
-          "undo redo | blocks | " +
+          "undo redo | blocks | codesample |" +
           "bold italic forecolor | alignleft aligncenter " +
           "alignright alignjustify | bullist numlist outdent indent | " +
           "removeformat | help",
@@ -68,5 +74,15 @@ const PostEditor: React.FC<PostEditorProps> = ({
     />
   );
 };
+
+/* More codesample_languages' values:
+ * { text: "PHP", value: "php" },
+ * { text: "Ruby", value: "ruby" },
+ * { text: "Python", value: "python" },
+ * { text: "Java", value: "java" },
+ * { text: "C", value: "c" },
+ * { text: "C#", value: "csharp" },
+ * { text: "C++", value: "cpp" },
+ */
 
 export default PostEditor;
