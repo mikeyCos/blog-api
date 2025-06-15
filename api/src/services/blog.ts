@@ -5,6 +5,7 @@ interface PostContent {
   blogId: string;
   authorId: string;
   title: string;
+  titleSlug: string;
   content: string;
 }
 
@@ -18,6 +19,7 @@ export const createPost = async ({
   blogId,
   authorId,
   title,
+  titleSlug,
   content,
 }: PostContent) => {
   const post = prisma.post.create({
@@ -33,6 +35,7 @@ export const createPost = async ({
         },
       },
       title: title,
+      titleSlug: titleSlug,
       content: content,
     },
   });

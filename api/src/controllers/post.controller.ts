@@ -40,10 +40,13 @@ const postController: PostController = {
 
     // TODO
     // Slugify title
+    const titleSlug = title;
+
     const newPost = await createPost({
       blogId: user!.blog!.id,
       authorId: userId,
       title,
+      titleSlug,
       content,
     });
 
