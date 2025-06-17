@@ -1,11 +1,15 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 17 JUN 2025
+- Defined unique constraints for the `Post` model.
+- Defined `LoaderArgs` in `postLoader` module.
+---
 ### 16 JUN 2025
 - Reset database/schema with command `npx prisma migrate reset`
 - A `connectOrCreate` query will be performed when a user is created for assigning the `"VIEWER"` role.
 - Changed `RoleName` `"USER"` value to `"VIEWER"`.
-- Created `RoleDetails` interface in `user` module.
+- Defined `RoleDetails` interface in `user` module.
 - Defined many-to-many relations the `User` and and `Roles` model; users can have multiple roles.
 ---
 ### 14 JUN 2025
@@ -19,7 +23,7 @@
 - Moved `AuthProvider` and `UserProvider` components from `routes` module into `App` component.
 - Created `rewrite-routes-providers` branch from `feature-post`.
 - The `getPost` blog service function will throw a `PostNotFoundError` when a post does not exist in the database.
-- Created `PostNotFoundError` interface in `customErrors` module.
+- Defined `PostNotFoundError` interface in `customErrors` module.
 - Created `postLoader` module in `post` subdirectory.
 - Removed `state` prop from `NavAnchor` component in `PostCard` component.
 ---
@@ -33,7 +37,7 @@
 ### 11 JUN 2025
 - When a user successfully creates a new post, the new post is added to the database and the user's state is updated.
 - Defined `addPost` function for `UserProvider` in `useUser` module and made it available to the provider's context.
-- Defined a `SuccessResponse` interface to extend as a base interface.
+- Defined `SuccessResponse` interface to extend as a base interface.
 - The `PostList` component now requires a `data` prop of type `Post[]`.
 - The `PostCard` component now requires a `data` prop of type `Post`.
 - Renamed `Post` component to `PostCard`.
@@ -74,7 +78,7 @@
 ### 03 JUN 2025
 - Added maximum character limit for a post's title and content.
 - Updated npm packages for both `cms` and `api` subdirectories.
-- Created `PostEditorProps` interface for `PostEditor` component.
+- Defined `PostEditorProps` interface for `PostEditor` component.
 - Added `formData` and `setFormData` in `PostForm` component.
 - Invalid `PostForm` `POST` requests will render errors.
 - Renamed form errors object property from `message` to `msg`. 
@@ -297,7 +301,7 @@
 - Installed `jsonwebtoken` package.
 - Created `server-authentication` branch.
 - Merged `server-controllers` branch to `main` branch.
-- Created `blog` interface.
+- Defined `blog` interface.
 - Added `createdAt` field to `Comment` model.
 - Added `name` argument to `relation` attribute in `blog.prisma` schema.
 - Defined `UserIdParams` interface; this is used as a generic for `matchedData` in `user.controller`.

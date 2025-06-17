@@ -8,7 +8,7 @@ import authRoutes from "./auth.route";
 const routes = (app: Application) => {
   app.use("/pizza", pizzaRoutes());
   app.use("/user", userRoutes());
-  app.use("/post", postRoutes());
+  app.use("/posts", postRoutes());
   app.use("/auth", authRoutes());
 };
 

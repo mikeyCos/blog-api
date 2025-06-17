@@ -6,6 +6,10 @@ model Blog {
   authorId String @unique
 }
 
+// TODO
+// Create tags (m:n)
+// A post can have multiple tags
+// A tag can be in multiple posts
 model Post {
   id        String    @id @default(uuid())
   blog      Blog      @relation(fields: [blogId], references: [id])
@@ -18,6 +22,8 @@ model Post {
   title     String
   titleSlug String
   content   String
+
+  @@unique(name: "postId", [authorId, titleSlug])
 }
 
 model Comment {

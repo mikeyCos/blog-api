@@ -59,7 +59,7 @@ const routes: RouteObject[] = [
                     element: <Dashboard />,
                   },
                   {
-                    path: "/posts",
+                    path: "/:author/posts",
                     element: <Posts />,
                   },
                   {
@@ -67,7 +67,7 @@ const routes: RouteObject[] = [
                     element: <Comments />,
                   },
                   {
-                    path: "/post/:postTitle",
+                    path: "/:author/:postTitle",
                     element: <Post />,
                     loader: postLoader,
                   },

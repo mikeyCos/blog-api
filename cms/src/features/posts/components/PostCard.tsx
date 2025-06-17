@@ -1,3 +1,4 @@
+import { useParams } from "react-router";
 import NavAnchor from "../../../components/navAnchor/NavAnchor";
 import { Post } from "../../../interfaces/blog";
 
@@ -6,15 +7,16 @@ interface Props {
 }
 
 const PostCard: React.FC<Props> = ({ data }) => {
-  const { id, title, createdAt } = data;
-  const url = encodeURI(title);
+  const { id, title, titleSlug, createdAt } = data;
+  const { author } = useParams();
+  // const url = encodeURI(title);
   // TODO
   // Add
   //  Delete button
   //  Anchor heading
   return (
     <li>
-      <NavAnchor pathname={`/post/${id}`} textContent={title} />
+      <NavAnchor pathname={`/${author}/${titleSlug}`} textContent={title} />
       <p>Posted on {createdAt.toString()}</p>
     </li>
   );

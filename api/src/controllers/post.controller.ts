@@ -10,7 +10,7 @@ import slugify from "../utils/slugify.utils";
 interface PostController {
   createPost: RequestHandler;
   createPostComment: RequestHandler;
-  getPost: RequestHandler;
+  getPost: RequestHandler<{ postTitle: string }, {}, {}, { author: string }>;
   getPosts: RequestHandler;
   getPostComment: RequestHandler;
   getPostComments: RequestHandler;
@@ -63,11 +63,18 @@ const postController: PostController = {
     // res.json(newPostComment);
   }),
   getPost: asyncHandler(async (req, res) => {
-    const { postId } = req.params;
-    const post = await getPost(postId);
+    console.group("getPost endpoint running...");
+    const { postTitle } = req.params;
+    const { author } = req.query;
+    const post = await getPost(postTitle, author);
     res.json(post);
+    console.groupEnd();
   }),
   getPosts: asyncHandler(async (req, res) => {
+    console.group("getPosts endpoint running...");
+    console.groupEnd();
+    // TODO
+    // Require query parameters of author?
     const { blogId } = req.params;
     const posts = await getPosts(blogId);
     res.json(posts);

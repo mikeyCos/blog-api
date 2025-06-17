@@ -21,6 +21,14 @@ const PostEditor: React.FC<PostEditorProps> = ({
 
   } */
 
+  /* TODO
+   * Handling image uploads in TinyMCE
+   * https://www.tiny.cloud/docs/tinymce/latest/upload-images/
+   */
+
+  const imgUploadHandler = (blobInfo: any, progress: any) =>
+    new Promise((resolve, reject) => {});
+
   return (
     <Editor
       tinymceScriptSrc={"/tinymce/tinymce.min.js"}
@@ -67,6 +75,7 @@ const PostEditor: React.FC<PostEditorProps> = ({
         content_style:
           "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
         placeholder: "This is a placholder",
+        // images_upload_handler: imgUploadHandler
       }}
       onEditorChange={onChangeHandler}
       onBeforeAddUndo={onBeforeAddUndoHandler}

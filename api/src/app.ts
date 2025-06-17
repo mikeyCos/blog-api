@@ -44,7 +44,9 @@ app.use(deserializeTokens);
 
 // Application-level
 app.use("/", (req, res, next) => {
-  console.log("Application-level middleware running...");
+  console.group("Application-level middleware running...");
+  console.log("req.originalUrl:", req.originalUrl);
+  console.groupEnd();
   next();
 });
 

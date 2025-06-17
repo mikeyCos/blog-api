@@ -16,7 +16,6 @@ import useRefreshToken from "./useRefreshToken";
 // https://reacttraining.com/blog/react-context-with-typescript
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
-// type Logout = () => void;
 
 interface AuthContext {
   login: Login;

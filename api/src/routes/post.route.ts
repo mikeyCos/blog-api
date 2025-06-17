@@ -19,10 +19,10 @@ const postRoutes = () => {
   } = postController;
 
   // GET requests
-  postRouter.get("/:postId", getPost);
-  postRouter.get("/:blogId", getPosts);
-  postRouter.get("/:postId/comments/:commentId", getPostComment);
-  postRouter.get("/:postId/comments", getPostComments);
+  postRouter.get("/", getPosts);
+  postRouter.get("/:postTitle", getPost);
+  postRouter.get("/:author/:postTitle/comments/:commentId", getPostComment);
+  postRouter.get("/:author/:postTitle/comments", getPostComments);
 
   // POST requests
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'

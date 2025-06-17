@@ -67,15 +67,22 @@ export const createComment = async ({
   return newComment;
 };
 
-export const getPost = async (postId: string) => {
+export const getPost = async (titleSlug: string, author: string) => {
+  console.group("getPost running...");
+  console.log("titleSlug:", titleSlug);
+  console.log("author:", author);
+  console.groupEnd();
   const post = await prisma.post.findUnique({
     where: {
-      id: postId,
+      postId: {
+        titleSlug: titleSlug,
+        authorId: author,
+      },
     },
   });
 
   if (!post) {
-    throw new PostNotFoundError(postId);
+    throw new PostNotFoundError(titleSlug);
   }
 
   return post;

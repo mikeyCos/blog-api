@@ -60,7 +60,7 @@ const PostForm = () => {
       //  Rerun original request
       try {
         const response = await axiosPrivate.post<PostSuccessResponse>(
-          "/post",
+          "/posts",
           body
         );
         // Clear inputs

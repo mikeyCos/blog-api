@@ -41,9 +41,12 @@ const authController: authController = {
     }
   }),
   authenticatedUser: asyncHandler(async (req, res) => {
+    console.group("authenticatedUser running...");
     const { user: userPayload } = req;
     const user = await getUser(userPayload.id);
     // What if user does not have a blog?
+    console.log("user:", user);
+    console.groupEnd();
     if (user) {
       res.json({
         status: "success",

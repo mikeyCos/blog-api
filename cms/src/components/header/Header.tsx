@@ -5,6 +5,7 @@ import NavAnchor from "../navAnchor/NavAnchor";
 import styles from "./Header.module.css";
 import { useAuth } from "../../hooks/useAuth";
 import { usePrevLocation } from "../../hooks/usePrevLocation";
+import { useUser } from "../../hooks/useUser";
 
 const Header: React.FC = () => {
   const { accessToken, isAuthenticated, logout } = useAuth();

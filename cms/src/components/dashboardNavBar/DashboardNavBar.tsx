@@ -1,16 +1,24 @@
+import { useUser } from "../../hooks/useUser";
 import NavAnchor from "../navAnchor/NavAnchor";
 
 const DashboardNavBar = () => {
+  const { user } = useUser();
   return (
     <header>
       <nav>
         <ul>
           <li>
-            <NavAnchor pathname="/posts" textContent="Posts" />
+            <NavAnchor
+              pathname={`${user?.username}/posts`}
+              textContent="Posts"
+            />
           </li>
 
           <li>
-            <NavAnchor pathname="/comments" textContent="Comments" />
+            <NavAnchor
+              pathname={`${user?.username}/comments`}
+              textContent="Comments"
+            />
           </li>
         </ul>
       </nav>
