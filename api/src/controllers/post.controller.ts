@@ -5,6 +5,7 @@ import { matchedData } from "express-validator";
 import { getUser } from "../services/user";
 import { createPost, createComment, getPost, getPosts } from "../services/blog";
 import { User } from "../interfaces/user";
+import slugify from "../utils/slugify.utils";
 
 interface PostController {
   createPost: RequestHandler;
@@ -40,7 +41,7 @@ const postController: PostController = {
 
     // TODO
     // Slugify title
-    const titleSlug = title;
+    const titleSlug = slugify(title);
 
     const newPost = await createPost({
       blogId: user!.blog!.id,

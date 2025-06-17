@@ -45,6 +45,10 @@ const seedDB = async () => {
   try {
     await seedUsers();
     console.log("Database seeded");
+    console.group("Users in database:");
+    const users = await getUsers();
+    console.log("users:", users);
+    console.groupEnd();
   } catch (err) {
     console.log("err:", err);
   }

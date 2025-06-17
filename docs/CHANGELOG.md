@@ -1,6 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 16 JUN 2025
+- Reset database/schema with command `npx prisma migrate reset`
+- A `connectOrCreate` query will be performed when a user is created for assigning the `"VIEWER"` role.
+- Changed `RoleName` `"USER"` value to `"VIEWER"`.
+- Created `RoleDetails` interface in `user` module.
+- Defined many-to-many relations the `User` and and `Roles` model; users can have multiple roles.
+---
 ### 14 JUN 2025
 - Created `slugify.utils` module and exports a `slugify` function; `slugify` function returns a slug string.
 - Created `titleSlug` field of type string for the `Post` model.

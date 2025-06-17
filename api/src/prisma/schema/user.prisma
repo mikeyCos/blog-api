@@ -3,15 +3,38 @@ model User {
   blog      Blog?
   posts     Post[]
   comments  Comment[]
-  role      Role      @default(USER)
+  roles     Roles[]
   username  String    @unique
   email     String    @unique
   password  String
   timestamp DateTime  @default(now())
 }
 
-enum Role {
-  USER
+// TODO
+// Create Roles model
+// User can have many roles, and a role can have many users
+//  Many-to-many relationship
+// User cannot have multiple of the same role
+// https://github.com/prisma/prisma/discussions/18560
+
+model Role {
+  id    String   @id @unique @default(uuid())
+  name  RoleName @unique @default(VIEWER)
+  users Roles[]
+}
+
+model Roles {
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  roleDetails Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  roleId      String
+  assignedAt  DateTime @default(now())
+
+  @@id([userId, roleId])
+}
+
+enum RoleName {
+  VIEWER
   AUTHOR
   ADMIN
 }

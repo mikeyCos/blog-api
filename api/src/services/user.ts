@@ -13,6 +13,22 @@ export const createUser = async ({ username, email, password }: CreateUser) => {
       blog: {
         create: {},
       },
+      roles: {
+        create: [
+          {
+            roleDetails: {
+              connectOrCreate: {
+                where: {
+                  name: "VIEWER",
+                },
+                create: {
+                  name: "VIEWER",
+                },
+              },
+            },
+          },
+        ],
+      },
     },
     include: {
       blog: {
@@ -23,6 +39,7 @@ export const createUser = async ({ username, email, password }: CreateUser) => {
           authorId: true,
         },
       },
+      roles: true,
     },
   });
 
@@ -61,6 +78,15 @@ export const getUser: GetUser = async (userId, username) => {
       },
       posts: true,
       comments: true,
+      roles: {
+        include: {
+          roleDetails: true,
+        },
+        omit: {
+          roleId: true,
+          userId: true,
+        },
+      },
     },
   });
 
@@ -75,7 +101,7 @@ export const getUser: GetUser = async (userId, username) => {
 
 export const getUsers = async () => {
   const users = await prisma.user.findMany({
-    include: { blog: true, posts: true, comments: true },
+    include: { blog: true, posts: true, comments: true, roles: true },
   });
 
   return users;

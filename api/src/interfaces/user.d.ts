@@ -4,7 +4,7 @@ import { Comment } from "./comment";
 
 export interface User {
   id?: UserId;
-  role?: Role;
+  roles?: Role[];
   username?: Username;
   email?: string;
   password?: string;
@@ -16,7 +16,7 @@ export interface User {
 
 export interface AuthenticatedUser {
   id: string;
-  role: Role;
+  roles: Role[];
   username: Username;
 }
 
@@ -30,7 +30,17 @@ export interface UserIdParams {
   userId: UserId;
 }
 
-type Role = "USER" | "AUTHOR" | "ADMIN";
+interface Role {
+  assignedAt: Date;
+  roleDetails: RoleDetails;
+}
+
+interface RoleDetails {
+  id: string;
+  name: RoleName;
+}
+
+type RoleName = "VIEWER" | "AUTHOR" | "ADMIN";
 
 export type UserId = string;
 

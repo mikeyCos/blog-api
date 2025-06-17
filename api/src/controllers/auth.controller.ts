@@ -48,7 +48,7 @@ const authController: authController = {
       res.json({
         status: "success",
         code: 200,
-        user: { username: user.username, role: user.role, blog: user.blog },
+        user: { username: user.username, roles: user.roles, blog: user.blog },
       });
       return;
     }
@@ -71,7 +71,7 @@ const authController: authController = {
     const newAccessToken =
       user &&
       (await signJWT(
-        { user: { id: user.id, username: user.username, role: user.role } },
+        { user: { id: user.id, username: user.username, roles: user.roles } },
         {
           expiresIn: 10,
         }
@@ -112,11 +112,11 @@ const authController: authController = {
               // TODO
               // Create a private accessToken
               // Do not send private user properties
-              const { id, username, role } = user;
+              const { id, username, roles } = user;
               const accessTokenExpiresIn = 10; // 10 seconds
               const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
               const accessToken = await signJWT(
-                { user: { id, username, role } },
+                { user: { id, username, roles } },
                 { expiresIn: accessTokenExpiresIn }
               );
               const refreshToken = await Promise.resolve(
@@ -176,12 +176,12 @@ const authController: authController = {
       // Should I redirect to '/auth/signup'?
       // Log in user when they sign up
       req.login(user, { session: false }, async (err) => {
-        const { id, username, role } = user;
+        const { id, username, roles } = user;
         const expiresIn = 10; // seconds
         const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
         // const refreshTokenExpiresIn = 20 * 1000; // 20 seconds * 1000 milliseconds
         const accessToken = await signJWT(
-          { user: { id, username, role } },
+          { user: { id, username, roles } },
           { expiresIn }
         );
         const refreshToken = await Promise.resolve(
