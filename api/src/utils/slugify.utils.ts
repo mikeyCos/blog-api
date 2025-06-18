@@ -9,8 +9,11 @@ interface Slugify {
  *  Should return apples-strawberries-and-bananas-ex--tap-version-1-2
  */
 const slugify: Slugify = (text: string) => {
-  const prohibitedCharacters = new RegExp("[^A-Za-zA0-9\\s-]", "g");
-  const slug = text.replace(prohibitedCharacters, "").replace(/[\.\s]/g, "-");
+  const prohibitedCharacters = new RegExp("[^a-zA0-9\\s-]", "g");
+  const slug = text
+    .toLowerCase()
+    .replace(prohibitedCharacters, "")
+    .replace(/[\.\s]/g, "-");
   return slug;
 };
 

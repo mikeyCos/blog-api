@@ -72,18 +72,22 @@ export const getPost = async (titleSlug: string, author: string) => {
   console.log("titleSlug:", titleSlug);
   console.log("author:", author);
   console.groupEnd();
-  const post = await prisma.post.findFirst({
-    where: {
-      titleSlug: titleSlug,
-      author: {
-        username: author,
+  const post = await prisma.post
+    .findFirstOrThrow({
+      where: {
+        titleSlug: titleSlug,
+        author: {
+          username: author,
+        },
       },
-    },
-  });
+    })
+    .catch(() => {
+      throw new PostNotFoundError(titleSlug);
+    });
 
-  if (!post) {
+  /* if (!post) {
     throw new PostNotFoundError(titleSlug);
-  }
+  } */
 
   return post;
 };

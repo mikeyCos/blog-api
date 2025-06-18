@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
 import PostForm from "./components/PostForm";
-
 import { useUser } from "../../hooks/useUser";
 import PostList from "./components/PostList";
 
+// This will always render the authenticated user's posts
 const Posts = () => {
   const { user } = useUser();
   const data = user?.blog?.posts || [];

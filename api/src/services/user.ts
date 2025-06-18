@@ -65,36 +65,42 @@ export const getUser: GetUser = async (userId, username) => {
 
   // TODO
   // What to include on user object?
-  const user = await prisma.user.findUnique({
-    where: filter,
-    include: {
-      blog: {
-        include: {
-          posts: true,
+  const user = await prisma.user
+    .findUniqueOrThrow({
+      where: filter,
+      include: {
+        blog: {
+          include: {
+            posts: true,
+          },
+          omit: {
+            authorId: true,
+          },
         },
-        omit: {
-          authorId: true,
+        posts: true,
+        comments: true,
+        roles: {
+          include: {
+            roleDetails: true,
+          },
+          omit: {
+            roleId: true,
+            userId: true,
+          },
         },
       },
-      posts: true,
-      comments: true,
-      roles: {
-        include: {
-          roleDetails: true,
-        },
-        omit: {
-          roleId: true,
-          userId: true,
-        },
-      },
-    },
-  });
+    })
+    .catch(() => {
+      const identifier = userId || username;
+      const isId = !!userId;
+      throw new UserNotFoundError(identifier!, isId);
+    });
 
-  if (!user) {
+  /* if (!user) {
     const identifier = userId || username;
     const isId = !!userId;
     throw new UserNotFoundError(identifier!, isId);
-  }
+  } */
 
   return user;
 };
