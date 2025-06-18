@@ -13,6 +13,7 @@ interface LoaderArgs extends ActionFunctionArgs {
   params: Params<ParamParseKey<typeof Paths.postDetail>>;
 }
 
+// const postLoader = async ({ params }: { params: Params<"postTitle"> }) => {
 const postLoader = async ({ params }: LoaderArgs) => {
   console.log("postLoader running...");
   console.log("params:", params);

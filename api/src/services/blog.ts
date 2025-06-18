@@ -72,11 +72,11 @@ export const getPost = async (titleSlug: string, author: string) => {
   console.log("titleSlug:", titleSlug);
   console.log("author:", author);
   console.groupEnd();
-  const post = await prisma.post.findUnique({
+  const post = await prisma.post.findFirst({
     where: {
-      postId: {
-        titleSlug: titleSlug,
-        authorId: author,
+      titleSlug: titleSlug,
+      author: {
+        username: author,
       },
     },
   });

@@ -2,6 +2,9 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 17 JUN 2025
+- Change query selector for `getPost` service function from `findUnique` to `findFirst` with `titleSlug`, and the author's `username` fields.
+- Added query parameter, `?author=${params.author}$`, to the url in `postLoader` module.
+- `Link` components, in the `PostCard` and `DashboardNavbar` components, now include the authenticated user's username in the path.
 - Defined unique constraints for the `Post` model.
 - Defined `LoaderArgs` in `postLoader` module.
 ---
