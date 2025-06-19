@@ -9,8 +9,6 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Login from "../features/login/Login";
 import SignUp from "../features/signup/SignUp";
 
-import AuthProvider from "../hooks/useAuth";
-import UserProvider from "../hooks/useUser";
 import ProtectedLayout from "../layouts/ProtectedLayout";
 import PrevLocationProvider from "../hooks/usePrevLocation";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -59,7 +57,7 @@ const routes: RouteObject[] = [
                     element: <Dashboard />,
                   },
                   {
-                    path: "/:author/posts",
+                    path: "/:username/posts",
                     element: <Posts />,
                   },
                   {
@@ -67,7 +65,7 @@ const routes: RouteObject[] = [
                     element: <Comments />,
                   },
                   {
-                    path: "/:author/:postTitle",
+                    path: "/:username/:postTitle",
                     element: <Post />,
                     loader: postLoader,
                   },

@@ -56,7 +56,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     console.log("AuthProvider mounted...");
-    console.log("accessToken:", accessToken);
     const refresh = useRefreshToken();
 
     const initAuth = async () => {

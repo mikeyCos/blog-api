@@ -3,13 +3,13 @@ import { User } from "../interfaces/user";
 import { signJWT } from "./jwt.utils";
 
 const loginResponse = async (res: Response, user: User) => {
-  const { id, username, role } = user;
+  const { id, username, roles } = user;
   const accessTokenExpiresIn = 10; // 10 seconds
   const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
 
   try {
     const accessToken = await signJWT(
-      { user: { id, username, role } },
+      { user: { id, username, roles } },
       { expiresIn: accessTokenExpiresIn }
     );
     const refreshToken = await Promise.resolve(
@@ -20,9 +20,6 @@ const loginResponse = async (res: Response, user: User) => {
         }
       )
     );
-
-    console.log("refreshToken:", refreshToken);
-    console.log("accessToken:", accessToken);
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -38,7 +35,7 @@ const loginResponse = async (res: Response, user: User) => {
       status: "success",
       code: 200,
       accessToken,
-      user: { username, role },
+      user: { username, roles },
     });
   } catch (err) {}
 };

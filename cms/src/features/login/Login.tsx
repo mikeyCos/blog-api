@@ -9,7 +9,6 @@ const SignIn = () => {
   const location = useLocation();
   const { prevLocation } = usePrevLocation();
   console.log("SignIn component");
-  console.log("accessToken:", accessToken);
   console.log("prevLocation:", prevLocation);
   // If accessToken exists (user is logged in)
   //  Navigate the user to their dashboard or the previous location

@@ -2,6 +2,10 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 18 JUN 2025
+- Renamed `useUser` hook to `useUserData`.
+- Defined `AuthenticatedUser` interface in `user` module.
+- Defined `PostForm` interface for `PostForm` functional component.
+- Defined `initialData` optional prop for `PostForm` component.
 - Fixed Git error `object file...is empty` by deleting empty objects, fetching missing objects and checking full object store.
 - The `slugify` function will also convert the string to lower case.
 - Changed query selector for `getUser`, and `getPost` data access functions `findUnique` to `findUniqueOrThrow` and `findFirstOrThrow` respectively.

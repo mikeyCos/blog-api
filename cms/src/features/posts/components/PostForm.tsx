@@ -1,39 +1,54 @@
-import {
+import React, {
   ChangeEventHandler,
-  EventHandler,
   FormEventHandler,
-  SyntheticEvent,
-  useEffect,
+  ReactElement,
   useRef,
   useState,
 } from "react";
 import { Editor as TinyMCEEditor } from "tinymce"; // TinyMCE Editor
 
 import PostEditor from "./PostEditor";
-import { useAuth } from "../../../hooks/useAuth";
 
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { PostFormError } from "../../../interfaces/errors";
-import { useUser } from "../../../hooks/useUser";
+import { useUserData } from "../../../hooks/useUser";
 import { PostSuccessResponse } from "../../../interfaces/responses";
 
 const charCount = (editor: TinyMCEEditor) => {
   return editor.plugins.wordcount.body.getCharacterCount();
 };
 
-const PostForm = () => {
-  const initialFormData = {
-    title: {
-      value: "",
-    },
-    content: {
-      value: "",
-    },
-  };
-  const [formData, setFormData] = useState(initialFormData);
+interface Value {
+  value: string;
+}
+
+interface InitialFormData {
+  title: Value;
+  content: Value;
+}
+
+interface PostFormProps {
+  initialData?: InitialFormData;
+}
+
+interface PostForm {
+  ({ initialData }: PostFormProps): ReactElement;
+}
+
+const initialFormData: InitialFormData = {
+  title: {
+    value: "",
+  },
+  content: {
+    value: "",
+  },
+};
+
+const PostForm: PostForm = ({ initialData = initialFormData }) => {
+  const [formData, setFormData] = useState(initialData);
   const [errors, setErrors] = useState<PostFormError>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
-  const { addPost } = useUser();
+  const { addPost, user } = useUserData();
   const axiosPrivate = useAxiosPrivate();
   // How to create new access token if current is expired on form submission?
   const submitPost: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -46,7 +61,6 @@ const PostForm = () => {
       const formData = new FormData(formElement);
       const body = new URLSearchParams();
 
-      console.log(formElement);
       for (const input of formData) {
         const [key, value] = input;
         console.log("input:", input);
@@ -55,18 +69,14 @@ const PostForm = () => {
 
       body.append("content", editorContent);
 
-      // If the access token expires
-      //  Generate new access token
-      //  Rerun original request
       try {
         const response = await axiosPrivate.post<PostSuccessResponse>(
-          "/posts",
+          `/users/${user?.username}/posts`,
           body
         );
-        // Clear inputs
-        setFormData(initialFormData);
+
+        setFormData(initialFormData); // Resets form data
         addPost(response.data.post);
-        // console.log("response:", response);
       } catch (err: any) {
         console.log("err:", err);
         if (err.response.data.errors) {

@@ -5,7 +5,7 @@ import { validatePost } from "../validators/validators";
 import authenticateToken from "../middleware/authenticateToken";
 
 const postRoutes = () => {
-  const postRouter = Router();
+  const postRouter = Router({ mergeParams: true });
   const {
     createPost,
     createPostComment,

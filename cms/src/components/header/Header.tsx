@@ -5,7 +5,7 @@ import NavAnchor from "../navAnchor/NavAnchor";
 import styles from "./Header.module.css";
 import { useAuth } from "../../hooks/useAuth";
 import { usePrevLocation } from "../../hooks/usePrevLocation";
-import { useUser } from "../../hooks/useUser";
+import { useUserData } from "../../hooks/useUser";
 
 const Header: React.FC = () => {
   const { accessToken, isAuthenticated, logout } = useAuth();
@@ -31,7 +31,6 @@ const Header: React.FC = () => {
     console.group();
     console.log("prevLocation:", prevLocation);
     console.log("from:", from);
-    console.log("accessToken:", accessToken);
     console.groupEnd();
     // console.log("isLogout:", isLogout);
     // navigate(prevLocation ?? "/");
@@ -39,13 +38,6 @@ const Header: React.FC = () => {
     // navigate("/");
     // logout();
   };
-
-  useEffect(() => {
-    console.log("Header component mounted...");
-    console.log("isAuthenticated changed");
-    console.log("accessToken:", accessToken);
-    console.log("isAuthenticated:", isAuthenticated);
-  }, [isAuthenticated]);
 
   return (
     <header>

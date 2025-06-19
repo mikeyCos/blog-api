@@ -5,27 +5,46 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { User } from "../interfaces/user";
+import { AuthenticatedUser, User } from "../interfaces/user";
 import { useAuth } from "./useAuth";
 import { AuthUserResponse } from "../interfaces/responses";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { Post } from "../interfaces/blog";
 
-interface UserContext {
-  user?: User | null;
-  addPost: (newPost: Post) => void;
+interface AddPost {
+  (newPost: Post): void;
 }
 
-const UserContext = createContext<UserContext>({} as UserContext);
+interface UserContextAuthenticated {
+  authenticated: boolean;
+  user: AuthenticatedUser;
+  addPost: AddPost;
+}
+
+interface UserContextUnauthenticated {
+  authenticated: boolean;
+  user: null;
+  addPost: AddPost;
+}
+
+export type UserContextType =
+  | UserContextUnauthenticated
+  | UserContextAuthenticated;
+
+const UserContext = createContext<UserContextType>({
+  authenticated: false,
+  user: null,
+  addPost: () => {},
+});
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { accessToken, isAuthenticated } = useAuth();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthenticatedUser | null>(null);
   const axiosPrivate = useAxiosPrivate();
 
-  const addPost = (newPost: Post) => {
+  const addPost: AddPost = (newPost) => {
     setUser((prevUser) => {
       if (!prevUser) return prevUser;
       return {
@@ -53,7 +72,6 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
 
-    console.log("accessToken in UserProvider:", accessToken);
     if (accessToken) {
       // Send GET request to API to get user profile
       getUser();
@@ -62,8 +80,20 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [isAuthenticated]);
 
-  const useUserValue = useMemo(() => {
-    return { user, addPost };
+  const useUserValue = useMemo<UserContextType>(() => {
+    if (isAuthenticated) {
+      return {
+        authenticated: true,
+        user,
+        addPost,
+      };
+    }
+
+    return {
+      authenticated: false,
+      user: null,
+      addPost: () => {},
+    };
   }, [user]);
 
   return (
@@ -71,8 +101,8 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-const useUser = () => {
+const useUserData = () => {
   return useContext(UserContext);
 };
 
-export { UserProvider as default, useUser };
+export { UserProvider as default, useUserData };

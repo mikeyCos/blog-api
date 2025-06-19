@@ -1,8 +1,8 @@
-import { useUser } from "../../hooks/useUser";
+import { useUserData } from "../../hooks/useUser";
 import NavAnchor from "../navAnchor/NavAnchor";
 
 const DashboardNavBar = () => {
-  const { user } = useUser();
+  const { user } = useUserData();
   return (
     <header>
       <nav>

@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { AuthenticatedUser } from "./user";
 import { Post } from "./blog";
 
 export interface SuccessResponse {
@@ -11,7 +11,7 @@ export interface AuthSuccessResponse extends SuccessResponse {
 }
 
 export interface AuthUserResponse extends AuthSuccessResponse {
-  user: User;
+  user: AuthenticatedUser;
 }
 
 // A new post has been created

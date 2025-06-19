@@ -10,7 +10,7 @@ import slugify from "../utils/slugify.utils";
 interface PostController {
   createPost: RequestHandler;
   createPostComment: RequestHandler;
-  getPost: RequestHandler<{ postTitle: string }, {}, {}, { author: string }>;
+  getPost: RequestHandler;
   getPosts: RequestHandler;
   getPostComment: RequestHandler;
   getPostComments: RequestHandler;
@@ -36,11 +36,6 @@ const postController: PostController = {
     // User has been authenticated before reaching this endpoint
     const { id: userId } = req.user;
     const user = await getUser(userId);
-
-    console.log("user:", user);
-
-    // TODO
-    // Slugify title
     const titleSlug = slugify(title);
 
     const newPost = await createPost({
@@ -64,9 +59,8 @@ const postController: PostController = {
   }),
   getPost: asyncHandler(async (req, res) => {
     console.group("getPost endpoint running...");
-    const { postTitle } = req.params;
-    const { author } = req.query;
-    const post = await getPost(postTitle, author);
+    const { postTitle, username } = req.params;
+    const post = await getPost(postTitle, username);
     res.json(post);
     console.groupEnd();
   }),

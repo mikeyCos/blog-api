@@ -23,13 +23,7 @@ interface authController {
 
 const authController: authController = {
   authorize: asyncHandler(async (req, res) => {
-    console.log("authorize");
-
-    // if (!user && !accessToken)
     const { accessToken, user: userPayload } = req;
-
-    console.log("userPayload:", userPayload);
-    console.log("accessToken:", accessToken);
     // If current accessToken is valid
     // Return the accessToken and it's payload
     if (accessToken && userPayload) {
@@ -58,10 +52,8 @@ const authController: authController = {
   }),
   refreshToken: asyncHandler(async (req, res) => {
     // Create new accessToken unless the current accessToken is still valid
-    console.log("refreshAccessToken middleware running...");
     // TODO
     // Refactor this endpoint
-    console.log("req.refreshToken:", req.refreshToken);
     const { refreshToken } = req;
 
     if (!refreshToken) {
@@ -130,9 +122,6 @@ const authController: authController = {
                   }
                 )
               );
-
-              console.log("refreshToken:", refreshToken);
-              console.log("accessToken:", accessToken);
 
               res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,

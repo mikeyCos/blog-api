@@ -6,7 +6,7 @@ import { axiosPrivate } from "../../config/axios.config";
  */
 
 const Paths = {
-  postDetail: "/:author/:postTitle",
+  postDetail: "/:username/:postTitle",
 } as const;
 
 interface LoaderArgs extends ActionFunctionArgs {
@@ -18,7 +18,7 @@ const postLoader = async ({ params }: LoaderArgs) => {
   console.log("postLoader running...");
   console.log("params:", params);
   try {
-    const url = `/posts/${params.postTitle}?author=${params.author}`;
+    const url = `users/${params.username}/posts/${params.postTitle}`;
     const response = await axiosPrivate.get(url);
     console.log("response:", response);
     return response.data;

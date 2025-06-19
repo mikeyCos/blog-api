@@ -1,10 +1,10 @@
 import PostForm from "./components/PostForm";
-import { useUser } from "../../hooks/useUser";
+import { useUserData } from "../../hooks/useUser";
 import PostList from "./components/PostList";
 
 // This will always render the authenticated user's posts
 const Posts = () => {
-  const { user } = useUser();
+  const { user } = useUserData();
   const data = user?.blog?.posts || [];
 
   return (

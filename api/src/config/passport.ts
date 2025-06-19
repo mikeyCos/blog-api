@@ -10,12 +10,12 @@ const verifyCallback = async (
   password: string,
   done: Function
 ) => {
-  console.log("LocalStrategy verifyCallback running...");
   try {
+    console.group("LocalStrategy verifyCallback running...");
     console.log("username:", username);
     console.log("password:", password);
+    console.groupEnd();
     const user = await getUser(null, username);
-    console.log("user:", user);
 
     // user.password should not be undefined/null if the user exists
     const match = await bcrypt.compare(password, user.password!);

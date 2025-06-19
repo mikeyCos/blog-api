@@ -2,6 +2,7 @@ import { Router } from "express";
 import userController from "../controllers/user.controller";
 import { validateParams } from "../validators/validators";
 import { userSchema } from "../validators/params.validator";
+import postRoutes from "./post.route";
 
 const userRoutes = () => {
   const userRouter = Router();
@@ -16,6 +17,10 @@ const userRoutes = () => {
 
   // DELETE requests
   userRouter.delete("/:userId", validateParams(userSchema), deleteUser);
+
+  // Nested routes
+  userRouter.use("/:username/posts", postRoutes());
+
   return userRouter;
 };
 export default userRoutes;

@@ -17,7 +17,6 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   //   return <Navigate to="/login" state={{ from: location }} replace />;
 
   const navigate = useNavigate();
-  console.log("accessToken:", accessToken);
 
   useEffect(() => {
     console.log("ProtectedLayout mounted...");

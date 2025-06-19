@@ -1,35 +1,24 @@
-import {
-  ErrorResponse,
-  useLoaderData,
-  useLocation,
-  useParams,
-} from "react-router";
-import { Post as PostProp } from "../../interfaces/blog";
-
-/* type PostParams = {
-  postTitle: string;
-} */
-
-interface PostParams {
-  postTitle: string;
-  [key: string]: string | undefined;
-}
-
-interface LocationState {
-  post: PostProp;
-}
+import { useLoaderData } from "react-router";
+import NavAnchor from "../../components/navAnchor/NavAnchor";
+import { Post as PostData } from "../../interfaces/blog";
+import { useUserData } from "../../hooks/useUser";
 
 const Post = () => {
-  const data = useLoaderData();
+  const { authenticated, user } = useUserData();
+  const data = useLoaderData<PostData>();
   console.log("data:", data);
+  if (!authenticated || !user) {
+    return <p>Please log in</p>;
+  }
   // const { postTitle } = useParams<PostParams>();
-  // console.log("postTitle:", postTitle);
-
-  // What if state is falsy?
-  //  Should navigate to 404 page
+  const { username } = user;
+  const pathname = `${username}/edit?=${username}/${data.titleSlug}`;
 
   return (
     <section>
+      <header>
+        <NavAnchor pathname={pathname} textContent="edit" />
+      </header>
       <article>
         <header>
           <h2>{data.title}</h2>
