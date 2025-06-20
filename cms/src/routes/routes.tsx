@@ -16,6 +16,8 @@ import Posts from "../features/posts/Posts";
 import Comments from "../features/comments/Comments";
 import Post from "../pages/post/Post";
 import postLoader from "../pages/post/postLoader";
+import EditPost from "../pages/editPost/EditPost";
+import editPostLoader from "../pages/editPost/editPostLoader";
 
 // If no user is logged in
 //  Go to home page
@@ -61,13 +63,18 @@ const routes: RouteObject[] = [
                     element: <Posts />,
                   },
                   {
-                    path: "/comments",
+                    path: "/:username/comments",
                     element: <Comments />,
                   },
                   {
                     path: "/:username/:postTitle",
                     element: <Post />,
                     loader: postLoader,
+                  },
+                  {
+                    path: "/:username/posts/:postTitle/edit",
+                    element: <EditPost />,
+                    loader: editPostLoader,
                   },
                 ],
               },

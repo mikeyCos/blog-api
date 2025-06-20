@@ -20,26 +20,26 @@ const postRoutes = () => {
 
   // GET requests
   postRouter.get("/", getPosts);
-  postRouter.get("/:postTitle", getPost);
+  postRouter.get("/:postTitle", getPost); // Needs to be protected to authenticated user
   postRouter.get("/:author/:postTitle/comments/:commentId", getPostComment);
   postRouter.get("/:author/:postTitle/comments", getPostComments);
 
   // POST requests
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'
   // blogId and authorId are required
-  postRouter.post("/", authenticateToken, validatePost(), createPost); // Needs to be protected
+  postRouter.post("/new", authenticateToken, validatePost(), createPost);
   postRouter.post("/:postId/comment", authenticateToken, createPostComment);
 
   // PUT requests
   postRouter.put("/", authenticateToken, editPost);
 
   // DELETE requests
-  postRouter.delete("/:postId", authenticateToken, deletePost); // Needs to be protected
+  postRouter.delete("/:postId", authenticateToken, deletePost);
   postRouter.delete(
     "/:postId/comments/:commentId",
     authenticateToken,
     deletePostComment
-  ); // Needs to be protected(?)
+  );
 
   return postRouter;
 };

@@ -38,11 +38,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     authorize();
   }, [location]);
 
-  return (
-    <>
-      <main>{children ?? <Outlet />}</main>
-    </>
-  );
+  return <>{children ?? <Outlet />}</>;
 };
 
 export default ProtectedLayout;

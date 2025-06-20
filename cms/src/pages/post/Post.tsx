@@ -1,18 +1,26 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, useLocation } from "react-router";
 import NavAnchor from "../../components/navAnchor/NavAnchor";
 import { Post as PostData } from "../../interfaces/blog";
 import { useUserData } from "../../hooks/useUser";
 
 const Post = () => {
-  const { authenticated, user } = useUserData();
+  const location = useLocation();
+  const { status, user } = useUserData();
   const data = useLoaderData<PostData>();
   console.log("data:", data);
-  if (!authenticated || !user) {
-    return <p>Please log in</p>;
-  }
+
   // const { postTitle } = useParams<PostParams>();
+
+  if (status === "unauthenticated" || !user) {
+    console.group("Post component");
+    console.log("location:", location);
+    console.groupEnd();
+    return <NavAnchor pathname="/login" textContent="Login" />;
+  }
+
   const { username } = user;
-  const pathname = `${username}/edit?=${username}/${data.titleSlug}`;
+  // /:username/posts/:postTitle/edit
+  const pathname = `/${username}/posts/${data.titleSlug}/edit`;
 
   return (
     <section>

@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { AuthenticatedUser, User } from "../interfaces/user";
+import { AuthenticatedUser } from "../interfaces/user";
 import { useAuth } from "./useAuth";
 import { AuthUserResponse } from "../interfaces/responses";
 import useAxiosPrivate from "./useAxiosPrivate";
@@ -15,14 +15,16 @@ interface AddPost {
   (newPost: Post): void;
 }
 
+type status = "loading" | "unauthenticated" | "authenticated";
+
 interface UserContextAuthenticated {
-  authenticated: boolean;
+  status: status;
   user: AuthenticatedUser;
   addPost: AddPost;
 }
 
 interface UserContextUnauthenticated {
-  authenticated: boolean;
+  status: status;
   user: null;
   addPost: AddPost;
 }
@@ -32,7 +34,7 @@ export type UserContextType =
   | UserContextAuthenticated;
 
 const UserContext = createContext<UserContextType>({
-  authenticated: false,
+  status: "unauthenticated",
   user: null,
   addPost: () => {},
 });
@@ -80,17 +82,19 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [isAuthenticated]);
 
+  if (false) {
+  }
   const useUserValue = useMemo<UserContextType>(() => {
     if (isAuthenticated) {
       return {
-        authenticated: true,
+        status: "authenticated",
         user,
         addPost,
       };
     }
 
     return {
-      authenticated: false,
+      status: "unauthenticated",
       user: null,
       addPost: () => {},
     };
@@ -101,6 +105,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// I wish a generic type could be provided to useContext on consumption
 const useUserData = () => {
   return useContext(UserContext);
 };

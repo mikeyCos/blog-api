@@ -21,7 +21,13 @@ const PrevLocationContext = createContext<PrevLocationContext>(
 const usePrevious = (value: string) => {
   const ref = useRef<string | null>(null);
   useEffect(() => {
-    ref.current = value;
+    console.group("usePrevious running...");
+    console.log("previous ref.current:", ref.current);
+    console.log("new ref.current:", value);
+    console.groupEnd();
+    if (value !== "/login") {
+      ref.current = value;
+    }
   }, [value]);
   return ref.current;
 };

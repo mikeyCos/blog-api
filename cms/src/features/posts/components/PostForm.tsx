@@ -70,8 +70,8 @@ const PostForm: PostForm = ({ initialData = initialFormData }) => {
       body.append("content", editorContent);
 
       try {
-        const response = await axiosPrivate.post<PostSuccessResponse>(
-          `/users/${user?.username}/posts`,
+        const response = await axiosPrivate["post"]<PostSuccessResponse>(
+          `/users/${user?.username}/posts/new`,
           body
         );
 

@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 19 JUN 2025
+- Created `editPost` subdirectory and `EditPost` component.
+- Added conditional block in `useEffect` hook for the `usePrevious` hook; `"/login"` path is ignored.
+---
 ### 18 JUN 2025
 - Renamed `useUser` hook to `useUserData`.
 - Defined `AuthenticatedUser` interface in `user` module.
