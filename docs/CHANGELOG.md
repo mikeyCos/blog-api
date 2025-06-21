@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 21 JUN 2025
+- Defined `baseURL` variable with the string value `"/api/"` in `routes` module.
+---
 ### 20 JUN 2025
 - Defined interfaces for `updatePost` data access function.
 - `PostForm` component's form data are appended to `FormData` object instead of `URLSearchParams`.

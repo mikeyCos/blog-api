@@ -6,7 +6,8 @@ import { PostSuccessResponse } from "../../interfaces/responses";
 import { useState } from "react";
 import { PostFormError } from "../../interfaces/errors";
 
-// This will always render the authenticated user's posts
+// Fetches authenticated user's posts
+//  and renders their posts
 const Posts = () => {
   const { user, addPost } = useUserData();
   const [errors, setErrors] = useState<PostFormError>();

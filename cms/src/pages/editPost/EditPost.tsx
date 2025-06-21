@@ -16,7 +16,7 @@ const EditPost = () => {
   const submitPost = async (data: any) => {
     try {
       const response = await axiosPrivate.put<PostSuccessResponse>(
-        `/users/${user?.username}/posts/${currentPost.titleSlug}/edit`,
+        `/users/${user?.id}/posts/${currentPost.id}/edit`,
         data
       );
       updatePost(response.data.post);

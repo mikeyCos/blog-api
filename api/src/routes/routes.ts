@@ -5,9 +5,10 @@ import authRoutes from "./auth.route";
 
 // Import routes and mount routes on specific paths
 const routes = (app: Application) => {
+  const baseURL = "/api/";
   app.use("/pizza", pizzaRoutes());
-  app.use("/users", userRoutes());
-  app.use("/auth", authRoutes());
+  app.use(`${baseURL}/users`, userRoutes());
+  app.use(`${baseURL}/auth`, authRoutes());
 };
 
 export default routes;
@@ -18,12 +19,18 @@ export default routes;
  * Public routes
  * public/
  *    users/:username
- *        posts/
- *            posts/postId
+ *        /posts
+ *        /posts/:postId
+ *        /posts/:postId/comments
  *
  * Private routes
  * private/
  *    auth/
- *    users/
- *    posts/
+ *    users/:userId
+ *        /posts
+ *        /posts/postId
+ *        /posts/postId/update
+ *        /posts/postId/delete
+ *    posts/postId/comments/commentId
+ *    posts/postId/comments/commentId/delete
  */

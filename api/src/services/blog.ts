@@ -23,6 +23,7 @@ interface UpdatePost {
 }
 
 interface FilterOptions {
+  postId?: string;
   authorId?: string;
   titleSlug?: string;
 }
