@@ -21,8 +21,8 @@ const postRoutes = () => {
   // GET requests
   postRouter.get("/", getPosts);
   postRouter.get("/:postTitle", getPost); // Needs to be protected to authenticated user
-  postRouter.get("/:author/:postTitle/comments/:commentId", getPostComment);
-  postRouter.get("/:author/:postTitle/comments", getPostComments);
+  postRouter.get("/:username/:postTitle/comments/:commentId", getPostComment);
+  postRouter.get("/:username/:postTitle/comments", getPostComments);
 
   // POST requests
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'
@@ -31,7 +31,7 @@ const postRoutes = () => {
   postRouter.post("/:postId/comment", authenticateToken, createPostComment);
 
   // PUT requests
-  postRouter.put("/", authenticateToken, editPost);
+  postRouter.put("/", authenticateToken, validatePost(), editPost);
 
   // DELETE requests
   postRouter.delete("/:postId", authenticateToken, deletePost);

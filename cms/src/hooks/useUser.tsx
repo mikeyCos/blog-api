@@ -11,7 +11,7 @@ import { AuthUserResponse } from "../interfaces/responses";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { Post } from "../interfaces/blog";
 
-interface AddPost {
+interface PostCallback {
   (newPost: Post): void;
 }
 
@@ -20,13 +20,15 @@ type status = "loading" | "unauthenticated" | "authenticated";
 interface UserContextAuthenticated {
   status: status;
   user: AuthenticatedUser;
-  addPost: AddPost;
+  addPost: PostCallback;
+  updatePost: PostCallback;
 }
 
 interface UserContextUnauthenticated {
   status: status;
   user: null;
-  addPost: AddPost;
+  addPost: PostCallback;
+  updatePost: PostCallback;
 }
 
 export type UserContextType =
@@ -37,6 +39,7 @@ const UserContext = createContext<UserContextType>({
   status: "unauthenticated",
   user: null,
   addPost: () => {},
+  updatePost: () => {},
 });
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -46,7 +49,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
   const axiosPrivate = useAxiosPrivate();
 
-  const addPost: AddPost = (newPost) => {
+  const addPost: PostCallback = (newPost) => {
     setUser((prevUser) => {
       if (!prevUser) return prevUser;
       return {
@@ -55,6 +58,26 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           blog: { ...prevUser.blog, posts: [...prevUser.blog.posts, newPost] },
         }),
       };
+    });
+  };
+
+  const updatePost: PostCallback = (newPost) => {
+    setUser((prevUser) => {
+      if (prevUser?.blog) {
+        const posts = prevUser.blog.posts.map((post) => {
+          if (post.id !== newPost.id) return post;
+          return newPost;
+        });
+
+        return {
+          ...prevUser,
+          ...{
+            blog: { ...prevUser.blog, posts },
+          },
+        };
+      }
+
+      return prevUser;
     });
   };
 
@@ -90,6 +113,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         status: "authenticated",
         user,
         addPost,
+        updatePost,
       };
     }
 
@@ -97,6 +121,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       status: "unauthenticated",
       user: null,
       addPost: () => {},
+      updatePost: () => {},
     };
   }, [user]);
 

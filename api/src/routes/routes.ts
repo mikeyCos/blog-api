@@ -11,3 +11,19 @@ const routes = (app: Application) => {
 };
 
 export default routes;
+
+/* Base route
+ * api/
+ *
+ * Public routes
+ * public/
+ *    users/:username
+ *        posts/
+ *            posts/postId
+ *
+ * Private routes
+ * private/
+ *    auth/
+ *    users/
+ *    posts/
+ */

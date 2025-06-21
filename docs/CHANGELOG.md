@@ -1,8 +1,14 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 20 JUN 2025
+- Defined interfaces for `updatePost` data access function.
+- `PostForm` component's form data are appended to `FormData` object instead of `URLSearchParams`.
+- Defined `headers` property for `axiosPrivate` instance with `"Content-Type": "application/json"`.
+- `PostForm` component now accepts `submitForm` and `formErrors` props.
+---
 ### 19 JUN 2025
-- Created `editPost` subdirectory and `EditPost` component.
+- Created `editPost` subdirectory, `EditPost` component, and `editPostLoader` module.
 - Added conditional block in `useEffect` hook for the `usePrevious` hook; `"/login"` path is ignored.
 ---
 ### 18 JUN 2025

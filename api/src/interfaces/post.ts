@@ -8,6 +8,7 @@ export interface Post extends CreatedAt {
   createdAt: Date;
   updatedAt: Date;
   title: string;
+  titleSlug: string;
   content: string;
   // comments: Comment[];
 }

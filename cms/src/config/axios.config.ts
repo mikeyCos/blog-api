@@ -9,5 +9,9 @@ const axiosDefault = axios.create({
 const axiosPrivate = axios.create({
   baseURL: config.blogAPIBase,
   withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
+
 export { axiosDefault as default, axiosPrivate };

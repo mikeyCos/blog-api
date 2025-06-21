@@ -6,8 +6,8 @@ import { useUserData } from "../../hooks/useUser";
 const Post = () => {
   const location = useLocation();
   const { status, user } = useUserData();
-  const data = useLoaderData<PostData>();
-  console.log("data:", data);
+  const currentPost = useLoaderData<PostData>();
+  console.log("currentPost:", currentPost);
 
   // const { postTitle } = useParams<PostParams>();
 
@@ -20,7 +20,7 @@ const Post = () => {
 
   const { username } = user;
   // /:username/posts/:postTitle/edit
-  const pathname = `/${username}/posts/${data.titleSlug}/edit`;
+  const pathname = `/${username}/posts/${currentPost.titleSlug}/edit`;
 
   return (
     <section>
@@ -29,9 +29,9 @@ const Post = () => {
       </header>
       <article>
         <header>
-          <h2>{data.title}</h2>
+          <h2>{currentPost.title}</h2>
         </header>
-        <div dangerouslySetInnerHTML={{ __html: data.content }} />
+        <div dangerouslySetInnerHTML={{ __html: currentPost.content }} />
       </article>
     </section>
   );

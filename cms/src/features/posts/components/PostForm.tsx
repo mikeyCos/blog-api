@@ -1,4 +1,4 @@
-import React, {
+import {
   ChangeEventHandler,
   FormEventHandler,
   ReactElement,
@@ -8,11 +8,7 @@ import React, {
 import { Editor as TinyMCEEditor } from "tinymce"; // TinyMCE Editor
 
 import PostEditor from "./PostEditor";
-
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { PostFormError } from "../../../interfaces/errors";
-import { useUserData } from "../../../hooks/useUser";
-import { PostSuccessResponse } from "../../../interfaces/responses";
 
 const charCount = (editor: TinyMCEEditor) => {
   return editor.plugins.wordcount.body.getCharacterCount();
@@ -28,14 +24,16 @@ interface InitialFormData {
 }
 
 interface PostFormProps {
+  submitForm: any;
+  formErrors?: PostFormError;
   initialData?: InitialFormData;
 }
 
 interface PostForm {
-  ({ initialData }: PostFormProps): ReactElement;
+  ({ initialData, submitForm, formErrors }: PostFormProps): ReactElement;
 }
 
-const initialFormData: InitialFormData = {
+const defaultFormData: InitialFormData = {
   title: {
     value: "",
   },
@@ -44,47 +42,28 @@ const initialFormData: InitialFormData = {
   },
 };
 
-const PostForm: PostForm = ({ initialData = initialFormData }) => {
+const PostForm: PostForm = ({
+  submitForm,
+  formErrors,
+  initialData = defaultFormData,
+}) => {
   const [formData, setFormData] = useState(initialData);
-  const [errors, setErrors] = useState<PostFormError>();
   const editorRef = useRef<TinyMCEEditor | null>(null);
-  const { addPost, user } = useUserData();
-  const axiosPrivate = useAxiosPrivate();
   // How to create new access token if current is expired on form submission?
   const submitPost: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    console.log("submitHandler running...");
+    console.group("submitPost running...");
 
     if (editorRef.current) {
       const editorContent = editorRef.current.getContent();
       const formElement = e.currentTarget;
       const formData = new FormData(formElement);
-      const body = new URLSearchParams();
-
-      for (const input of formData) {
-        const [key, value] = input;
-        console.log("input:", input);
-        body.append(key, value as string);
-      }
-
-      body.append("content", editorContent);
-
-      try {
-        const response = await axiosPrivate["post"]<PostSuccessResponse>(
-          `/users/${user?.username}/posts/new`,
-          body
-        );
-
-        setFormData(initialFormData); // Resets form data
-        addPost(response.data.post);
-      } catch (err: any) {
-        console.log("err:", err);
-        if (err.response.data.errors) {
-          console.log("err.response.data.errors:", err.response.data.errors);
-          setErrors(err.response.data.errors);
-        }
-      }
-      console.log("editorContent:", editorContent);
+      formData.append("content", editorContent);
+      const formDataValues = Object.fromEntries(formData);
+      console.log("formDataValues:", formDataValues);
+      console.groupEnd();
+      setFormData(defaultFormData); // Resets form data
+      await submitForm(formData);
     }
   };
 
@@ -138,11 +117,6 @@ const PostForm: PostForm = ({ initialData = initialFormData }) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log("PostForm mounted");
-  //   console.log("formData:", formData);
-  // }, [formData]);
-
   return (
     <form method="POST" onSubmit={submitPost}>
       <h3>Create Post</h3>
@@ -154,8 +128,9 @@ const PostForm: PostForm = ({ initialData = initialFormData }) => {
           type="text"
           onChange={onChangeHandler}
           maxLength={300}
+          value={formData.title.value}
         />
-        {errors?.title && <p>{errors.title.msg}</p>}
+        {formErrors?.title && <p>{formErrors.title.msg}</p>}
       </li>
 
       <li className="form-item">
@@ -165,7 +140,7 @@ const PostForm: PostForm = ({ initialData = initialFormData }) => {
           onBeforeAddUndoHandler={editorOnBeforeAddUndoHandler}
           editorValue={formData.content.value}
         />
-        {errors?.content && <p>{errors.content.msg}</p>}
+        {formErrors?.content && <p>{formErrors.content.msg}</p>}
       </li>
 
       <button

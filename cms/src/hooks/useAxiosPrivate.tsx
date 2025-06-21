@@ -8,7 +8,7 @@ const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
 
   useEffect(() => {
-    console.log("useAxiosPrivate mounted...");
+    console.group("useAxiosPrivate mounted...");
     const requestInterceptor = axiosPrivate.interceptors.request.use(
       (config) => {
         console.log("requestInterceptor useAxiosPrivate");
@@ -16,6 +16,7 @@ const useAxiosPrivate = () => {
           console.log("requestInterceptor accessToken:", accessToken);
           config.headers.Authorization = `Bearer ${accessToken}`;
         }
+        console.groupEnd();
         return config;
       }
     );
@@ -25,7 +26,7 @@ const useAxiosPrivate = () => {
     const responseInterceptor = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (err) => {
-        console.log("responseInterceptor err:", err);
+        console.group("responseInterceptor err handler running...");
         if (err.request.status === 403 || err.request.status === 401) {
           console.log("responseInterceptor accessToken:", accessToken);
           const refreshResponse = await refresh();
@@ -36,6 +37,7 @@ const useAxiosPrivate = () => {
           setAccessToken(refreshResponse.accessToken);
           return axiosPrivate(err.config);
         }
+        console.groupEnd();
         return Promise.reject(err);
       }
     );

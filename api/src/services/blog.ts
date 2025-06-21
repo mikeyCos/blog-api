@@ -15,6 +15,18 @@ interface CreateComment {
   content: string;
 }
 
+interface UpdatePost {
+  title: string;
+  titleSlug: string;
+  content: string;
+  filterOptions: FilterOptions;
+}
+
+interface FilterOptions {
+  authorId?: string;
+  titleSlug?: string;
+}
+
 export const createPost = async ({
   blogId,
   authorId,
@@ -85,10 +97,6 @@ export const getPost = async (titleSlug: string, author: string) => {
       throw new PostNotFoundError(titleSlug);
     });
 
-  /* if (!post) {
-    throw new PostNotFoundError(titleSlug);
-  } */
-
   return post;
 };
 
@@ -129,4 +137,30 @@ export const getPostComments = async (postId: string) => {
   });
 
   return postComments;
+};
+
+export const updatePost = async ({
+  title,
+  titleSlug,
+  content,
+  filterOptions,
+}: UpdatePost) => {
+  // Need to throw custom error
+  if (!filterOptions.authorId || !filterOptions.titleSlug) throw new Error();
+
+  const updatedPost = await prisma.post.update({
+    where: {
+      postId: {
+        authorId: filterOptions.authorId,
+        titleSlug: filterOptions.titleSlug,
+      },
+    },
+    data: {
+      title: title,
+      titleSlug: titleSlug,
+      content: content,
+    },
+  });
+
+  return updatedPost;
 };

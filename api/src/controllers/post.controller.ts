@@ -3,7 +3,13 @@ import asyncHandler = require("express-async-handler");
 import { matchedData } from "express-validator";
 
 import { getUser } from "../services/user";
-import { createPost, createComment, getPost, getPosts } from "../services/blog";
+import {
+  createPost,
+  createComment,
+  getPost,
+  getPosts,
+  updatePost,
+} from "../services/blog";
 import { User } from "../interfaces/user";
 import slugify from "../utils/slugify.utils";
 
@@ -75,7 +81,17 @@ const postController: PostController = {
   }),
   getPostComment: asyncHandler(async (req, res) => {}),
   getPostComments: asyncHandler(async (req, res) => {}),
-  editPost: asyncHandler(async (req, res) => {}),
+  editPost: asyncHandler(async (req, res) => {
+    const { title, content } = matchedData(req, {
+      onlyValidData: true,
+    });
+    console.group("editPost running...");
+    const { id: userId } = req.user;
+    const user = await getUser(userId);
+    const titleSlug = slugify(title);
+    // Will need postId, titleSlug from req.params
+    // const updatedPost = await updatePost({title, titleSlug, content, })
+  }),
   deletePost: asyncHandler(async (req, res) => {}),
   deletePostComment: asyncHandler(async (req, res) => {}),
 };

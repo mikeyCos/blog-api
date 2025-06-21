@@ -7,12 +7,13 @@ import DOMPurify from "dompurify";
 import { BadRequestError } from "../errors/customErrors";
 
 const contentSanitizer = (value: string) => {
-  console.log("contentSanitizer running...");
+  console.group("contentSanitizer running...");
   console.log("dirty value:", value);
   const window = new JSDOM("").window;
   const purify = DOMPurify(window);
   const sanitizedValue = purify.sanitize(value);
   console.log("sanitized value:", sanitizedValue);
+  console.groupEnd();
   return sanitizedValue;
 };
 
@@ -40,7 +41,9 @@ const postSchema: Schema = {
 const validatePost = (): RequestHandler => {
   const postValidator: RequestHandler = asyncHandler(
     async (req, res, next): Promise<any> => {
+      console.group("validatePost running...");
       console.log("req.body:", req.body);
+      console.groupEnd();
       await checkSchema(postSchema, ["body"]).run(req);
       const errors = validationResult(req);
 
