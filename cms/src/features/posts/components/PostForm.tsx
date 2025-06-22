@@ -25,6 +25,7 @@ interface InitialFormData {
 
 interface PostFormProps {
   submitForm: any;
+  submitBtnText: "save edits" | "post";
   formErrors?: PostFormError;
   initialData?: InitialFormData;
 }
@@ -44,6 +45,7 @@ const defaultFormData: InitialFormData = {
 
 const PostForm: PostForm = ({
   submitForm,
+  submitBtnText = "post",
   formErrors,
   initialData = defaultFormData,
 }) => {
@@ -149,7 +151,7 @@ const PostForm: PostForm = ({
           !(formData.content.value.length && formData.title.value.length)
         }
       >
-        Post
+        {submitBtnText}
       </button>
     </form>
   );

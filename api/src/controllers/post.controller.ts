@@ -17,7 +17,7 @@ interface PostController {
   createPost: RequestHandler;
   createPostComment: RequestHandler;
   getPost: RequestHandler;
-  getPosts: RequestHandler;
+  getAllPosts: RequestHandler;
   getPostComment: RequestHandler;
   getPostComments: RequestHandler;
   editPost: RequestHandler;
@@ -70,7 +70,7 @@ const postController: PostController = {
     res.json(post);
     console.groupEnd();
   }),
-  getPosts: asyncHandler(async (req, res) => {
+  getAllPosts: asyncHandler(async (req, res) => {
     console.group("getPosts endpoint running...");
     console.groupEnd();
     // TODO
@@ -86,11 +86,19 @@ const postController: PostController = {
       onlyValidData: true,
     });
     console.group("editPost running...");
-    const { id: userId } = req.user;
-    const user = await getUser(userId);
+    const { id: authorId } = req.user;
+    const { postTitle } = req.params;
     const titleSlug = slugify(title);
     // Will need postId, titleSlug from req.params
-    // const updatedPost = await updatePost({title, titleSlug, content, })
+    const updatedPost = await updatePost({
+      authorId,
+      prevTitleSlug: postTitle,
+      title,
+      titleSlug,
+      content,
+    });
+
+    res.json({ status: "success", code: 200, post: updatedPost });
   }),
   deletePost: asyncHandler(async (req, res) => {}),
   deletePostComment: asyncHandler(async (req, res) => {}),

@@ -2,6 +2,9 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 21 JUN 2025
+- Changed `post` route parameter `:postId` to `:postTitle`.
+- Defined `submitBtnText` prop for `PostForm` component.
+- Authenticated users can edit their post and successful form submit will redirect user back to their posts page.
 - Defined `baseURL` variable with the string value `"/api/"` in `routes` module.
 ---
 ### 20 JUN 2025

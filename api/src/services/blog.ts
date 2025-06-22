@@ -16,10 +16,11 @@ interface CreateComment {
 }
 
 interface UpdatePost {
-  title: string;
+  authorId: string;
+  prevTitleSlug: string;
   titleSlug: string;
+  title: string;
   content: string;
-  filterOptions: FilterOptions;
 }
 
 interface FilterOptions {
@@ -141,19 +142,19 @@ export const getPostComments = async (postId: string) => {
 };
 
 export const updatePost = async ({
-  title,
+  authorId,
+  prevTitleSlug,
   titleSlug,
+  title,
   content,
-  filterOptions,
 }: UpdatePost) => {
   // Need to throw custom error
-  if (!filterOptions.authorId || !filterOptions.titleSlug) throw new Error();
 
   const updatedPost = await prisma.post.update({
     where: {
       postId: {
-        authorId: filterOptions.authorId,
-        titleSlug: filterOptions.titleSlug,
+        authorId: authorId,
+        titleSlug: prevTitleSlug,
       },
     },
     data: {

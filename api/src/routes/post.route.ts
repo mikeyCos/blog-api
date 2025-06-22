@@ -10,7 +10,7 @@ const postRoutes = () => {
     createPost,
     createPostComment,
     getPost,
-    getPosts,
+    getAllPosts,
     getPostComment,
     getPostComments,
     editPost,
@@ -19,24 +19,33 @@ const postRoutes = () => {
   } = postController;
 
   // GET requests
-  postRouter.get("/", getPosts);
-  postRouter.get("/:postTitle", getPost); // Needs to be protected to authenticated user
-  postRouter.get("/:username/:postTitle/comments/:commentId", getPostComment);
-  postRouter.get("/:username/:postTitle/comments", getPostComments);
+  postRouter.get("/", getAllPosts);
+  postRouter.get("/:postTitle", getPost);
+  postRouter.get("/:postTitle/comments/:commentId", getPostComment);
+  postRouter.get("/:postTitle/comments", getPostComments);
 
   // POST requests
   // curl -w "\n" -X POST -H "Content-Type:application/json" http://localhost:3001/post -d '{"title":"Post Title", "content":"Lorem ipsum scelerisque risus fringilla justo."}'
   // blogId and authorId are required
-  postRouter.post("/new", authenticateToken, validatePost(), createPost);
-  postRouter.post("/:postId/comment", authenticateToken, createPostComment);
+  postRouter.post("/create", authenticateToken, validatePost(), createPost);
+  postRouter.post(
+    "/:postTitle/comments/create",
+    authenticateToken,
+    createPostComment
+  );
 
   // PUT requests
-  postRouter.put("/", authenticateToken, validatePost(), editPost);
+  postRouter.put(
+    "/:postTitle/edit",
+    authenticateToken,
+    validatePost(),
+    editPost
+  );
 
   // DELETE requests
-  postRouter.delete("/:postId", authenticateToken, deletePost);
+  postRouter.delete("/:postTitle/delete", authenticateToken, deletePost);
   postRouter.delete(
-    "/:postId/comments/:commentId",
+    "/:postTitle/comments/:commentId/delete",
     authenticateToken,
     deletePostComment
   );

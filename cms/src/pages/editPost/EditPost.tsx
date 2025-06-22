@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import { useState } from "react";
 import { useUserData } from "../../hooks/useUser";
 import { Post as PostData } from "../../interfaces/blog";
@@ -8,18 +8,24 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { PostSuccessResponse } from "../../interfaces/responses";
 
 const EditPost = () => {
+  const navigate = useNavigate();
   const { user, updatePost } = useUserData();
   const currentPost = useLoaderData<PostData>();
   const [errors, setErrors] = useState<PostFormError>();
   const axiosPrivate = useAxiosPrivate();
 
+  console.log("user:", user);
   const submitPost = async (data: any) => {
     try {
+      console.group("submitPost running...");
       const response = await axiosPrivate.put<PostSuccessResponse>(
-        `/users/${user?.id}/posts/${currentPost.id}/edit`,
+        `/users/${currentPost?.authorId}/posts/${currentPost.titleSlug}/edit`,
         data
       );
+      console.log("response:", response);
+      console.groupEnd();
       updatePost(response.data.post);
+      navigate(`/${user?.username}/posts`);
     } catch (err: any) {
       setErrors(err.response.data.errors);
     }
@@ -41,8 +47,9 @@ const EditPost = () => {
     <>
       <p>EditPost page</p>
       <PostForm
-        initialData={initialData}
         submitForm={submitPost}
+        submitBtnText="save edits"
+        initialData={initialData}
         formErrors={errors}
       />
     </>

@@ -14,7 +14,7 @@ const authRoutes = () => {
   authRouter.get("/user", authenticateToken, authenticatedUser);
 
   // POST requests
-  // curl -w "\n" -X POST http://localhost:3001/auth
+  // curl -w "\n" -X POST http://localhost:3001/api/auth
   authRouter.post("/login", login);
   authRouter.post("/logout", logout);
   authRouter.post("/refresh", refreshToken);
