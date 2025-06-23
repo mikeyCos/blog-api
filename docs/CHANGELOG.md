@@ -2,6 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 22 JUN 2025
+- Merged `api-public-private-routes` branch to `feature-post`.
 - Updating a post will filter by `publicId` and the author's `username`.
 - Added `post` route parameter `:postPublicId`.
 - Changed `post` route parameter `:postTitle` to `:postSlugTitle`.
