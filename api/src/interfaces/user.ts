@@ -3,9 +3,9 @@ import { Post } from "./post";
 import { Comment } from "./comment";
 
 export interface User {
-  id?: UserId;
+  id: UserId;
   roles?: Role[];
-  username?: Username;
+  username: Username;
   email?: string;
   password?: string;
   timestamp?: Date;

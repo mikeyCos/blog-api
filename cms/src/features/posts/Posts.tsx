@@ -18,7 +18,7 @@ const Posts = () => {
     try {
       console.group("submitPost running...");
       const response = await axiosPrivate.post<PostSuccessResponse>(
-        `/users/${user?.username}/posts/new`,
+        `/users/${user?.username}/posts`,
         data
       );
       addPost(response.data.post);

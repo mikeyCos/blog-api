@@ -65,8 +65,8 @@ const postController: PostController = {
   }),
   getPost: asyncHandler(async (req, res) => {
     console.group("getPost endpoint running...");
-    const { postTitle, username } = req.params;
-    const post = await getPost(postTitle, username);
+    const { postPublicId, username } = req.params;
+    const post = await getPost(postPublicId, username);
     res.json(post);
     console.groupEnd();
   }),
@@ -86,13 +86,12 @@ const postController: PostController = {
       onlyValidData: true,
     });
     console.group("editPost running...");
-    const { id: authorId } = req.user;
-    const { postTitle } = req.params;
+    const { postPublicId, username } = req.params;
     const titleSlug = slugify(title);
     // Will need postId, titleSlug from req.params
     const updatedPost = await updatePost({
-      authorId,
-      prevTitleSlug: postTitle,
+      username,
+      postPublicId,
       title,
       titleSlug,
       content,

@@ -25,7 +25,7 @@ interface InitialFormData {
 
 interface PostFormProps {
   submitForm: any;
-  submitBtnText: "save edits" | "post";
+  submitBtnText?: "save edits" | "post";
   formErrors?: PostFormError;
   initialData?: InitialFormData;
 }

@@ -16,8 +16,8 @@ interface CreateComment {
 }
 
 interface UpdatePost {
-  authorId: string;
-  prevTitleSlug: string;
+  username: string;
+  postPublicId: string;
   titleSlug: string;
   title: string;
   content: string;
@@ -81,22 +81,24 @@ export const createComment = async ({
   return newComment;
 };
 
-export const getPost = async (titleSlug: string, author: string) => {
+// export const getPost = async (titleSlug: string, author: string) => {
+export const getPost = async (publicId: string, username: string) => {
   console.group("getPost running...");
-  console.log("titleSlug:", titleSlug);
-  console.log("author:", author);
+  console.log("publicId:", publicId);
+  console.log("username:", username);
   console.groupEnd();
+
   const post = await prisma.post
-    .findFirstOrThrow({
+    .findUniqueOrThrow({
       where: {
-        titleSlug: titleSlug,
+        publicId: publicId,
         author: {
-          username: author,
+          username: username,
         },
       },
     })
     .catch(() => {
-      throw new PostNotFoundError(titleSlug);
+      throw new PostNotFoundError(publicId);
     });
 
   return post;
@@ -142,19 +144,17 @@ export const getPostComments = async (postId: string) => {
 };
 
 export const updatePost = async ({
-  authorId,
-  prevTitleSlug,
-  titleSlug,
+  username,
+  postPublicId,
   title,
+  titleSlug,
   content,
 }: UpdatePost) => {
-  // Need to throw custom error
-
   const updatedPost = await prisma.post.update({
     where: {
-      postId: {
-        authorId: authorId,
-        titleSlug: prevTitleSlug,
+      publicId: postPublicId,
+      author: {
+        username: username,
       },
     },
     data: {

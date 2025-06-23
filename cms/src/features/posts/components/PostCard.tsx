@@ -7,10 +7,10 @@ interface Props {
 }
 
 const PostCard: React.FC<Props> = ({ data }) => {
-  const { id, title, titleSlug, createdAt } = data;
+  const { publicId, title, titleSlug, createdAt } = data;
   const { username } = useParams();
-  const postPath = `/${username}/${titleSlug}`;
-  const editPostPath = `/${username}/posts/${data.titleSlug}/edit`;
+  const postPath = `/${username}/posts/${publicId}/${titleSlug}`;
+  const editPostPath = `/${username}/posts/${publicId}/${titleSlug}/edit`;
   // TODO
   // Add
   //  Delete button

@@ -6,6 +6,7 @@ export interface Blog {
 
 export interface Post {
   id: string;
+  publicId: string;
   authorId: string;
   blogId: string;
   createdAt: Date;

@@ -20,7 +20,7 @@ const Post = () => {
 
   const { username } = user;
   // /:username/posts/:postTitle/edit
-  const pathname = `/${username}/posts/${currentPost.titleSlug}/edit`;
+  const pathname = `/${username}/posts/${currentPost.publicId}/${currentPost.titleSlug}/edit`;
 
   return (
     <section>

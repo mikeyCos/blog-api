@@ -3,7 +3,7 @@ import { axiosPrivate } from "../../config/axios.config";
 import { Post } from "../../interfaces/blog";
 
 const Paths = {
-  editPostDetail: "/:username/posts/:postTitle/edit",
+  editPostDetail: "/:username/posts/:postPublicId/:postTitle/edit",
 } as const;
 
 interface LoaderArgs extends ActionFunctionArgs {
@@ -14,7 +14,7 @@ const editPostLoader = async ({ params }: LoaderArgs): Promise<Post> => {
   console.group("postLoader running...");
 
   try {
-    const url = `users/${params.username}/posts/${params.postTitle}`;
+    const url = `users/${params.username}/posts/${params.postPublicId}/${params.postTitle}`;
     const response = await axiosPrivate.get(url);
     console.log("response:", response);
     console.groupEnd();

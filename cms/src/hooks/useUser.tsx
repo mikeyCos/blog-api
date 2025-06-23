@@ -101,8 +101,6 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [isAuthenticated]);
 
-  if (false) {
-  }
   const useUserValue = useMemo<UserContextType>(() => {
     if (isAuthenticated) {
       return {

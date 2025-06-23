@@ -3,9 +3,9 @@ import { Comment } from "./comment";
 
 export interface Post extends CreatedAt {
   id: string;
+  publicId: string;
   authorId: string;
   blogId: string;
-  createdAt: Date;
   updatedAt: Date;
   title: string;
   titleSlug: string;

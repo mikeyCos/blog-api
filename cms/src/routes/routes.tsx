@@ -67,12 +67,12 @@ const routes: RouteObject[] = [
                     element: <Comments />,
                   },
                   {
-                    path: "/:username/:postTitle",
+                    path: "/:username/posts/:postPublicId/:postTitle",
                     element: <Post />,
                     loader: postLoader,
                   },
                   {
-                    path: "/:username/posts/:postTitle/edit",
+                    path: "/:username/posts/:postPublicId/:postTitle/edit",
                     element: <EditPost />,
                     loader: editPostLoader,
                   },

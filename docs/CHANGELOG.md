@@ -1,6 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 22 JUN 2025
+- Updating a post will filter by `publicId` and the author's `username`.
+- Added `post` route parameter `:postPublicId`.
+- Changed `post` route parameter `:postTitle` to `:postSlugTitle`.
+- Removed `create` and `edit` from API paths.
+- Defined unique `publicId` field in `Post` model with default value of `nanoid(10)`. 
+---
 ### 21 JUN 2025
 - Changed `post` route parameter `:postId` to `:postTitle`.
 - Defined `submitBtnText` prop for `PostForm` component.
