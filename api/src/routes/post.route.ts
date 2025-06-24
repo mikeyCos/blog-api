@@ -1,8 +1,9 @@
 import { Router } from "express";
 
 import postController from "../controllers/post.controller";
-import { validatePost } from "../validators/validators";
+import { validateParams, validatePost } from "../validators/validators";
 import authenticateToken from "../middleware/authenticateToken";
+import { postSchema } from "../validators/params.validator";
 
 const postRoutes = () => {
   const postRouter = Router({ mergeParams: true });
@@ -20,7 +21,11 @@ const postRoutes = () => {
 
   // GET requests
   postRouter.get("/", getAllPosts);
-  postRouter.get("/:postPublicId/:postSlugTitle", getPost);
+  postRouter.get(
+    "/:postPublicId/:postSlugTitle",
+    validateParams(postSchema),
+    getPost
+  );
   postRouter.get(
     "/:postPublicId/:postSlugTitle/comments/:commentId",
     getPostComment
@@ -33,18 +38,32 @@ const postRoutes = () => {
   postRouter.post("/", authenticateToken, validatePost(), createPost);
   postRouter.post(
     "/:postPublicId/:postSlugTitle/comments",
+    validateParams(postSchema),
+    validatePost(),
     authenticateToken,
     createPostComment
   );
 
   // PUT requests
-  postRouter.put("/:postPublicId", authenticateToken, validatePost(), editPost);
+  postRouter.put(
+    "/:postPublicId",
+    authenticateToken,
+    validateParams(postSchema),
+    validatePost(),
+    editPost
+  );
 
   // DELETE requests
-  postRouter.delete("/:postPublicId/", authenticateToken, deletePost);
+  postRouter.delete(
+    "/:postPublicId/",
+    authenticateToken,
+    validateParams(postSchema),
+    deletePost
+  );
   postRouter.delete(
     "/:postPublicId/:postSlugTitle/comments/:commentId",
     authenticateToken,
+    validateParams(postSchema),
     deletePostComment
   );
 

@@ -82,7 +82,7 @@ export const createComment = async ({
 };
 
 // export const getPost = async (titleSlug: string, author: string) => {
-export const getPost = async (publicId: string, username: string) => {
+export const getPost = async (publicId: number, username: string) => {
   console.group("getPost running...");
   console.log("publicId:", publicId);
   console.log("username:", username);
@@ -98,7 +98,7 @@ export const getPost = async (publicId: string, username: string) => {
       },
     })
     .catch(() => {
-      throw new PostNotFoundError(publicId);
+      throw new PostNotFoundError(`${publicId}`);
     });
 
   return post;
@@ -152,7 +152,7 @@ export const updatePost = async ({
 }: UpdatePost) => {
   const updatedPost = await prisma.post.update({
     where: {
-      publicId: postPublicId,
+      publicId: +postPublicId,
       author: {
         username: username,
       },

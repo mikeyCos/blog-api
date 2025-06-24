@@ -12,6 +12,7 @@ import {
 } from "../services/blog";
 import { User } from "../interfaces/user";
 import slugify from "../utils/slugify.utils";
+import { ValidDataPostSchema } from "../validators/params.validator";
 
 interface PostController {
   createPost: RequestHandler;
@@ -65,7 +66,8 @@ const postController: PostController = {
   }),
   getPost: asyncHandler(async (req, res) => {
     console.group("getPost endpoint running...");
-    const { postPublicId, username } = req.params;
+    const { username, postPublicId, postSlugTitle } =
+      matchedData<ValidDataPostSchema>(req, { onlyValidData: true });
     const post = await getPost(postPublicId, username);
     res.json(post);
     console.groupEnd();

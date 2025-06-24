@@ -19,7 +19,7 @@ const EditPost = () => {
     try {
       console.group("submitPost running...");
       const response = await axiosPrivate.put<PostSuccessResponse>(
-        `/users/${user?.username}/posts/${currentPost.publicId}`,
+        `/users/${user?.username}/posts/${currentPost.titleSlug}`,
         data
       );
       console.log("response:", response);
@@ -27,6 +27,7 @@ const EditPost = () => {
       updatePost(response.data.post);
       navigate(`/${user?.username}/posts`);
     } catch (err: any) {
+      console.error(err);
       setErrors(err.response.data.errors);
     }
   };

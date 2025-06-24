@@ -41,4 +41,18 @@ export default routes;
  *        /posts/postId/comments                    returns all comments by post id
  *        /posts/postId/comments/commentId          returns comment by post id and comment id
  *        /posts/postId/comments/commentId/delete
+ *
+ * Brainstorming...
+ *
+ * Front end --[METHOD]--> Back end
+ * Get posts for specific user
+ *    /:username --[GET]--> /users/:username/posts
+ * Create a new post for specific user
+ *    /:username/new --[POST]--> /users/:username/posts
+ * Get comments for specific user
+ *    /:username --[GET]--> /users/:username/comments
+ * Get/update a specific post for specific user, postPublicId, postTitleSlug
+ *    /:username/:postTitleSlug --[GET]--> /users/:username/posts/:postPublicId/:postTitleSlug
+ *    /:username/:postTitleSlug/edit --[PUT]--> /users/:username/:postPublicId/posts/:postTitleSlug
+ *
  */

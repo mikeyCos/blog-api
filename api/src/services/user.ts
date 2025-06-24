@@ -96,12 +96,6 @@ export const getUser: GetUser = async (userId, username) => {
       throw new UserNotFoundError(identifier!, isId);
     });
 
-  /* if (!user) {
-    const identifier = userId || username;
-    const isId = !!userId;
-    throw new UserNotFoundError(identifier!, isId);
-  } */
-
   return user;
 };
 

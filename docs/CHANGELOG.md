@@ -1,6 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 23 JUN 2025
+- Changed `publicId` parameter type for data access function `getPost` from `string` to `number`.
+- The `:postPublicId` parameter sanitizes into an integer type.
+- Defined `postSchema` in `param.validator` module.
+- Changed `publicId` field type from `String` to `Int` and changed default value from `nanoid(10)` to `autoincrement()`.
+---
 ### 22 JUN 2025
 - Merged `api-public-private-routes` branch to `feature-post`.
 - Updating a post will filter by `publicId` and the author's `username`.

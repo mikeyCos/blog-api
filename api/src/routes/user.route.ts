@@ -10,8 +10,8 @@ const userRoutes = () => {
 
   // GET requests
   // curl -w "\n" -X GET http://localhost:3001/user/:userId
-  userRouter.get("/:userId", validateParams(userSchema), getUser);
   userRouter.get("/", getUsers);
+  userRouter.get("/:userId", validateParams(userSchema), getUser);
 
   // PUT requests
 

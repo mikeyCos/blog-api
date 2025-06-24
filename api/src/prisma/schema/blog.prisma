@@ -12,7 +12,7 @@ model Blog {
 // A tag can be in multiple posts
 model Post {
   id        String    @id @default(uuid())
-  publicId  String    @unique @default(nanoid(10))
+  publicId  Int       @unique @default(autoincrement())
   blog      Blog      @relation(fields: [blogId], references: [id])
   blogId    String
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
