@@ -98,8 +98,10 @@ const PostForm: PostForm = ({
    *  additional characters until key is lifted up
    */
   const editorOnChangeHandler = (content: string, editor: TinyMCEEditor) => {
+    console.group("editorOnChangeHandler running...");
     console.log("content:", content);
     console.log("editor:", editor);
+    console.groupEnd();
     const currentCharCount = charCount(editor);
     if (currentCharCount <= 50) {
       setFormData({

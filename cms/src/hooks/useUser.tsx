@@ -82,7 +82,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   useEffect(() => {
-    console.log("UserProvider mounted");
+    console.group("UserProvider mounted");
     const getUser = async () => {
       try {
         const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
@@ -91,10 +91,10 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       } catch (err) {
         console.error(err);
       }
+      console.groupEnd();
     };
 
     if (accessToken && isAuthenticated) {
-      // Send GET request to API to get user profile
       getUser();
     } else {
       setUser(null);

@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 24 JUN 2025
+- 
+---
 ### 23 JUN 2025
 - Changed `publicId` parameter type for data access function `getPost` from `string` to `number`.
 - The `:postPublicId` parameter sanitizes into an integer type.

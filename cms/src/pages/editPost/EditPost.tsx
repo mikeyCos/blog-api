@@ -16,6 +16,7 @@ const EditPost = () => {
 
   console.log("user:", user);
   const submitPost = async (data: any) => {
+    // If data and currentPost are the same don't submit
     try {
       console.group("submitPost running...");
       const response = await axiosPrivate.put<PostSuccessResponse>(
