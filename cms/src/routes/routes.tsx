@@ -18,6 +18,7 @@ import Post from "../pages/post/Post";
 import postLoader from "../pages/post/postLoader";
 import EditPost from "../pages/editPost/EditPost";
 import editPostLoader from "../pages/editPost/editPostLoader";
+import ModalProvider from "../hooks/useModal";
 
 // If no user is logged in
 //  Go to home page
@@ -30,7 +31,9 @@ import editPostLoader from "../pages/editPost/editPostLoader";
 const RootLayout: React.FC = () => {
   return (
     <PrevLocationProvider>
-      <Outlet />
+      <ModalProvider>
+        <Outlet />
+      </ModalProvider>
     </PrevLocationProvider>
   );
 };

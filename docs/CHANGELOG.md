@@ -2,7 +2,11 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 24 JUN 2025
-- 
+- The `content` state resets to `null` whenever the modal is closed.
+- Created a skeleton `ConfirmPostDelete` component with temporary button that allows the user to close the modal by clicking the button.
+- The `openModal` method requires a `React.ReactNode` type parameter, sets the `ModalProvider` `content` state with the `modalContent` parameter, and sets `isOpen` state to true.
+- Created `Modal` component and `useModalContext` hook.
+- Created `hook-modal-provider` branch from `feature-post`.
 ---
 ### 23 JUN 2025
 - Changed `publicId` parameter type for data access function `getPost` from `string` to `number`.
