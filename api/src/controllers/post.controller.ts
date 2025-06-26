@@ -9,6 +9,7 @@ import {
   getPost,
   getPosts,
   updatePost,
+  deletePost,
 } from "../services/blog";
 import { User } from "../interfaces/user";
 import slugify from "../utils/slugify.utils";
@@ -101,7 +102,15 @@ const postController: PostController = {
 
     res.json({ status: "success", code: 200, post: updatedPost });
   }),
-  deletePost: asyncHandler(async (req, res) => {}),
+  deletePost: asyncHandler(async (req, res) => {
+    console.group("deletePost running...");
+    console.groupEnd();
+    const { postId } = matchedData<{ postId: string }>(req, {
+      onlyValidData: true,
+    });
+    const deletedPost = await deletePost(postId);
+    res.json({ status: "success", code: 200, post: deletedPost });
+  }),
   deletePostComment: asyncHandler(async (req, res) => {}),
 };
 

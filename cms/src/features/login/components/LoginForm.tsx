@@ -35,7 +35,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState<LoginFormError | null>(null);
 
-  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const input = e.currentTarget;
     const { id, value } = input;
     setFormData({
@@ -46,10 +46,10 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
     });
   };
 
-  const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handlerSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const from = prevLocation ?? "/dashboard";
-    console.log("form submit handler running...");
+    console.log("handlerSubmit running...");
     console.log("from:", from);
     const body = new URLSearchParams();
 
@@ -90,7 +90,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
 
   // Do I really need to erase inputs after successful POSt request?
   return (
-    <form method="POST" onSubmit={submitHandler}>
+    <form method="POST" onSubmit={handlerSubmit}>
       <ul>
         <li>
           <label htmlFor="username">username</label>
@@ -98,7 +98,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
             type="text"
             name="username"
             id="username"
-            onChange={onChangeHandler}
+            onChange={handleInputChange}
             value={formData.username.value}
             ref={userRef}
             autoComplete="off"
@@ -112,7 +112,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
             type="password"
             name="password"
             id="password"
-            onChange={onChangeHandler}
+            onChange={handleInputChange}
             value={formData.password.value}
             autoComplete="off"
             // required

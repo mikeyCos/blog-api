@@ -11,8 +11,8 @@ import { AuthUserResponse } from "../interfaces/responses";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { Post } from "../interfaces/blog";
 
-interface PostCallback {
-  (newPost: Post): void;
+interface PostCallback<T> {
+  (param: T): void;
 }
 
 type status = "loading" | "unauthenticated" | "authenticated";
@@ -20,15 +20,17 @@ type status = "loading" | "unauthenticated" | "authenticated";
 interface UserContextAuthenticated {
   status: status;
   user: AuthenticatedUser;
-  addPost: PostCallback;
-  updatePost: PostCallback;
+  addPost: PostCallback<Post>;
+  updatePost: PostCallback<Post>;
+  removePost: PostCallback<string>;
 }
 
 interface UserContextUnauthenticated {
   status: status;
   user: null;
-  addPost: PostCallback;
-  updatePost: PostCallback;
+  addPost: PostCallback<Post>;
+  updatePost: PostCallback<Post>;
+  removePost: PostCallback<string>;
 }
 
 export type UserContextType =
@@ -40,6 +42,7 @@ const UserContext = createContext<UserContextType>({
   user: null,
   addPost: () => {},
   updatePost: () => {},
+  removePost: () => {},
 });
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -49,9 +52,10 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
   const axiosPrivate = useAxiosPrivate();
 
-  const addPost: PostCallback = (newPost) => {
+  const addPost: PostCallback<Post> = (newPost) => {
     setUser((prevUser) => {
       if (!prevUser) return prevUser;
+
       return {
         ...prevUser,
         ...(prevUser.blog && {
@@ -61,7 +65,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  const updatePost: PostCallback = (newPost) => {
+  const updatePost: PostCallback<Post> = (newPost) => {
     setUser((prevUser) => {
       if (prevUser?.blog) {
         const posts = prevUser.blog.posts.map((post) => {
@@ -71,9 +75,24 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
         return {
           ...prevUser,
-          ...{
-            blog: { ...prevUser.blog, posts },
-          },
+          blog: { ...prevUser.blog, posts },
+        };
+      }
+
+      return prevUser;
+    });
+  };
+
+  const removePost: PostCallback<string> = (postId) => {
+    setUser((prevUser) => {
+      if (prevUser?.blog) {
+        const posts = prevUser.blog.posts.filter((post) => {
+          if (post.id !== postId) return post;
+        });
+
+        return {
+          ...prevUser,
+          blog: { ...prevUser.blog, posts },
         };
       }
 
@@ -108,6 +127,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         user,
         addPost,
         updatePost,
+        removePost,
       };
     }
 
@@ -116,6 +136,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       user: null,
       addPost: () => {},
       updatePost: () => {},
+      removePost: () => {},
     };
   }, [user]);
 

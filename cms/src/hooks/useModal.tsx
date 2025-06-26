@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import Modal from "../components/modal/Modal";
+import { useSearchParams } from "react-router";
 
 interface ModalContext {
   openModal: (modalContent: React.ReactNode) => void;
@@ -15,19 +16,20 @@ const ModalContext = createContext<ModalContext | null>(null);
 const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState<React.ReactNode | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isOpen = searchParams.get("modal") === "open";
 
   const openModal = (modalContent: React.ReactNode) => {
     console.group("openDialog running...");
     console.groupEnd();
     setContent(modalContent);
-    setIsOpen(true);
+    setSearchParams({ modal: "open" });
   };
 
   const closeModal = () => {
     setContent(null);
-    setIsOpen(false);
+    setSearchParams();
   };
 
   const value = useMemo(() => {

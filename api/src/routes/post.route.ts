@@ -54,8 +54,9 @@ const postRoutes = () => {
   );
 
   // DELETE requests
+  // How can I use this only for routes /posts, not /users/*/posts?
   postRouter.delete(
-    "/:postPublicId/",
+    "/:postId/",
     authenticateToken,
     validateParams(postSchema),
     deletePost

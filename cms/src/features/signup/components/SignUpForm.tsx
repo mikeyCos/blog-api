@@ -18,9 +18,9 @@ const SignUpForm: React.FC = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const submitHandler: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    console.log("form submit handler running...");
+    console.group("handleSubmit running...");
     const formElement = e.currentTarget;
     const formData = new FormData(formElement);
     const body = new URLSearchParams();
@@ -49,13 +49,14 @@ const SignUpForm: React.FC = () => {
         console.error(err);
       }
     }
+    console.groupEnd();
   };
 
   return (
     <form
       action={`${config.blogAPIBase}/auth/signup`}
       method="POST"
-      onSubmit={submitHandler}
+      onSubmit={handleSubmit}
     >
       <ul>
         <li>

@@ -4,15 +4,15 @@ import React from "react";
 
 interface PostEditorProps {
   editorRef: React.RefObject<TinyMCEEditor | null>;
-  onChangeHandler: (content: string, editor: TinyMCEEditor) => void;
-  onBeforeAddUndoHandler: (e: any, editor: TinyMCEEditor) => void;
+  onChange: (content: string, editor: TinyMCEEditor) => void;
+  onBeforeAddUndo: (e: any, editor: TinyMCEEditor) => void;
   editorValue: string;
 }
 
 const PostEditor: React.FC<PostEditorProps> = ({
   editorRef,
-  onChangeHandler,
-  onBeforeAddUndoHandler,
+  onChange,
+  onBeforeAddUndo,
   editorValue,
 }) => {
   // apiKey={tinyMCEAPI}
@@ -77,8 +77,8 @@ const PostEditor: React.FC<PostEditorProps> = ({
         placeholder: "This is a placholder",
         // images_upload_handler: imgUploadHandler
       }}
-      onEditorChange={onChangeHandler}
-      onBeforeAddUndo={onBeforeAddUndoHandler}
+      onEditorChange={onChange}
+      onBeforeAddUndo={onBeforeAddUndo}
       value={editorValue}
     />
   );

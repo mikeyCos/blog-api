@@ -8,8 +8,8 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, closeModal, content }) => {
   const modalRef = useRef<HTMLDialogElement>(null);
-  const onClickHandler: React.MouseEventHandler = (e) => {
-    console.group("onClickHandler running...");
+  const handleDialogClick: React.MouseEventHandler = (e) => {
+    console.group("handleDialogClick running...");
     console.log("e.target:", e.target);
     const element = e.target as HTMLElement;
     if (element.tagName === "DIALOG") closeModal();
@@ -18,7 +18,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, closeModal, content }) => {
 
   useEffect(() => {
     const modalElement = modalRef.current;
-    if (!modalElement) return;
+    if (!modalElement || !content) return;
 
     if (isOpen) {
       modalElement.showModal();
@@ -28,13 +28,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, closeModal, content }) => {
   }, [isOpen]);
 
   return (
-    <dialog id="modal" onClick={onClickHandler} ref={modalRef}>
+    <dialog id="modal" onClick={handleDialogClick} ref={modalRef}>
       <div
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <p>If you see this, the modal is open</p>
         {content}
       </div>
     </dialog>

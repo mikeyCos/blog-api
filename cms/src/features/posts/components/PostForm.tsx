@@ -79,7 +79,7 @@ const PostForm: PostForm = ({
     }
   };
 
-  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const input = e.currentTarget;
     console.log("input:", input);
     const { id, value } = input;
@@ -97,8 +97,8 @@ const PostForm: PostForm = ({
    * BUG: Holding a key down will keep rendering
    *  additional characters until key is lifted up
    */
-  const editorOnChangeHandler = (content: string, editor: TinyMCEEditor) => {
-    console.group("editorOnChangeHandler running...");
+  const handleEditorOnChange = (content: string, editor: TinyMCEEditor) => {
+    console.group("handleEditorOnChange running...");
     console.log("content:", content);
     console.log("editor:", editor);
     console.groupEnd();
@@ -113,7 +113,7 @@ const PostForm: PostForm = ({
     }
   };
 
-  const editorOnBeforeAddUndoHandler = (e: any, editor: TinyMCEEditor) => {
+  const handleOnBeforeAddUndo = (e: any, editor: TinyMCEEditor) => {
     const currentCharCount = charCount(editor);
     console.log("e:", e);
     if (currentCharCount < 50) {
@@ -130,7 +130,7 @@ const PostForm: PostForm = ({
           id="title"
           name="title"
           type="text"
-          onChange={onChangeHandler}
+          onChange={handleOnChange}
           maxLength={300}
           value={formData.title.value}
         />
@@ -140,8 +140,8 @@ const PostForm: PostForm = ({
       <li className="form-item">
         <PostEditor
           editorRef={editorRef}
-          onChangeHandler={editorOnChangeHandler}
-          onBeforeAddUndoHandler={editorOnBeforeAddUndoHandler}
+          onChange={handleEditorOnChange}
+          onBeforeAddUndo={handleOnBeforeAddUndo}
           editorValue={formData.content.value}
         />
         {formErrors?.content && <p>{formErrors.content.msg}</p>}

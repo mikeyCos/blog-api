@@ -24,19 +24,13 @@ const Header: React.FC = () => {
   //  Cannot redirect user to page they are logging out from
   //  For example,
   //    Logging out from /faq should return the user to /faq, not /login
-  const logoutHandler = async () => {
-    console.log("logoutHandler running...");
-    // const isLogout = await logout();
-    await logout();
-    console.group();
+  const handleLogout = async () => {
+    console.group("handleLogout running...");
     console.log("prevLocation:", prevLocation);
     console.log("from:", from);
     console.groupEnd();
-    // console.log("isLogout:", isLogout);
-    // navigate(prevLocation ?? "/");
+    await logout();
     navigate(from), { replace: true };
-    // navigate("/");
-    // logout();
   };
 
   return (
@@ -66,7 +60,7 @@ const Header: React.FC = () => {
               </li>
 
               <li>
-                <button type="button" onClick={logoutHandler}>
+                <button type="button" onClick={handleLogout}>
                   Log out
                 </button>
               </li>

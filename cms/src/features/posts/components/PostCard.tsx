@@ -9,7 +9,7 @@ interface Props {
 }
 
 const PostCard: React.FC<Props> = ({ data }) => {
-  const { publicId, title, titleSlug, createdAt } = data;
+  const { id, authorId, publicId, title, titleSlug, createdAt } = data;
   const { username } = useParams();
   const { openModal } = useModalContext();
   const postPath = `/${username}/posts/${publicId}/${titleSlug}`;
@@ -23,7 +23,9 @@ const PostCard: React.FC<Props> = ({ data }) => {
       <NavAnchor pathname={postPath} textContent={title} />
       <p>Posted on {createdAt.toString()}</p>
       <NavAnchor pathname={editPostPath} textContent="edit" />
-      <button onClick={() => openModal(<ConfirmPostDelete />)}>Delete</button>
+      <button onClick={() => openModal(<ConfirmPostDelete data={data} />)}>
+        Delete
+      </button>
     </li>
   );
 };

@@ -1,6 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 25 JUN 
+- The variable `isOpen` is assigned a boolean value based on `searchParams.get("modal") === "open"`.
+- Replaced `isOpen`/`setIsOpen` state with `useSearchParams` hook values `searchParams` and `setSearchParams`.
+- The `deletePost` query function accepts `postId` parameter of `string` type.
+- Defined `removePost` function for `UserProvider` in `useUser` module and made it available to the provider's context.
+- Renamed event handlers with the prefix `handle`.
+---
 ### 24 JUN 2025
 - The `content` state resets to `null` whenever the modal is closed.
 - Created a skeleton `ConfirmPostDelete` component with temporary button that allows the user to close the modal by clicking the button.
@@ -9,7 +16,7 @@
 - Created `hook-modal-provider` branch from `feature-post`.
 ---
 ### 23 JUN 2025
-- Changed `publicId` parameter type for data access function `getPost` from `string` to `number`.
+- Changed `publicId` parameter type for query function `getPost` from `string` to `number`.
 - The `:postPublicId` parameter sanitizes into an integer type.
 - Defined `postSchema` in `param.validator` module.
 - Changed `publicId` field type from `String` to `Int` and changed default value from `nanoid(10)` to `autoincrement()`.
@@ -29,7 +36,7 @@
 - Defined `baseURL` variable with the string value `"/api/"` in `routes` module.
 ---
 ### 20 JUN 2025
-- Defined interfaces for `updatePost` data access function.
+- Defined interfaces for `updatePost` query function.
 - `PostForm` component's form data are appended to `FormData` object instead of `URLSearchParams`.
 - Defined `headers` property for `axiosPrivate` instance with `"Content-Type": "application/json"`.
 - `PostForm` component now accepts `submitForm` and `formErrors` props.
@@ -45,10 +52,10 @@
 - Defined `initialData` optional prop for `PostForm` component.
 - Fixed Git error `object file...is empty` by deleting empty objects, fetching missing objects and checking full object store.
 - The `slugify` function will also convert the string to lower case.
-- Changed query selector for `getUser`, and `getPost` data access functions `findUnique` to `findUniqueOrThrow` and `findFirstOrThrow` respectively.
+- Changed query selector for `getUser`, and `getPost` query functions `findUnique` to `findUniqueOrThrow` and `findFirstOrThrow` respectively.
 ---
 ### 17 JUN 2025
-- Change query selector for `getPost` data access function from `findUnique` to `findFirst` with `titleSlug`, and the author's `username` fields.
+- Change query selector for `getPost` query function from `findUnique` to `findFirst` with `titleSlug`, and the author's `username` fields.
 - Added query parameter, `?author=${params.author}$`, to the url in `postLoader` module.
 - `Link` components, in the `PostCard` and `DashboardNavbar` components, now include the authenticated user's username in the path.
 - Defined unique constraints for the `Post` model.
@@ -71,7 +78,7 @@
 ### 13 JUN 2025
 - Moved `AuthProvider` and `UserProvider` components from `routes` module into `App` component.
 - Created `rewrite-routes-providers` branch from `feature-post`.
-- The `getPost` blog data access function will throw a `PostNotFoundError` when a post does not exist in the database.
+- The `getPost` blog query function will throw a `PostNotFoundError` when a post does not exist in the database.
 - Defined `PostNotFoundError` interface in `customErrors` module.
 - Created `postLoader` module in `post` subdirectory.
 - Removed `state` prop from `NavAnchor` component in `PostCard` component.

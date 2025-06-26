@@ -32,6 +32,20 @@ const postSchema: Schema = {
     },
     escape: true,
   },
+  postId: {
+    trim: true,
+    notEmpty: {
+      errorMessage: 'Parameter "postId" cannot be left empty',
+      bail: true,
+    },
+    isUUID: true,
+    optional: {
+      options: {
+        nullable: true,
+      },
+    },
+    escape: true,
+  },
   postPublicId: {
     trim: true,
     notEmpty: {

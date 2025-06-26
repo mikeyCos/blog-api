@@ -23,10 +23,8 @@ interface UpdatePost {
   content: string;
 }
 
-interface FilterOptions {
-  postId?: string;
-  authorId?: string;
-  titleSlug?: string;
+interface DeletePost {
+  postPublicId: string;
 }
 
 export const createPost = async ({
@@ -165,4 +163,14 @@ export const updatePost = async ({
   });
 
   return updatedPost;
+};
+
+export const deletePost = async (postId: string) => {
+  const deletedPost = await prisma.post.delete({
+    where: {
+      id: postId,
+    },
+  });
+
+  return deletedPost;
 };
