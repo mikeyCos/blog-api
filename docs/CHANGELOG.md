@@ -2,6 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 26 JUN 2025
+- Merged `hook-modal-provider` branch to `feature-post`.
 - When a user deletes a post on the post page, they will be redirected to `/:username/posts`.
 ---
 ### 25 JUN 
