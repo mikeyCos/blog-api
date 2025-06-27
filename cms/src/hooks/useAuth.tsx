@@ -10,11 +10,13 @@ import React, {
 import axios from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
 import { useUserData } from "./useUser";
-// import { useNavigate } from "react-router";
 
 // TODO
 // Need to set type for createContext, useState, and user
 // https://reacttraining.com/blog/react-context-with-typescript
+// Need to check roles of logged in user
+//  Admins, they can read, write, delete anyone's material and comments
+//  Authors, can only read, write, delete their own material and user comments under their blog
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
 

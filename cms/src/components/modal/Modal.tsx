@@ -18,7 +18,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, closeModal, content }) => {
 
   useEffect(() => {
     const modalElement = modalRef.current;
-    if (!modalElement || !content) return;
+    if (!modalElement) return;
 
     if (isOpen) {
       modalElement.showModal();

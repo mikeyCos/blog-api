@@ -1,9 +1,9 @@
 import React, { FormEventHandler } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useModalContext } from "../../../hooks/useModal";
 import { Post } from "../../../interfaces/blog";
 import { useUserData } from "../../../hooks/useUser";
-import { useLocation } from "react-router";
 
 interface Props {
   data: Post;
@@ -11,6 +11,8 @@ interface Props {
 
 const ConfirmPostDelete: React.FC<Props> = ({ data }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const params = useParams<{ username: string }>();
   const { closeModal } = useModalContext();
   const { removePost, user } = useUserData();
   const axiosPrivate = useAxiosPrivate();
@@ -29,7 +31,15 @@ const ConfirmPostDelete: React.FC<Props> = ({ data }) => {
         `/users/${user?.username}/posts/${data.id}`
       );
       console.log("location:", location);
-      // What if user is not on /:username/posts path?
+      console.log("params:", params);
+      console.log(params.username);
+      const urlEnd = location.pathname.slice(
+        location.pathname.lastIndexOf("/")
+      );
+      if (urlEnd !== "posts") {
+        navigate(`${params.username}/posts`, { replace: true });
+      }
+      // What if an admin needs to delete a user's post?
       removePost(deletedPost.data.post.id);
       closeModal();
     } catch (err) {

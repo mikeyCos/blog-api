@@ -11,7 +11,7 @@ import { PostFormError } from "../../interfaces/errors";
 const Posts = () => {
   const { user, addPost } = useUserData();
   const [errors, setErrors] = useState<PostFormError>();
-  const data = user?.blog?.posts || [];
+  const data = user?.blog?.posts || []; // This should fetch based on :username parameter
   const axiosPrivate = useAxiosPrivate();
 
   const submitPost = async (data: any) => {

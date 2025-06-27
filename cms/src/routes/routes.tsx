@@ -110,3 +110,8 @@ const routes: RouteObject[] = [
 ];
 
 export default routes;
+
+/* /:username/posts
+ * How to view any users' posts if the authenticated user is an admin?
+ * Or should all paths under /admin be for all admin behaviors?
+ */

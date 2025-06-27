@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 26 JUN 2025
+- When a user deletes a post on the post page, they will be redirected to `/:username/posts`.
+---
 ### 25 JUN 
 - The variable `isOpen` is assigned a boolean value based on `searchParams.get("modal") === "open"`.
 - Replaced `isOpen`/`setIsOpen` state with `useSearchParams` hook values `searchParams` and `setSearchParams`.
