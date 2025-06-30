@@ -23,12 +23,12 @@ const Post = () => {
 
   const { username } = user;
   // /:username/posts/:postTitle/edit
-  const pathname = `/${username}/posts/${currentPost.publicId}/${currentPost.titleSlug}/edit`;
+  const editPathname = `/${username}/posts/${currentPost.publicId}/${currentPost.titleSlug}/edit`;
 
   return (
     <section>
       <header>
-        <NavAnchor pathname={pathname} textContent="edit" />
+        <NavAnchor pathname={editPathname} textContent="edit" />
         <button
           onClick={() => openModal(<ConfirmPostDelete data={currentPost} />)}
         >

@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 29 JUN 2025
+- Created `useError` hook that returns a cached function; throws error in function.
+---
 ### 26 JUN 2025
 - Merged `hook-modal-provider` branch to `feature-post`.
 - When a user deletes a post on the post page, they will be redirected to `/:username/posts`.

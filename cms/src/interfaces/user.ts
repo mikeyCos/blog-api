@@ -2,7 +2,7 @@ import { Blog, Post } from "./blog";
 
 export interface User {
   id?: string;
-  role?: Role;
+  roles?: Role[];
   username?: string;
   timestamp?: Date;
   blog?: Blog | null;
@@ -12,10 +12,20 @@ export interface User {
 
 export interface AuthenticatedUser {
   id: string;
-  role: Role;
+  roles: Role[];
   username: string;
   timestamp: Date;
   blog: Blog | null;
 }
 
-type Role = "USER" | "AUTHOR" | "ADMIN";
+interface Role {
+  assignedAt: Date;
+  roleDetails: RoleDetails;
+}
+
+interface RoleDetails {
+  id: string;
+  name: RoleName;
+}
+
+type RoleName = "USER" | "AUTHOR" | "ADMIN";

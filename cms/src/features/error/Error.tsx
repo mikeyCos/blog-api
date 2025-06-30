@@ -15,10 +15,11 @@ const isRouterError = (object: any): object is RouterError => {
  * May refactor later
  */
 const parseRouteError = (error: unknown): ParsedRouteError => {
-  console.log("parseRouteError running...");
+  console.group("parseRouteError running...");
   console.log("error:", error);
   if (isRouteErrorResponse(error)) {
     console.log("isRouteErrorResponse(error) is true");
+    console.groupEnd();
     return { message: error.statusText, status: error.status };
   } else if (error != undefined && isRouterError(error)) {
     return { message: error.message, status: 400 };
