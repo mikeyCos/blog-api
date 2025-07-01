@@ -40,7 +40,7 @@ interface RoleDetails {
   name: RoleName;
 }
 
-type RoleName = "VIEWER" | "AUTHOR" | "ADMIN";
+export type RoleName = "VIEWER" | "AUTHOR" | "ADMIN";
 
 export type UserId = string;
 

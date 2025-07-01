@@ -1,8 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 30 JUN 2025
+- Defined `InsufficientPermissionsError` in `customErrors` module.
+- Defined `roleSchema` in `params.validator` module.
+- Created `authenticateRole` middleware.
+---
 ### 29 JUN 2025
-- Created `useError` hook that returns a cached function; throws error in function.
+- Created `useError` hook that returns a cached function; propagates an error up to React Error Boundary
 ---
 ### 26 JUN 2025
 - Merged `hook-modal-provider` branch to `feature-post`.

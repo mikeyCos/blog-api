@@ -14,7 +14,8 @@ import { BadRequestError } from "../errors/customErrors";
 
 interface authController {
   authorize: RequestHandler;
-  authenticatedUser: RequestHandler;
+  authenticateRole: RequestHandler;
+  getAuthenticatedUser: RequestHandler;
   refreshToken: RequestHandler;
   login: RequestHandler[];
   logout: RequestHandler;
@@ -22,19 +23,7 @@ interface authController {
 }
 
 const authController: authController = {
-  authorize: asyncHandler(async (req, res) => {
-    const { accessToken, user: userPayload } = req;
-    // If current accessToken is valid
-    // Return the accessToken and it's payload
-    if (accessToken && userPayload) {
-      res.json({
-        status: "success",
-        code: 200,
-      });
-      return;
-    }
-  }),
-  authenticatedUser: asyncHandler(async (req, res) => {
+  getAuthenticatedUser: asyncHandler(async (req, res) => {
     console.group("authenticatedUser running...");
     const { user: userPayload } = req;
     const user = await getUser(userPayload.id);
@@ -50,6 +39,19 @@ const authController: authController = {
       return;
     }
   }),
+  authorize: asyncHandler(async (req, res) => {
+    const { accessToken, user: userPayload } = req;
+    // If current accessToken is valid
+    // Return the accessToken and it's payload
+    if (accessToken && userPayload) {
+      res.json({
+        status: "success",
+        code: 200,
+      });
+      return;
+    }
+  }),
+  authenticateRole: asyncHandler(async (req, res) => {}),
   refreshToken: asyncHandler(async (req, res) => {
     // Create new accessToken unless the current accessToken is still valid
     // TODO

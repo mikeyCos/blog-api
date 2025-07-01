@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
 import asyncHandler from "express-async-handler";
 import { checkSchema, Schema, validationResult } from "express-validator";
-import { BadRequestError, UserNotFoundError } from "../errors/customErrors";
+import { BadRequestError } from "../errors/customErrors";
+import { RoleName as allowedRoles } from "../prisma/generated/prisma";
 
 interface ValidDataPostSchema {
   username: string;
@@ -9,7 +10,13 @@ interface ValidDataPostSchema {
   postSlugTitle: string;
 }
 
-const isPostSlugTitleValid = async (postSlugTitle: string) => {};
+const isValidRole = async (roleName: string) => {
+  console.group("isValidRole running...");
+  console.log("allowedRoles:", allowedRoles);
+  console.log(allowedRoles[roleName as keyof typeof allowedRoles]);
+  console.log();
+  console.groupEnd();
+};
 
 const userSchema: Schema = {
   userId: {
@@ -94,6 +101,21 @@ const postSchema: Schema = {
   },
 };
 
+const roleSchema: Schema = {
+  role: {
+    trim: true,
+    notEmpty: {
+      errorMessage: 'Parameter "roleName" cannot be left empty',
+      bail: true,
+    },
+    custom: {
+      options: isValidRole,
+      errorMessage: 'Parameter "roleName" is invalid',
+    },
+    escape: true,
+  },
+};
+
 const validateParams = (schema: Schema): RequestHandler => {
   const paramsValidator: RequestHandler = asyncHandler(
     async (req, res, next) => {
@@ -122,5 +144,6 @@ export {
   validateParams as default,
   userSchema,
   postSchema,
+  roleSchema,
   ValidDataPostSchema,
 };

@@ -65,13 +65,13 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
           console.groupEnd();
           // How to throw error to React Router errorElement?
           // throw err;
-          // throwError(err);
-          // return;
+          throwError(err);
+        } else {
+          // What if an authenticated user is deleted and a /auth request is sent?
+          // Should the user be notified?
+          setAccessToken(null);
+          navigate("/login", { state: { prevLocation: location.pathname } });
         }
-        // What if an authenticated user is deleted and a /auth request is sent?
-        // Should the user be notified?
-        setAccessToken(null);
-        navigate("/login", { state: { prevLocation: location.pathname } });
       }
     };
 

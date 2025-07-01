@@ -53,7 +53,6 @@ const routes: RouteObject[] = [
         children: [
           {
             element: <ProtectedLayout />,
-
             children: [
               {
                 element: <DashboardLayout />,

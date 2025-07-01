@@ -23,6 +23,16 @@ export class UserNotFoundError extends APICustomError {
   }
 }
 
+export class InsufficientPermissionsError extends APICustomError {
+  constructor(identifier: string) {
+    super(
+      `User has insufficient permissions. User is not assigned the "${identifier}" role`,
+      403
+    );
+    this.name = "PermissionError";
+  }
+}
+
 export class PostNotFoundError extends APICustomError {
   constructor(identifier: string) {
     super(`Post with the ID, "${identifier}" not found.`, 404);
