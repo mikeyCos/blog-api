@@ -19,7 +19,7 @@ const isValidRole = async (roleName: string) => {
 };
 
 const userSchema: Schema = {
-  userId: {
+  username: {
     trim: true,
     notEmpty: {
       bail: true,

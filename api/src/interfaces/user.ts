@@ -26,10 +26,6 @@ export interface CreateUser {
   password: string;
 }
 
-export interface UserIdParams {
-  userId: UserId;
-}
-
 interface Role {
   assignedAt: Date;
   roleDetails: RoleDetails;

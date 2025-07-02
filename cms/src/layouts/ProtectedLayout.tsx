@@ -38,6 +38,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
         // if username parameter is equal to authenticated user continue
         // if username parameter is not equal to authenticated user
         //  check if authenticate user is an admin
+        // What if username is an invalid user?
         if (username && username !== user?.username) {
           const isAdmin =
             !!user &&
@@ -51,6 +52,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
               "You do not have permission(s) to view this content"
             );
           }
+          console.log("testing test test");
         }
 
         await axiosPrivate.get("/auth");

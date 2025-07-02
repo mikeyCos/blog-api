@@ -21,11 +21,7 @@ const postRoutes = () => {
 
   // GET requests
   postRouter.get("/", getAllPosts);
-  postRouter.get(
-    "/:postPublicId/:postSlugTitle",
-    validateParams(postSchema),
-    getPost
-  );
+  postRouter.get("/:postPublicId/:postSlugTitle", getPost);
   postRouter.get(
     "/:postPublicId/:postSlugTitle/comments/:commentId",
     getPostComment
@@ -38,33 +34,20 @@ const postRoutes = () => {
   postRouter.post("/", authenticateToken, validatePost(), createPost);
   postRouter.post(
     "/:postPublicId/:postSlugTitle/comments",
-    validateParams(postSchema),
     validatePost(),
     authenticateToken,
     createPostComment
   );
 
   // PUT requests
-  postRouter.put(
-    "/:postPublicId",
-    authenticateToken,
-    validateParams(postSchema),
-    validatePost(),
-    editPost
-  );
+  postRouter.put("/:postPublicId", authenticateToken, validatePost(), editPost);
 
   // DELETE requests
   // How can I use this only for routes /posts, not /users/*/posts?
-  postRouter.delete(
-    "/:postId/",
-    authenticateToken,
-    validateParams(postSchema),
-    deletePost
-  );
+  postRouter.delete("/:postId/", authenticateToken, deletePost);
   postRouter.delete(
     "/:postPublicId/:postSlugTitle/comments/:commentId",
     authenticateToken,
-    validateParams(postSchema),
     deletePostComment
   );
 

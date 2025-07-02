@@ -1,6 +1,11 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 01 JUL 2025
+- Added an additional conditional statement in `parseRouteError` for `axios.isAxiosError`.
+- Created `postsLoader` module.
+- The query function `getPosts` uses `prisma.$transaction()` to find user based on username and finds all posts based on user's `blogId`.
+---
 ### 30 JUN 2025
 - Defined `InsufficientPermissionsError` in `customErrors` module.
 - Defined `roleSchema` in `params.validator` module.

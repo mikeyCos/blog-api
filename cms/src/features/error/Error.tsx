@@ -1,3 +1,4 @@
+import axios from "axios";
 import { isRouteErrorResponse, useRouteError } from "react-router";
 
 interface RouterError extends Error {}
@@ -21,11 +22,23 @@ const parseRouteError = (error: unknown): ParsedRouteError => {
     console.log("isRouteErrorResponse(error) is true");
     console.groupEnd();
     return { message: error.statusText, status: error.status };
-  } else if (error != undefined && isRouterError(error)) {
+  } else if (axios.isAxiosError(error)) {
+    console.log("axios.isAxiosError(error)");
+    console.groupEnd();
+    return {
+      message: error.response?.data.message,
+      status: error.status ?? 400,
+    };
+  } else if (isRouterError(error)) {
+    console.log("error !== undefined && isRouterError(error))");
     return { message: error.message, status: 400 };
   } else if (typeof error === "string") {
+    console.log(`typeof error === "string"`);
+    console.groupEnd();
     return { message: error, status: 400 };
   } else {
+    console.log("else...");
+    console.groupEnd();
     return { message: "Unknown error", status: 400 };
   }
 };

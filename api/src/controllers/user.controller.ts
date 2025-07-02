@@ -3,7 +3,6 @@ import asyncHandler = require("express-async-handler");
 import { matchedData } from "express-validator";
 
 import { createUser, getUser, getUsers, deleteUser } from "../services/user";
-import { UserIdParams } from "../interfaces/user";
 import validateCreateUser from "../validators/signup.validator";
 
 interface userController {
@@ -14,10 +13,10 @@ interface userController {
 
 const userController = {
   getUser: asyncHandler(async (req, res) => {
-    const { userId } = matchedData<UserIdParams>(req, {
+    const { username } = matchedData<{ username: string }>(req, {
       onlyValidData: true,
     });
-    const user = await getUser(userId);
+    const user = await getUser(null, username);
     res.json(user);
   }),
   getUsers: asyncHandler(async (req, res) => {
@@ -25,10 +24,10 @@ const userController = {
     res.json(users);
   }),
   deleteUser: asyncHandler(async (req, res) => {
-    const { userId } = matchedData<UserIdParams>(req, {
+    const { username } = matchedData<{ username: string }>(req, {
       onlyValidData: true,
     });
-    const user = await deleteUser(userId);
+    const user = await deleteUser(username);
     res.json(user);
   }),
 };

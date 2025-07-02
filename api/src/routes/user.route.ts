@@ -1,7 +1,7 @@
 import { Router } from "express";
 import userController from "../controllers/user.controller";
 import { validateParams } from "../validators/validators";
-import { userSchema } from "../validators/params.validator";
+import { postSchema, userSchema } from "../validators/params.validator";
 import postRoutes from "./post.route";
 
 const userRoutes = () => {
@@ -11,15 +11,15 @@ const userRoutes = () => {
   // GET requests
   // curl -w "\n" -X GET http://localhost:3001/user/:userId
   userRouter.get("/", getUsers);
-  userRouter.get("/:userId", validateParams(userSchema), getUser);
+  userRouter.get("/:username", validateParams(userSchema), getUser);
 
   // PUT requests
 
   // DELETE requests
-  userRouter.delete("/:userId", validateParams(userSchema), deleteUser);
+  userRouter.delete("/:username", validateParams(userSchema), deleteUser);
 
   // Nested routes
-  userRouter.use("/:username/posts", postRoutes());
+  userRouter.use("/:username/posts", validateParams(postSchema), postRoutes());
 
   return userRouter;
 };

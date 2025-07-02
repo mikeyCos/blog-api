@@ -78,8 +78,8 @@ const postController: PostController = {
     console.groupEnd();
     // TODO
     // Require query parameters of author?
-    const { blogId } = req.params;
-    const posts = await getPosts(blogId);
+    const { username } = req.params;
+    const posts = await getPosts(username);
     res.json(posts);
   }),
   getPostComment: asyncHandler(async (req, res) => {}),
