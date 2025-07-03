@@ -19,7 +19,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   console.log("ProtectedLayout running");
   const { username } = useParams<{ username: string }>();
   const { accessToken, setAccessToken } = useAuth();
-  const { user } = useUserData();
+  const { user, isUserDataLoading } = useUserData();
   const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
   const throwError = useError();
@@ -34,12 +34,15 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     const authorize = async () => {
       try {
         console.log("username:", username);
+        console.log("user:", user);
 
         // if username parameter is equal to authenticated user continue
         // if username parameter is not equal to authenticated user
         //  check if authenticate user is an admin
         // What if username is an invalid user?
-        if (username && username !== user?.username) {
+
+        /* if (username && username !== user?.username) {
+          
           const isAdmin =
             !!user &&
             user.roles.some((role) => {
@@ -52,8 +55,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
               "You do not have permission(s) to view this content"
             );
           }
-          console.log("testing test test");
-        }
+        } */
 
         await axiosPrivate.get("/auth");
       } catch (err) {

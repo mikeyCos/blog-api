@@ -23,6 +23,7 @@ interface UserContextAuthenticated {
   addPost: PostCallback<Post>;
   updatePost: PostCallback<Post>;
   removePost: PostCallback<string>;
+  isUserDataLoading: boolean;
 }
 
 interface UserContextUnauthenticated {
@@ -31,6 +32,7 @@ interface UserContextUnauthenticated {
   addPost: PostCallback<Post>;
   updatePost: PostCallback<Post>;
   removePost: PostCallback<string>;
+  isUserDataLoading: boolean;
 }
 
 export type UserContextType =
@@ -43,12 +45,14 @@ const UserContext = createContext<UserContextType>({
   addPost: () => {},
   updatePost: () => {},
   removePost: () => {},
+  isUserDataLoading: true,
 });
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { accessToken, isAuthenticated } = useAuth();
+  const [isUserDataLoading, setIsUserDataLoading] = useState(true);
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
   const axiosPrivate = useAxiosPrivate();
 
@@ -103,6 +107,9 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     console.group("UserProvider mounted");
     const getUser = async () => {
+      console.log(
+        `accessToken: ${accessToken}, isAuthenticate: ${isAuthenticated}`
+      );
       try {
         const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
         setUser(response.data.user);
@@ -113,11 +120,20 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.groupEnd();
     };
 
+    // getUser();
     if (accessToken && isAuthenticated) {
+      console.log("accessToken && isAuthenticate");
       getUser();
     } else {
+      console.log("accessToken && isAuthenticate ELSE");
       setUser(null);
     }
+
+    /* 
+    if (!accessToken || !isAuthenticated) {
+      console.log("accessToken && isAuthenticate ELSE");
+      setUser(null);
+    } */
   }, [isAuthenticated]);
 
   const useUserValue = useMemo<UserContextType>(() => {
@@ -128,6 +144,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         addPost,
         updatePost,
         removePost,
+        isUserDataLoading,
       };
     }
 
@@ -137,6 +154,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       addPost: () => {},
       updatePost: () => {},
       removePost: () => {},
+      isUserDataLoading,
     };
   }, [user]);
 

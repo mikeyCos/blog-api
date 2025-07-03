@@ -1,43 +1,51 @@
 import bcrypt from "bcryptjs";
 import { getUsers, createUser, deleteUsers } from "../services/user";
+import { CreateUser } from "../interfaces/user";
 
 const seedUsers = async () => {
-  const usersArr = await Promise.all(
-    [
-      {
-        name: "Bill Dauterive",
-        username: "bill_dozer",
-        email: "bill.d@gmail.com",
-        password: "Test123!",
-      },
-      {
-        name: "Kahn Souphanousinphone",
-        username: "kBanana",
-        email: "kahntheman@gmail.com",
-        password: "Foobar2#",
-      },
-      {
-        name: "Peggy Hill",
-        username: "spa-peggy",
-        email: "peggyTeaches@gmail.com",
-        password: "inEspan456*",
-      },
-      {
-        name: "Luanne Platter",
-        username: "platter_lp",
-        email: "lp_barber@gmail.com",
-        password: "manGer1&BabY",
-      },
-    ].map(async (user) => {
+  const usersArr: CreateUser[] = [
+    {
+      name: "Bill Dauterive",
+      username: "bill_dozer",
+      email: "bill.d@gmail.com",
+      password: "Test123!",
+      roleName: "ADMIN",
+    },
+    {
+      name: "Kahn Souphanousinphone",
+      username: "kBanana",
+      email: "kahntheman@gmail.com",
+      password: "Foobar2#",
+    },
+    {
+      name: "Peggy Hill",
+      username: "spa-peggy",
+      email: "peggyTeaches@gmail.com",
+      password: "inEspan456*",
+    },
+    {
+      name: "Luanne Platter",
+      username: "platter_lp",
+      email: "lp_barber@gmail.com",
+      password: "manGer1&BabY",
+    },
+  ];
+
+  const usersArrHashed = await Promise.all(
+    usersArr.map(async (user) => {
       const { password, ...rest } = user;
       const hashedPassword = await bcrypt.hash(password, 10);
       return { ...rest, password: hashedPassword };
     })
   );
 
-  for (const user of usersArr) {
+  for (const user of usersArrHashed) {
     const newUser = await createUser(user);
-    console.log(`User, ${newUser.username}, created at ${newUser.timestamp}`);
+    console.group(`User, ${newUser.username}, created at ${newUser.timestamp}`);
+    console.log(
+      `${newUser.username} has the roles: ${JSON.stringify(newUser.roles)}`
+    );
+    console.groupEnd();
   }
 };
 

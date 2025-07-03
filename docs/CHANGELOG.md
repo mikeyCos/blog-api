@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 02 JUL 2025
+- Fixed Git error `object file...is empty` by deleting empty objects, fetching missing objects and checking full object store.
+- Added optional `roleName` parameter to `createUser` query function.
+---
 ### 01 JUL 2025
 - Added an additional conditional statement in `parseRouteError` for `axios.isAxiosError`.
 - Created `postsLoader` module.

@@ -13,12 +13,11 @@ import { useParams } from "react-router";
 const Posts = () => {
   const params = useParams<{ username: string }>();
 
-  /* const { user, addPost } = useUserData();
+  const { user, addPost } = useUserData();
   const [errors, setErrors] = useState<PostFormError>();
   const data = user?.blog?.posts || []; // This should fetch based on :username parameter
   const axiosPrivate = useAxiosPrivate();
-
-  const submitPost = async (data: any) => {
+  /*const submitPost = async (data: any) => {
     try {
       console.group("submitPost running...");
       const response = await axiosPrivate.post<PostSuccessResponse>(

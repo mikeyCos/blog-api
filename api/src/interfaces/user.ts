@@ -21,9 +21,11 @@ export interface AuthenticatedUser {
 }
 
 export interface CreateUser {
+  name?: string;
   username: string;
   email: string;
   password: string;
+  roleName?: RoleName;
 }
 
 interface Role {
