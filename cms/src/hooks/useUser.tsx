@@ -113,8 +113,10 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
         setUser(response.data.user);
+        setIsUserDataLoading(false);
         console.log("response:", response);
       } catch (err) {
+        setIsUserDataLoading(true);
         console.error(err);
       }
       console.groupEnd();

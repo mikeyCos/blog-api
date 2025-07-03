@@ -18,7 +18,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
 }) => {
   console.log("ProtectedLayout running");
   const { username } = useParams<{ username: string }>();
-  const { accessToken, setAccessToken } = useAuth();
+  const { accessToken, isAuthenticated, setAccessToken } = useAuth();
   const { user, isUserDataLoading } = useUserData();
   const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
@@ -34,6 +34,8 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     const authorize = async () => {
       try {
         console.log("username:", username);
+        console.log("isAuthenticated:", isAuthenticated);
+        console.log("isUserDataLoading:", isUserDataLoading);
         console.log("user:", user);
 
         // if username parameter is equal to authenticated user continue
@@ -41,13 +43,11 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
         //  check if authenticate user is an admin
         // What if username is an invalid user?
 
-        /* if (username && username !== user?.username) {
-          
-          const isAdmin =
-            !!user &&
-            user.roles.some((role) => {
-              role.roleDetails.name === "ADMIN";
-            });
+        if (username && user && username !== user.username) {
+          const isAdmin = user.roles.some((role) => {
+            return role.roleDetails.name === "ADMIN";
+          });
+
           if (!isAdmin) {
             console.log("user is not an administrator");
             console.groupEnd();
@@ -55,16 +55,17 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
               "You do not have permission(s) to view this content"
             );
           }
-        } */
+        }
 
         await axiosPrivate.get("/auth");
       } catch (err) {
         console.log("authorize err caught");
-        console.log(location);
+        console.log("location:", location);
         console.log(err);
+        console.log("accessToken:", accessToken);
         console.groupEnd();
-        // if (err instanceof Error) return navigate("/error");
-        if (err instanceof Error) {
+        if (err instanceof Error && isAuthenticated) {
+          console.log(err);
           console.log("err instanceof Error:", err instanceof Error);
           console.groupEnd();
           // How to throw error to React Router errorElement?
@@ -80,7 +81,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     };
 
     authorize();
-  }, [location]);
+  }, [location, isUserDataLoading]);
 
   return <>{children ?? <Outlet />}</>;
 };

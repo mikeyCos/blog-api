@@ -2,6 +2,8 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 02 JUL 2025
+- Added `isUserDataLoading` to `useEffect` dependency in `ProtectedLayout`.
+- Defined `isUserDataLoading`/`setIsUserDataLoading` state in `useUser` module.
 - Created `role-authentication` branch from `feature-post`.
 - Fixed Git error `object file...is empty` by deleting empty objects, fetching missing objects and checking full object store.
 - Added optional `roleName` parameter to `createUser` query function.
