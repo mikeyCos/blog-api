@@ -1,3 +1,4 @@
+import { useLocation } from "@tanstack/react-router";
 import React, {
   createContext,
   useContext,
@@ -5,7 +6,6 @@ import React, {
   useMemo,
   useRef,
 } from "react";
-import { useLocation } from "react-router";
 
 interface PrevLocationContext {
   // prevLocationRef: RefObject<string | null>;

@@ -1,6 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 04 JUL 2025
+- Added `"strict": true` to `tsconfig.json` in `cms` subdirectory.
+- Created `router.config.ts` module.
+- Updated outdated packages.
+- Defined `about`, `faq`, `index`, `login`, `signup`, `dashboard` modules in `routes` subdirectory.
+- Deleted `RoleProtectedRoute`, `homeRoute` and `routes` modules in `routes` subdirectory.
+---
 ### 03 JUL 2025
 - Created `__root` and `homeRoute` modules.
 - Uninstalled `react-router` and installed `@tanstack/react-router`.

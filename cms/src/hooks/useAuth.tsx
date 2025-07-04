@@ -20,7 +20,7 @@ import { useUserData } from "./useUser";
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
 
-interface AuthContext {
+export interface AuthContext {
   login: Login;
   logout: Logout;
   isAuthenticated: boolean;
@@ -30,7 +30,7 @@ interface AuthContext {
   >;
 }
 
-const AuthContext = createContext<AuthContext>({} as AuthContext);
+const AuthContext = createContext<AuthContext | null>(null);
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,

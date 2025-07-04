@@ -12,6 +12,7 @@ import { useAuth } from "../hooks/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useUserData } from "../hooks/useUser";
 import useError from "../hooks/useError";
+import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
 
 const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
@@ -20,14 +21,13 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   // const { username } = useParams<{ username: string }>();
   const { accessToken, isAuthenticated, setAccessToken } = useAuth();
   const { user, isUserDataLoading } = useUserData();
-  // const location = useLocation();
+  const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
   const throwError = useError();
   // console.log(prevLocation);
   // if (!accessToken)
   //   return <Navigate to="/login" state={{ from: location }} replace />;
-
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     console.group("ProtectedLayout mounted...");
 
@@ -56,7 +56,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
           // What if an authenticated user is deleted and a /auth request is sent?
           // Should the user be notified?
           setAccessToken(null);
-          // navigate("/login", { state: { prevLocation: location.pathname } });
+          // navigate({to: "/login", state: { prevLocation: location.pathname } });
         }
       }
     };

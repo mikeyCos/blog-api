@@ -1,11 +1,44 @@
 import React from "react";
-import AuthProvider from "../hooks/useAuth";
+import { createRouter, Router, RouterProvider } from "@tanstack/react-router";
+
+import AuthProvider, { AuthContext, useAuth } from "../hooks/useAuth";
 import UserProvider from "../hooks/useUser";
 import PrevLocationProvider from "../hooks/usePrevLocation";
-import { RouterProvider } from "@tanstack/react-router";
+import Header from "../components/header/Header";
+import { routeTree } from "../routeTree.gen";
 
-const App = ({ children }: { children: React.ReactNode }) => {
-  /* return (
+/* const router = createRouter({
+  routeTree,
+  defaultPreload: 'intent',
+  scrollRestoration: true,
+  context: { auth: undefined! }},
+});
+
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+} */
+
+/* const InnerApp = () => {
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth }} />
+} */
+
+/* const App = () => {
+    return (
+    <div id="app">
+      <AuthProvider>
+        <UserProvider>
+          <InnerApp />
+        </UserProvider>
+      </AuthProvider>
+    </div>
+  );
+}; */
+
+/* const App = ({router}: {router: Router<any>}) => {
+  return (
     <div id="app">
       <AuthProvider>
         <UserProvider>
@@ -13,8 +46,18 @@ const App = ({ children }: { children: React.ReactNode }) => {
         </UserProvider>
       </AuthProvider>
     </div>
-  ); */
-  return <div id="app">{children}</div>;
+  );
+}; */
+
+const App = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div id="app">
+      {" "}
+      <AuthProvider>
+        <UserProvider>{children}</UserProvider>
+      </AuthProvider>
+    </div>
+  );
 };
 
 export default App;

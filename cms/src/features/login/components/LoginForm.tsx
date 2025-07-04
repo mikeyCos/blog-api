@@ -6,17 +6,17 @@ import React, {
   useState,
 } from "react";
 // import axios from "axios";
+import { useNavigate } from "@tanstack/react-router";
+import { isAxiosError } from "axios";
 
 import axiosDefault from "../../../config/axios.config";
 import { LoginFormError } from "../../../interfaces/errors";
-// import config from "../../../config/env.config";
 import { useAuth } from "../../../hooks/useAuth";
-import { useNavigate } from "react-router";
+
 import {
   AuthSuccessResponse,
   LoginErrorResponse,
 } from "../../../interfaces/responses";
-import { isAxiosError } from "axios";
 
 const LoginForm: React.FC<{ prevLocation: string | null }> = ({
   prevLocation,
@@ -69,7 +69,7 @@ const LoginForm: React.FC<{ prevLocation: string | null }> = ({
       login(response.data.accessToken);
       setFormData(initialFormData);
       setErrors(null);
-      navigate(from, { replace: true });
+      navigate({ to: from, replace: true });
     } catch (err) {
       if (isAxiosError<LoginErrorResponse>(err) && err.response) {
         const { data } = err.response;

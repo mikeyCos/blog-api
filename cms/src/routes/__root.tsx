@@ -1,12 +1,19 @@
-import { createRootRoute } from "@tanstack/react-router";
-import App from "../app/App";
+import {
+  createRootRoute,
+  createRootRouteWithContext,
+  Outlet,
+} from "@tanstack/react-router";
+import DefaultLayout from "../layouts/DefaultLayout";
+import { AuthContext } from "../hooks/useAuth";
 
-const rootRoute = createRootRoute({
+interface RouterContext {
+  auth: AuthContext;
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <>
-      <p>hello world</p>
+      <DefaultLayout />
     </>
   ),
 });
-
-export default rootRoute;

@@ -1,20 +1,20 @@
 import NavAnchor from "../../components/navAnchor/NavAnchor";
 import LoginForm from "./components/LoginForm";
 import { useAuth } from "../../hooks/useAuth";
-import { Navigate, useLocation } from "react-router";
 import { usePrevLocation } from "../../hooks/usePrevLocation";
+import { Navigate, useLocation } from "@tanstack/react-router";
 
-const SignIn = () => {
+const Login = () => {
   const { accessToken } = useAuth();
   const location = useLocation();
   const { prevLocation } = usePrevLocation();
-  console.log("SignIn component");
-  console.log("prevLocation:", prevLocation);
+  console.group("Login component rendering...");
+  // console.log("prevLocation:", prevLocation);
   // If accessToken exists (user is logged in)
   //  Navigate the user to their dashboard or the previous location
   if (accessToken) {
     console.log("location:", location);
-    if (location.state?.prevLocation) {
+    /* if (location.state?.prevLocation) {
       return <Navigate to={location.state.prevLocation} />;
     } else {
       return (
@@ -26,7 +26,16 @@ const SignIn = () => {
           }
         />
       );
-    }
+    } */
+    return (
+      <Navigate
+        to={
+          !prevLocation || prevLocation === "/login"
+            ? "/dashboard"
+            : prevLocation
+        }
+      />
+    );
   }
 
   return (
@@ -47,4 +56,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;

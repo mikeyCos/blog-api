@@ -5,15 +5,15 @@ import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 // import PrevLocationProvider from "../hooks/usePrevLocation";
 
-const DefaultLayout: React.FC<{ children?: React.ReactNode }> = ({
-  children,
-}) => {
+const DefaultLayout = () => {
   console.log("DefaultLayout running..");
 
   return (
     <>
       <Header />
-      <main>{children ?? <Outlet />}</main>
+      <main>
+        <Outlet />
+      </main>
       <Footer />
     </>
   );
