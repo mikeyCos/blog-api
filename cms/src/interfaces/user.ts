@@ -18,7 +18,7 @@ export interface AuthenticatedUser {
   blog: Blog | null;
 }
 
-interface Role {
+export interface Role {
   assignedAt: Date;
   roleDetails: RoleDetails;
 }
@@ -28,4 +28,4 @@ interface RoleDetails {
   name: RoleName;
 }
 
-type RoleName = "USER" | "AUTHOR" | "ADMIN";
+export type RoleName = "USER" | "AUTHOR" | "ADMIN";

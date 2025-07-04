@@ -4,8 +4,9 @@ import { verifyJWT } from "../utils/jwt.utils";
 import { BadRequestError } from "../errors/customErrors";
 
 const authenticateToken: RequestHandler = async (req, res, next) => {
-  console.log("authenticateToken running...");
+  console.group("authenticateToken running...");
   console.log("req.accessToken:", req.accessToken);
+  console.groupEnd();
   const { accessToken } = req;
 
   if (!accessToken) {

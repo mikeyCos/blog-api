@@ -4,6 +4,7 @@ import postController from "../controllers/post.controller";
 import { validateParams, validatePost } from "../validators/validators";
 import authenticateToken from "../middleware/authenticateToken";
 import { postSchema } from "../validators/params.validator";
+import authenticateRoles from "../middleware/authenticateRoles";
 
 const postRoutes = () => {
   const postRouter = Router({ mergeParams: true });
@@ -20,7 +21,12 @@ const postRoutes = () => {
   } = postController;
 
   // GET requests
-  postRouter.get("/", getAllPosts);
+  postRouter.get(
+    "/",
+    authenticateToken,
+    authenticateRoles(["ADMIN"]),
+    getAllPosts
+  );
   postRouter.get("/:postPublicId/:postSlugTitle", getPost);
   postRouter.get(
     "/:postPublicId/:postSlugTitle/comments/:commentId",

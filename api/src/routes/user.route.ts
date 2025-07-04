@@ -3,6 +3,7 @@ import userController from "../controllers/user.controller";
 import { validateParams } from "../validators/validators";
 import { postSchema, userSchema } from "../validators/params.validator";
 import postRoutes from "./post.route";
+import authenticateToken from "../middleware/authenticateToken";
 
 const userRoutes = () => {
   const userRouter = Router();

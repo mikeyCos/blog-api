@@ -2,7 +2,7 @@ import { Router } from "express";
 import authController from "../controllers/auth.controller";
 import authenticateToken from "../middleware/authenticateToken";
 import validateParams, { roleSchema } from "../validators/params.validator";
-import authenticateRole from "../middleware/authenticateRole";
+import authenticateRole from "../middleware/authenticateRoles";
 
 const authRoutes = () => {
   const {

@@ -80,7 +80,7 @@ const postController: PostController = {
     // Require query parameters of author?
     const { username } = req.params;
     const posts = await getPosts(username);
-    res.json(posts);
+    res.json({ posts });
   }),
   getPostComment: asyncHandler(async (req, res) => {}),
   getPostComments: asyncHandler(async (req, res) => {}),

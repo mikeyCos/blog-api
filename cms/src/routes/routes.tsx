@@ -20,6 +20,7 @@ import EditPost from "../pages/editPost/EditPost";
 import editPostLoader from "../pages/editPost/editPostLoader";
 import ModalProvider from "../hooks/useModal";
 import postsLoader from "../features/posts/postsLoader";
+import RoleProtectedRoute from "./RoleProtectedRoute";
 
 // If no user is logged in
 //  Go to home page
@@ -65,7 +66,7 @@ const routes: RouteObject[] = [
                   {
                     path: "/:username/posts",
                     element: <Posts />,
-                    loader: postsLoader,
+                    // loader: postsLoader,
                   },
                   {
                     path: "/:username/comments",
@@ -76,6 +77,7 @@ const routes: RouteObject[] = [
                     element: <Post />,
                     loader: postLoader,
                   },
+
                   {
                     path: "/:username/posts/:postPublicId/:postTitle/edit",
                     element: <EditPost />,

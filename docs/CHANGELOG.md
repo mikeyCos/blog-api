@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 03 JUL 2025
+- Temporarily created `RoleProtectedRoute` in `cms` subdirectory and `authenticateRoles` in `api` subdirectory.
+- Created `utils` subdirectory in `cms` subdirectory.
+---
 ### 02 JUL 2025
 - Added `isUserDataLoading` to `useEffect` dependency in `ProtectedLayout`.
 - Defined `isUserDataLoading`/`setIsUserDataLoading` state in `useUser` module.

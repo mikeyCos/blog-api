@@ -113,11 +113,12 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       try {
         const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
         setUser(response.data.user);
-        setIsUserDataLoading(false);
         console.log("response:", response);
       } catch (err) {
-        setIsUserDataLoading(true);
+        setUser(null);
         console.error(err);
+      } finally {
+        setIsUserDataLoading(false);
       }
       console.groupEnd();
     };
@@ -139,6 +140,9 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [isAuthenticated]);
 
   const useUserValue = useMemo<UserContextType>(() => {
+    console.group("useUserValue useMemo running...");
+    console.log(user);
+    console.groupEnd();
     if (isAuthenticated) {
       return {
         status: "authenticated",

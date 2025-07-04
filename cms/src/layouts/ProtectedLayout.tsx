@@ -38,25 +38,6 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
         console.log("isUserDataLoading:", isUserDataLoading);
         console.log("user:", user);
 
-        // if username parameter is equal to authenticated user continue
-        // if username parameter is not equal to authenticated user
-        //  check if authenticate user is an admin
-        // What if username is an invalid user?
-
-        if (username && user && username !== user.username) {
-          const isAdmin = user.roles.some((role) => {
-            return role.roleDetails.name === "ADMIN";
-          });
-
-          if (!isAdmin) {
-            console.log("user is not an administrator");
-            console.groupEnd();
-            throw new Error(
-              "You do not have permission(s) to view this content"
-            );
-          }
-        }
-
         await axiosPrivate.get("/auth");
       } catch (err) {
         console.log("authorize err caught");
