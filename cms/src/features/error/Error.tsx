@@ -1,57 +1,56 @@
 import axios from "axios";
-import { isRouteErrorResponse, useRouteError } from "react-router";
 
-interface RouterError extends Error {}
-interface ParsedRouteError {
-  message: string;
-  status: number;
-}
+// interface RouterError extends Error {}
+// interface ParsedRouteError {
+//   message: string;
+//   status: number;
+// }
 
-const isRouterError = (object: any): object is RouterError => {
-  return "message" in object;
-};
+// const isRouterError = (object: any): object is RouterError => {
+//   return "message" in object;
+// };
 
-/* useRouteError return type unknown
- * https://github.com/remix-run/react-router/discussions/9628
- * May refactor later
- */
-const parseRouteError = (error: unknown): ParsedRouteError => {
-  console.group("parseRouteError running...");
-  console.log("error:", error);
-  if (isRouteErrorResponse(error)) {
-    console.log("isRouteErrorResponse(error) is true");
-    console.groupEnd();
-    return { message: error.statusText, status: error.status };
-  } else if (axios.isAxiosError(error)) {
-    console.log("axios.isAxiosError(error)");
-    console.groupEnd();
-    return {
-      message: error.response?.data.message,
-      status: error.status ?? 400,
-    };
-  } else if (isRouterError(error)) {
-    console.log("error !== undefined && isRouterError(error))");
-    return { message: error.message, status: 400 };
-  } else if (typeof error === "string") {
-    console.log(`typeof error === "string"`);
-    console.groupEnd();
-    return { message: error, status: 400 };
-  } else {
-    console.log("else...");
-    console.groupEnd();
-    return { message: "Unknown error", status: 400 };
-  }
-};
+// /* useRouteError return type unknown
+//  * https://github.com/remix-run/react-router/discussions/9628
+//  * May refactor later
+//  */
+// const parseRouteError = (error: unknown): ParsedRouteError => {
+//   console.group("parseRouteError running...");
+//   console.log("error:", error);
+//   if (isRouteErrorResponse(error)) {
+//     console.log("isRouteErrorResponse(error) is true");
+//     console.groupEnd();
+//     return { message: error.statusText, status: error.status };
+//   } else if (axios.isAxiosError(error)) {
+//     console.log("axios.isAxiosError(error)");
+//     console.groupEnd();
+//     return {
+//       message: error.response?.data.message,
+//       status: error.status ?? 400,
+//     };
+//   } else if (isRouterError(error)) {
+//     console.log("error !== undefined && isRouterError(error))");
+//     return { message: error.message, status: 400 };
+//   } else if (typeof error === "string") {
+//     console.log(`typeof error === "string"`);
+//     console.groupEnd();
+//     return { message: error, status: 400 };
+//   } else {
+//     console.log("else...");
+//     console.groupEnd();
+//     return { message: "Unknown error", status: 400 };
+//   }
+// };
 
-const Error = () => {
-  console.log("Error component rendering...");
-  const error = parseRouteError(useRouteError());
-  return (
-    <section>
-      <p>{error.status}</p>
-      <p>{error.message}</p>
-    </section>
-  );
-};
+// const Error = () => {
+//   console.log("Error component rendering...");
+//   const error = parseRouteError(useRouteError());
+//   return (
+//     <section>
+//       <p>{error.status}</p>
+//       <p>{error.message}</p>
+//     </section>
+//   );
+// };
 
-export default Error;
+// export default Error;

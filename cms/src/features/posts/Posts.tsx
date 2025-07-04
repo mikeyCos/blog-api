@@ -5,7 +5,6 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { PostSuccessResponse } from "../../interfaces/responses";
 import { useEffect, useState } from "react";
 import { PostFormError } from "../../interfaces/errors";
-import { useLoaderData, useParams } from "react-router";
 import { useAuth } from "../../hooks/useAuth";
 
 // Fetches authenticated user's posts
@@ -14,7 +13,7 @@ import { useAuth } from "../../hooks/useAuth";
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const axiosPrivate = useAxiosPrivate();
-  const params = useParams<{ username: string }>();
+  // const params = useParams<{ username: string }>();
   console.group("Posts component rendering...");
   console.log(posts);
   /* const { user, addPost } = useUserData();
@@ -25,10 +24,10 @@ const Posts = () => {
   useEffect(() => {
     const getUserPosts = async () => {
       try {
-        const response = await axiosPrivate.get(
+        /*         const response = await axiosPrivate.get(
           `users/${params.username}/posts`
         );
-        setPosts(response.data.posts);
+        setPosts(response.data.posts); */
       } catch (err) {
         console.error(err);
       }
@@ -36,7 +35,7 @@ const Posts = () => {
 
     getUserPosts();
     console.group("Posts mounted...");
-    console.log(params);
+    // console.log(params);
     console.groupEnd();
   }, []);
 
@@ -64,7 +63,7 @@ const Posts = () => {
   return (
     <>
       <h2>Posts</h2>
-      <p>username {params.username}</p>
+      {/* <p>username {params.username}</p> */}
       <PostList data={posts} />
     </>
   );

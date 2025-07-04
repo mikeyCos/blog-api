@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import {
-  Outlet,
-  useAsyncError,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router";
+// import {
+//   Outlet,
+//   useAsyncError,
+//   useLocation,
+//   useNavigate,
+//   useParams,
+// } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 // import { usePrevLocation } from "../hooks/usePrevLocation";
 
@@ -17,23 +17,23 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
 }) => {
   console.log("ProtectedLayout running");
-  const { username } = useParams<{ username: string }>();
+  // const { username } = useParams<{ username: string }>();
   const { accessToken, isAuthenticated, setAccessToken } = useAuth();
   const { user, isUserDataLoading } = useUserData();
-  const location = useLocation();
+  // const location = useLocation();
   const axiosPrivate = useAxiosPrivate();
   const throwError = useError();
   // console.log(prevLocation);
   // if (!accessToken)
   //   return <Navigate to="/login" state={{ from: location }} replace />;
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   useEffect(() => {
     console.group("ProtectedLayout mounted...");
 
     const authorize = async () => {
       try {
-        console.log("username:", username);
+        // console.log("username:", username);
         console.log("isAuthenticated:", isAuthenticated);
         console.log("isUserDataLoading:", isUserDataLoading);
         console.log("user:", user);
@@ -56,7 +56,7 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
           // What if an authenticated user is deleted and a /auth request is sent?
           // Should the user be notified?
           setAccessToken(null);
-          navigate("/login", { state: { prevLocation: location.pathname } });
+          // navigate("/login", { state: { prevLocation: location.pathname } });
         }
       }
     };
@@ -64,7 +64,8 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
     authorize();
   }, [location, isUserDataLoading]);
 
-  return <>{children ?? <Outlet />}</>;
+  // return <>{children ?? <Outlet />}</>;
+  return <p>test</p>;
 };
 
 export default ProtectedLayout;

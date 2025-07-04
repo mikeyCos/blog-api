@@ -2,6 +2,9 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 03 JUL 2025
+- Created `__root` and `homeRoute` modules.
+- Uninstalled `react-router` and installed `@tanstack/react-router`.
+- Created `rewrite-routes-tanstack` branch from `role-authentication`.
 - Temporarily created `RoleProtectedRoute` in `cms` subdirectory and `authenticateRoles` in `api` subdirectory.
 - Created `utils` subdirectory in `cms` subdirectory.
 ---

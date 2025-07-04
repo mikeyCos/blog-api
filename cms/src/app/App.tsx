@@ -1,15 +1,11 @@
 import React from "react";
-import { DataRouter, RouterProvider } from "react-router";
 import AuthProvider from "../hooks/useAuth";
 import UserProvider from "../hooks/useUser";
 import PrevLocationProvider from "../hooks/usePrevLocation";
+import { RouterProvider } from "@tanstack/react-router";
 
-interface Props {
-  router: DataRouter;
-}
-
-const App: React.FC<Props> = ({ router }) => {
-  return (
+const App = ({ children }: { children: React.ReactNode }) => {
+  /* return (
     <div id="app">
       <AuthProvider>
         <UserProvider>
@@ -17,7 +13,8 @@ const App: React.FC<Props> = ({ router }) => {
         </UserProvider>
       </AuthProvider>
     </div>
-  );
+  ); */
+  return <div id="app">{children}</div>;
 };
 
 export default App;

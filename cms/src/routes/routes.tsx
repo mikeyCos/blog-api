@@ -1,5 +1,3 @@
-import { Outlet, RouteObject } from "react-router";
-
 import DefaultLayout from "../layouts/DefaultLayout";
 import Home from "../pages/home/Home";
 import About from "../pages/about/About";
@@ -19,8 +17,6 @@ import postLoader from "../pages/post/postLoader";
 import EditPost from "../pages/editPost/EditPost";
 import editPostLoader from "../pages/editPost/editPostLoader";
 import ModalProvider from "../hooks/useModal";
-import postsLoader from "../features/posts/postsLoader";
-import RoleProtectedRoute from "./RoleProtectedRoute";
 
 // If no user is logged in
 //  Go to home page
@@ -30,7 +26,7 @@ import RoleProtectedRoute from "./RoleProtectedRoute";
 //  If user goes to the sign in page, they are redirected to their dashboard
 
 // useLocation hook can be used on all routes
-const RootLayout: React.FC = () => {
+/* const RootLayout: React.FC = () => {
   return (
     <PrevLocationProvider>
       <ModalProvider>
@@ -113,7 +109,7 @@ const routes: RouteObject[] = [
   },
 ];
 
-export default routes;
+export default routes; */
 
 /* /:username/posts
  * How to view any users' posts if the authenticated user is an admin?
