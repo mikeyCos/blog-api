@@ -35,7 +35,7 @@ const AuthContext = createContext<AuthContext | null>(null);
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  console.log("AuthProvider running...");
+  console.group("AuthProvider running...");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -93,7 +93,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  console.group("useAuth running...");
+  console.log("context:", context);
+  console.groupEnd();
+  return context;
 };
 
 export { AuthProvider as default, useAuth };

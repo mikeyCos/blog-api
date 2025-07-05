@@ -2,6 +2,7 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 04 JUL 2025
+- Created `InnerApp` component in `App` module; returns `RouterProvider` with `router` and `context` props.
 - Added `"strict": true` to `tsconfig.json` in `cms` subdirectory.
 - Created `router.config.ts` module.
 - Updated outdated packages.
