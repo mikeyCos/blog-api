@@ -1,6 +1,11 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 05 JUL 2025
+- Created pathless `_protectedLayout` and `_protected` subdirectory.
+- `Header`, `Outlet` and `Footer` components are created at the root route component.
+- Deleted `DefaultLayout` component.
+---
 ### 04 JUL 2025
 - Created `InnerApp` component in `App` module; returns `RouterProvider` with `router` and `context` props.
 - Added `"strict": true` to `tsconfig.json` in `cms` subdirectory.

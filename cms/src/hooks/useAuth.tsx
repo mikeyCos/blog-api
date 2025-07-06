@@ -10,6 +10,8 @@ import React, {
 import axios from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
 import { useUserData } from "./useUser";
+import router from "../config/router.config";
+import useAxiosPrivate from "./useAxiosPrivate";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -19,6 +21,7 @@ import { useUserData } from "./useUser";
 //  Authors, can only read, write, delete their own material and user comments under their blog
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
+type Authorize = () => Promise<void>;
 
 export interface AuthContext {
   login: Login;
@@ -28,6 +31,7 @@ export interface AuthContext {
   setAccessToken: Dispatch<
     string | null | ((prevState: string | null) => string | null)
   >;
+  authorize: Authorize;
 }
 
 const AuthContext = createContext<AuthContext | null>(null);
@@ -36,6 +40,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   console.group("AuthProvider running...");
+  const axiosPrivate = useAxiosPrivate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
@@ -57,6 +62,24 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
+  const authorize = async () => {
+    console.group("authorize running...");
+    try {
+      await axiosPrivate.get("/auth");
+    } catch (err) {
+      console.error(err);
+      if (err instanceof Error && isAuthenticated) {
+        console.log(err);
+        console.log("err instanceof Error:", err instanceof Error);
+        console.groupEnd();
+        // How to throw error to Tanstack Router errorElement?
+        // throwError(err);
+      } else {
+        setAccessToken(null);
+      }
+    }
+  };
+
   useEffect(() => {
     console.log("AuthProvider mounted...");
     const refresh = useRefreshToken();
@@ -76,12 +99,14 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const providerValue = useMemo(() => {
+    // router.invalidate();
     return {
       login,
       logout,
       isAuthenticated,
       accessToken,
       setAccessToken,
+      authorize,
     };
   }, [accessToken]);
 
@@ -94,9 +119,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 const useAuth = () => {
   const context = useContext(AuthContext);
-  console.group("useAuth running...");
-  console.log("context:", context);
-  console.groupEnd();
+
+  if (!context)
+    throw Error("useAuth needs to be called inside AuthContext Provider.");
   return context;
 };
 
