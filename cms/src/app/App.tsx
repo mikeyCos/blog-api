@@ -2,10 +2,11 @@ import { RouterProvider } from "@tanstack/react-router";
 
 import AuthProvider, { useAuth } from "../hooks/useAuth";
 import UserProvider from "../hooks/useUser";
-import PrevLocationProvider from "../hooks/usePrevLocation";
 import router from "../config/router.config";
+import AxiosPrivateProvider from "../hooks/useAxiosPrivate";
 
 const InnerApp = () => {
+  console.group("InnerApp running...");
   const auth = useAuth();
   return <RouterProvider router={router} context={{ auth }} />;
 };
@@ -14,9 +15,11 @@ const App = () => {
   return (
     <div id="app">
       <AuthProvider>
-        <UserProvider>
-          <InnerApp />
-        </UserProvider>
+        <AxiosPrivateProvider>
+          <UserProvider>
+            <InnerApp />
+          </UserProvider>
+        </AxiosPrivateProvider>
       </AuthProvider>
     </div>
   );

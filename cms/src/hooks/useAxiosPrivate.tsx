@@ -1,9 +1,16 @@
-import { useEffect } from "react";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
 import { axiosPrivate } from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
 import { useAuth } from "./useAuth";
+import { AxiosInstance } from "axios";
 
-const useAxiosPrivate = () => {
+export interface AxiosPrivateContext {
+  axiosPrivate: AxiosInstance;
+}
+
+const AxiosPrivateContext = createContext<AxiosPrivateContext | null>(null);
+
+const AxiosPrivateProvider = ({ children }: { children: React.ReactNode }) => {
   const { accessToken, setAccessToken } = useAuth();
   const refresh = useRefreshToken();
 
@@ -31,9 +38,8 @@ const useAxiosPrivate = () => {
           console.log("responseInterceptor accessToken:", accessToken);
           const refreshResponse = await refresh();
           console.log("refreshResponse:", refreshResponse);
-          err.config.headers[
-            "Authorization"
-          ] = `Bearer ${refreshResponse.accessToken}`;
+          err.config.headers["Authorization"] =
+            `Bearer ${refreshResponse.accessToken}`;
           setAccessToken(refreshResponse.accessToken);
           return axiosPrivate(err.config);
         }
@@ -47,9 +53,29 @@ const useAxiosPrivate = () => {
       axiosPrivate.interceptors.request.eject(requestInterceptor);
       axiosPrivate.interceptors.response.eject(responseInterceptor);
     };
-  }, [accessToken]);
+  }, [axiosPrivate]);
 
-  return axiosPrivate;
+  const providerValue = useMemo(() => {
+    return { axiosPrivate };
+  }, []);
+
+  return (
+    <AxiosPrivateContext.Provider value={providerValue}>
+      {children}
+    </AxiosPrivateContext.Provider>
+  );
 };
 
-export default useAxiosPrivate;
+const useAxiosPrivate = () => {
+  const context = useContext(AxiosPrivateContext);
+
+  if (!context) {
+    throw new Error(
+      "useAxiosPrivate needs to be called inside AxiosPrivateContext Provider"
+    );
+  }
+
+  return context;
+};
+
+export { AxiosPrivateProvider as default, useAxiosPrivate };

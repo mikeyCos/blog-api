@@ -1,6 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 07 JUL 2025
+- Renamed pathless route `_protectedLayout` to `protected`.
+- Deleted `_dashboard` pathless route subdirectory.
+- Deleted `_dashboardLayout` pathless route.
+- `AxiosPrivateProvider` is created in the `App` component in between `AuthProvider` and `UserProvider` components.
+- Defined `AxiosPrivateContext` and `AxiosPrivateProvider` in `useAxiosPrivate` module.
+---
 ### 05 JUL 2025
 - Created pathless `_protectedLayout` and `_protected` subdirectory.
 - `Header`, `Outlet` and `Footer` components are created at the root route component.

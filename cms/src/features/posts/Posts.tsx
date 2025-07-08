@@ -11,33 +11,33 @@ import { useAuth } from "../../hooks/useAuth";
 //  and renders their posts
 // Should this fetch user based on :username parameters?
 const Posts = () => {
-  const [posts, setPosts] = useState([]);
-  const axiosPrivate = useAxiosPrivate();
+  // const [posts, setPosts] = useState([]);
+  // const axiosPrivate = useAxiosPrivate();
   // const params = useParams<{ username: string }>();
   console.group("Posts component rendering...");
-  console.log(posts);
+  // console.log(posts);
   /* const { user, addPost } = useUserData();
   const [errors, setErrors] = useState<PostFormError>();
   const data = user?.blog?.posts || []; // This should fetch based on :username parameter
   const axiosPrivate = useAxiosPrivate(); */
 
-  useEffect(() => {
-    const getUserPosts = async () => {
-      try {
-        /*         const response = await axiosPrivate.get(
-          `users/${params.username}/posts`
-        );
-        setPosts(response.data.posts); */
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  // useEffect(() => {
+  //   const getUserPosts = async () => {
+  //     try {
+  //       /*         const response = await axiosPrivate.get(
+  //         `users/${params.username}/posts`
+  //       );
+  //       setPosts(response.data.posts); */
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
 
-    getUserPosts();
-    console.group("Posts mounted...");
-    // console.log(params);
-    console.groupEnd();
-  }, []);
+  //   getUserPosts();
+  //   console.group("Posts mounted...");
+  //   // console.log(params);
+  //   console.groupEnd();
+  // }, []);
 
   /* const submitPost = async (data: any) => {
     try {
@@ -64,7 +64,7 @@ const Posts = () => {
     <>
       <h2>Posts</h2>
       {/* <p>username {params.username}</p> */}
-      <PostList data={posts} />
+      {/* <PostList data={posts} /> */}
     </>
   );
 };

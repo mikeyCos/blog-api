@@ -21,7 +21,7 @@ import useAxiosPrivate from "./useAxiosPrivate";
 //  Authors, can only read, write, delete their own material and user comments under their blog
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
-type Authorize = () => Promise<void>;
+type Authorize = () => Promise<boolean>;
 
 export interface AuthContext {
   login: Login;
@@ -40,9 +40,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   console.group("AuthProvider running...");
-  const axiosPrivate = useAxiosPrivate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const axiosPrivate = useAxiosPrivate();
 
   const login: Login = (newToken) => {
     console.log("login from AuthProvider running...");
@@ -64,8 +64,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const authorize = async () => {
     console.group("authorize running...");
-    try {
+    /* try {
       await axiosPrivate.get("/auth");
+      return true;
     } catch (err) {
       console.error(err);
       if (err instanceof Error && isAuthenticated) {
@@ -76,8 +77,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         // throwError(err);
       } else {
         setAccessToken(null);
+        setIsAuthenticated(false);
       }
-    }
+      return false;
+    } */
+    return false;
   };
 
   useEffect(() => {
@@ -99,7 +103,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const providerValue = useMemo(() => {
-    // router.invalidate();
     return {
       login,
       logout,
@@ -108,7 +111,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setAccessToken,
       authorize,
     };
-  }, [accessToken]);
+  }, [accessToken, isAuthenticated]);
 
   return (
     <AuthContext.Provider value={providerValue}>
@@ -120,8 +123,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 const useAuth = () => {
   const context = useContext(AuthContext);
 
-  if (!context)
+  if (!context) {
     throw Error("useAuth needs to be called inside AuthContext Provider.");
+  }
+
   return context;
 };
 

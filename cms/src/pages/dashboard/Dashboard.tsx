@@ -2,6 +2,7 @@ import React from "react";
 
 import { useAuth } from "../../hooks/useAuth";
 const Dashboard: React.FC = () => {
+  console.group("Dashboard component rendering...");
   const { accessToken } = useAuth();
 
   return (

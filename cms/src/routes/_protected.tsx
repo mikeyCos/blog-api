@@ -17,11 +17,10 @@ export const Route = createFileRoute("/_protected")({
       });
     }
 
-    try {
-      context.auth.authorize();
-    } catch (err) {
-      console.error(err);
-    }
+    // const result = false;
+    // const result = context.auth.authorize();
+    // console.log("result:", result);
+    console.groupEnd();
   },
   component: RouteComponent,
 });
