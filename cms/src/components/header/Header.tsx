@@ -13,10 +13,12 @@ const Header: React.FC = () => {
   const from = location.pathname;
   const navigate = useNavigate();
   const { prevLocation } = usePrevLocation();
-  console.log("Header component rendering...");
+  console.group("Header component rendering...");
   // console.log("prevLocation in Header component:", prevLocation);
   // console.log("from in Header component:", from);
-  // console.log("accessToken in Header component:", accessToken);
+  console.log("accessToken in Header component:", accessToken);
+  console.log("isAuthenticated in Header component:", isAuthenticated);
+  console.groupEnd();
   // TODO
   // Should the user be redirected to the home page or the page they are logging out from?
   // Problem

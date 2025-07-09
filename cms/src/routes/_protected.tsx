@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected")({
   beforeLoad: async ({ context, location }) => {
-    console.group("/dashboard beforeLoad running...");
+    console.group("/_protected beforeLoad running...");
     if (!context.auth.isAuthenticated) {
       console.log(
         "context.auth.isAuthenticated:",
@@ -18,8 +18,8 @@ export const Route = createFileRoute("/_protected")({
     }
 
     // const result = false;
-    // const result = await context.auth.authorize();
-    // console.log("result:", result);
+    const result = await context.auth.authorize();
+    console.log("result:", result);
     console.groupEnd();
   },
   component: RouteComponent,

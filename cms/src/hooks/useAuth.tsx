@@ -41,7 +41,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   console.groupEnd();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  // const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
+  const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
 
   const login: Login = (newToken) => {
     console.log("login from AuthProvider running...");
@@ -64,7 +64,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const authorize = async () => {
     console.group("authorize running...");
     try {
-      // await axiosPrivate.get("/auth");
+      await axiosPrivate.get("/auth");
       return true;
     } catch (err) {
       console.error(err);

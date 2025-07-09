@@ -18,3 +18,5 @@ const RootLayout = () => {
 };
 
 export default RootLayout;
+
+// Why does Header component render 4 times in Strict Mode?

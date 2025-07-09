@@ -3,12 +3,12 @@ import { axiosPrivate } from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
 import { useAuth } from "./useAuth";
 
-// const useAxiosPrivate = (
-//   accessToken: string | null,
-//   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
-// ) => {
-const useAxiosPrivate = () => {
-  const { accessToken, setAccessToken } = useAuth();
+const useAxiosPrivate = (
+  accessToken: string | null,
+  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
+) => {
+  // const useAxiosPrivate = () => {
+  // const { accessToken, setAccessToken } = useAuth();
   const refresh = useRefreshToken();
   useEffect(() => {
     console.group("useAxiosPrivate mounted...");

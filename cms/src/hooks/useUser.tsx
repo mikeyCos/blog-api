@@ -51,10 +51,10 @@ const UserContext = createContext<UserContextType>({
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accessToken, isAuthenticated } = useAuth();
+  const { accessToken, setAccessToken, isAuthenticated } = useAuth();
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
-  const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
 
   const addPost: PostCallback<Post> = (newPost) => {
     setUser((prevUser) => {
