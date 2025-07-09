@@ -3,7 +3,6 @@ import { RouterProvider } from "@tanstack/react-router";
 import AuthProvider, { useAuth } from "../hooks/useAuth";
 import UserProvider from "../hooks/useUser";
 import router from "../config/router.config";
-import AxiosPrivateProvider from "../hooks/useAxiosPrivate";
 
 const InnerApp = () => {
   console.group("InnerApp running...");
@@ -15,11 +14,9 @@ const App = () => {
   return (
     <div id="app">
       <AuthProvider>
-        <AxiosPrivateProvider>
-          <UserProvider>
-            <InnerApp />
-          </UserProvider>
-        </AxiosPrivateProvider>
+        <UserProvider>
+          <InnerApp />
+        </UserProvider>
       </AuthProvider>
     </div>
   );

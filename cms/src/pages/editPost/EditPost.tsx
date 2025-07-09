@@ -4,7 +4,7 @@ import { useUserData } from "../../hooks/useUser";
 import { Post as PostData } from "../../interfaces/blog";
 import PostForm from "../../features/posts/components/PostForm";
 import { PostFormError } from "../../interfaces/errors";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useAxiosPrivate } from "../../hooks/useAxiosPrivate";
 import { PostSuccessResponse } from "../../interfaces/responses";
 
 const EditPost = () => {
@@ -12,7 +12,7 @@ const EditPost = () => {
   const { user, updatePost } = useUserData();
   const currentPost = useLoaderData<PostData>();
   const [errors, setErrors] = useState<PostFormError>();
-  const axiosPrivate = useAxiosPrivate();
+  const { axiosPrivate } = useAxiosPrivate();
 
   console.log("user:", user);
   const submitPost = async (data: any) => {

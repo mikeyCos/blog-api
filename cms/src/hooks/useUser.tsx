@@ -106,7 +106,9 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     console.group("UserProvider mounted");
+    console.groupEnd();
     const getUser = async () => {
+      console.group("getUser running...");
       console.log(
         `accessToken: ${accessToken}, isAuthenticate: ${isAuthenticated}`
       );

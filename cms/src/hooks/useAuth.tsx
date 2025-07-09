@@ -28,9 +28,7 @@ export interface AuthContext {
   logout: Logout;
   isAuthenticated: boolean;
   accessToken: string | null;
-  setAccessToken: Dispatch<
-    string | null | ((prevState: string | null) => string | null)
-  >;
+  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
   authorize: Authorize;
 }
 
@@ -40,9 +38,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   console.group("AuthProvider running...");
+  console.groupEnd();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const axiosPrivate = useAxiosPrivate();
+  // const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
 
   const login: Login = (newToken) => {
     console.log("login from AuthProvider running...");
@@ -64,8 +63,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const authorize = async () => {
     console.group("authorize running...");
-    /* try {
-      await axiosPrivate.get("/auth");
+    try {
+      // await axiosPrivate.get("/auth");
       return true;
     } catch (err) {
       console.error(err);
@@ -80,8 +79,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsAuthenticated(false);
       }
       return false;
-    } */
-    return false;
+    }
   };
 
   useEffect(() => {
@@ -89,6 +87,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     const refresh = useRefreshToken();
 
     const initAuth = async () => {
+      console.log("initAuth running...");
       try {
         const refreshResponse = await refresh();
         login(refreshResponse.accessToken);

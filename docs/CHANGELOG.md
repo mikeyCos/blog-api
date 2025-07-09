@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 08 JUL 2025
+- Removed `AxiosPrivateContext` and `AxiosPrivateProvider` in `useAxiosPrivate` module.
+---
 ### 07 JUL 2025
 - Renamed pathless route `_protectedLayout` to `protected`.
 - Deleted `_dashboard` pathless route subdirectory.

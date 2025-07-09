@@ -1,21 +1,18 @@
-import React, { createContext, useContext, useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { axiosPrivate } from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
 import { useAuth } from "./useAuth";
-import { AxiosInstance } from "axios";
 
-export interface AxiosPrivateContext {
-  axiosPrivate: AxiosInstance;
-}
-
-const AxiosPrivateContext = createContext<AxiosPrivateContext | null>(null);
-
-const AxiosPrivateProvider = ({ children }: { children: React.ReactNode }) => {
+// const useAxiosPrivate = (
+//   accessToken: string | null,
+//   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
+// ) => {
+const useAxiosPrivate = () => {
   const { accessToken, setAccessToken } = useAuth();
   const refresh = useRefreshToken();
-
   useEffect(() => {
     console.group("useAxiosPrivate mounted...");
+    console.groupEnd();
     const requestInterceptor = axiosPrivate.interceptors.request.use(
       (config) => {
         console.log("requestInterceptor useAxiosPrivate");
@@ -23,7 +20,6 @@ const AxiosPrivateProvider = ({ children }: { children: React.ReactNode }) => {
           console.log("requestInterceptor accessToken:", accessToken);
           config.headers.Authorization = `Bearer ${accessToken}`;
         }
-        console.groupEnd();
         return config;
       }
     );
@@ -34,6 +30,7 @@ const AxiosPrivateProvider = ({ children }: { children: React.ReactNode }) => {
       (response) => response,
       async (err) => {
         console.group("responseInterceptor err handler running...");
+        console.groupEnd();
         if (err.request.status === 403 || err.request.status === 401) {
           console.log("responseInterceptor accessToken:", accessToken);
           const refreshResponse = await refresh();
@@ -43,7 +40,6 @@ const AxiosPrivateProvider = ({ children }: { children: React.ReactNode }) => {
           setAccessToken(refreshResponse.accessToken);
           return axiosPrivate(err.config);
         }
-        console.groupEnd();
         return Promise.reject(err);
       }
     );
@@ -53,29 +49,9 @@ const AxiosPrivateProvider = ({ children }: { children: React.ReactNode }) => {
       axiosPrivate.interceptors.request.eject(requestInterceptor);
       axiosPrivate.interceptors.response.eject(responseInterceptor);
     };
-  }, [axiosPrivate]);
+  }, [accessToken]);
 
-  const providerValue = useMemo(() => {
-    return { axiosPrivate };
-  }, []);
-
-  return (
-    <AxiosPrivateContext.Provider value={providerValue}>
-      {children}
-    </AxiosPrivateContext.Provider>
-  );
+  return axiosPrivate;
 };
 
-const useAxiosPrivate = () => {
-  const context = useContext(AxiosPrivateContext);
-
-  if (!context) {
-    throw new Error(
-      "useAxiosPrivate needs to be called inside AxiosPrivateContext Provider"
-    );
-  }
-
-  return context;
-};
-
-export { AxiosPrivateProvider as default, useAxiosPrivate };
+export default useAxiosPrivate;

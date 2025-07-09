@@ -1,6 +1,6 @@
 import React, { FormEventHandler } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+// import { useLocation, useNavigate, useParams } from "react-router";
+import { useAxiosPrivate } from "../../../hooks/useAxiosPrivate";
 import { useModalContext } from "../../../hooks/useModal";
 import { Post } from "../../../interfaces/blog";
 import { useUserData } from "../../../hooks/useUser";
@@ -15,7 +15,7 @@ const ConfirmPostDelete: React.FC<Props> = ({ data }) => {
   const params = useParams<{ username: string }>();
   const { closeModal } = useModalContext();
   const { removePost, user } = useUserData();
-  const axiosPrivate = useAxiosPrivate();
+  const { axiosPrivate } = useAxiosPrivate();
   const handleCancel = () => {
     console.group("handleCancel running");
     console.log("closing modal...");
