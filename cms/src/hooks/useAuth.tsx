@@ -11,7 +11,7 @@ import axios from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
 import { useUserData } from "./useUser";
 import router from "../config/router.config";
-import useAxiosPrivate from "./useAxiosPrivate";
+import { useAxiosPrivateInit } from "./useAxiosPrivate";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -41,7 +41,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   console.groupEnd();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
+  const axiosPrivate = useAxiosPrivateInit(accessToken, setAccessToken);
 
   const login: Login = (newToken) => {
     console.log("login from AuthProvider running...");

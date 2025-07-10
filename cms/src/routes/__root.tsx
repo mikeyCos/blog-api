@@ -8,7 +8,6 @@ import Footer from "../components/footer/Footer";
 
 interface RouterContext {
   auth: AuthContext;
-  axiosPrivate: AxiosInstance;
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({

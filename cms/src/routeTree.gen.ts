@@ -15,7 +15,8 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProtectedDashboardRouteImport } from './routes/_protected/dashboard'
+import { Route as ProtectedDashboardRouteImport } from './routes/_protected/_dashboard'
+import { Route as ProtectedDashboardDashboardRouteImport } from './routes/_protected/_dashboard/dashboard'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -47,10 +48,15 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProtectedDashboardRoute = ProtectedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+  id: '/_dashboard',
   getParentRoute: () => ProtectedRoute,
 } as any)
+const ProtectedDashboardDashboardRoute =
+  ProtectedDashboardDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => ProtectedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -58,7 +64,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/dashboard': typeof ProtectedDashboardRoute
+  '/dashboard': typeof ProtectedDashboardDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -66,7 +72,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/dashboard': typeof ProtectedDashboardRoute
+  '/dashboard': typeof ProtectedDashboardDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -76,7 +82,8 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/_protected/dashboard': typeof ProtectedDashboardRoute
+  '/_protected/_dashboard': typeof ProtectedDashboardRouteWithChildren
+  '/_protected/_dashboard/dashboard': typeof ProtectedDashboardDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,7 +98,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/login'
     | '/signup'
-    | '/_protected/dashboard'
+    | '/_protected/_dashboard'
+    | '/_protected/_dashboard/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -147,22 +155,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_protected/dashboard': {
-      id: '/_protected/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
+    '/_protected/_dashboard': {
+      id: '/_protected/_dashboard'
+      path: ''
+      fullPath: ''
       preLoaderRoute: typeof ProtectedDashboardRouteImport
       parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/_dashboard/dashboard': {
+      id: '/_protected/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof ProtectedDashboardDashboardRouteImport
+      parentRoute: typeof ProtectedDashboardRoute
     }
   }
 }
 
+interface ProtectedDashboardRouteChildren {
+  ProtectedDashboardDashboardRoute: typeof ProtectedDashboardDashboardRoute
+}
+
+const ProtectedDashboardRouteChildren: ProtectedDashboardRouteChildren = {
+  ProtectedDashboardDashboardRoute: ProtectedDashboardDashboardRoute,
+}
+
+const ProtectedDashboardRouteWithChildren =
+  ProtectedDashboardRoute._addFileChildren(ProtectedDashboardRouteChildren)
+
 interface ProtectedRouteChildren {
-  ProtectedDashboardRoute: typeof ProtectedDashboardRoute
+  ProtectedDashboardRoute: typeof ProtectedDashboardRouteWithChildren
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
-  ProtectedDashboardRoute: ProtectedDashboardRoute,
+  ProtectedDashboardRoute: ProtectedDashboardRouteWithChildren,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

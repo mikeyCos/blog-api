@@ -4,7 +4,7 @@ import { routeTree } from "../routeTree.gen";
 const router = createRouter({
   routeTree,
   scrollRestoration: true,
-  context: { auth: undefined!, axiosPrivate: undefined! },
+  context: { auth: undefined! },
 });
 
 declare module "@tanstack/react-router" {

@@ -1,6 +1,11 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 09 JUL 2025
+- 
+- Recreated `AxiosPrivateContext` and `AxiosPrivateProvider` in `useAxiosPrivate` module.
+- Recreated `_dashboard` pathless route subdirectory.
+---
 ### 08 JUL 2025
 - The `useAxiosPrivate` custom hook now accepts two parameters, `accessToken` and `setAccessToken`.
 - Removed `AxiosPrivateContext` and `AxiosPrivateProvider` in `useAxiosPrivate` module.

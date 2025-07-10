@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 // import { usePrevLocation } from "../hooks/usePrevLocation";
 
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useAxiosPrivate } from "../hooks/useAxiosPrivate";
 import { useUserData } from "../hooks/useUser";
 import useError from "../hooks/useError";
 import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
@@ -22,7 +22,8 @@ const ProtectedLayout: React.FC<{ children?: React.ReactNode }> = ({
   const { accessToken, isAuthenticated, setAccessToken } = useAuth();
   const { user, isUserDataLoading } = useUserData();
   const location = useLocation();
-  const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
+  // const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
+  const { axiosPrivate } = useAxiosPrivate();
   const throwError = useError();
   // console.log(prevLocation);
   // if (!accessToken)

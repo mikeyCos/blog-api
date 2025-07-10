@@ -8,7 +8,7 @@ import React, {
 import { AuthenticatedUser } from "../interfaces/user";
 import { useAuth } from "./useAuth";
 import { AuthUserResponse } from "../interfaces/responses";
-import useAxiosPrivate from "./useAxiosPrivate";
+import { useAxiosPrivate } from "./useAxiosPrivate";
 import { Post } from "../interfaces/blog";
 
 interface PostCallback<T> {
@@ -51,10 +51,10 @@ const UserContext = createContext<UserContextType>({
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accessToken, setAccessToken, isAuthenticated } = useAuth();
+  const { accessToken, isAuthenticated } = useAuth();
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
-  const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
+  const { axiosPrivate } = useAxiosPrivate();
 
   const addPost: PostCallback<Post> = (newPost) => {
     setUser((prevUser) => {
@@ -109,10 +109,11 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     console.groupEnd();
     const getUser = async () => {
       console.group("getUser running...");
-      console.log(
-        `accessToken: ${accessToken}, isAuthenticate: ${isAuthenticated}`
-      );
       try {
+        // Why is the accessToken not getting attached to the request?
+        console.log(
+          `accessToken: ${accessToken}, isAuthenticated: ${isAuthenticated}`
+        );
         const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
         setUser(response.data.user);
         console.log("response:", response);
@@ -133,12 +134,6 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("accessToken && isAuthenticate ELSE");
       setUser(null);
     }
-
-    /* 
-    if (!accessToken || !isAuthenticated) {
-      console.log("accessToken && isAuthenticate ELSE");
-      setUser(null);
-    } */
   }, [isAuthenticated]);
 
   const useUserValue = useMemo<UserContextType>(() => {

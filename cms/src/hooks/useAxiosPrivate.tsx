@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { createContext, useContext, useEffect, useMemo } from "react";
 import { axiosPrivate } from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
 import { useAuth } from "./useAuth";
+import { AxiosInstance } from "axios";
 
-const useAxiosPrivate = (
+interface AxiosPrivateContext {
+  axiosPrivate: AxiosInstance;
+}
+
+const AxiosPrivateContext = createContext<AxiosPrivateContext | null>(null);
+
+const useAxiosPrivateInit = (
   accessToken: string | null,
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
-  // const useAxiosPrivate = () => {
-  // const { accessToken, setAccessToken } = useAuth();
   const refresh = useRefreshToken();
   useEffect(() => {
     console.group("useAxiosPrivate mounted...");
@@ -16,8 +21,9 @@ const useAxiosPrivate = (
     const requestInterceptor = axiosPrivate.interceptors.request.use(
       (config) => {
         console.log("requestInterceptor useAxiosPrivate");
+        console.log("config.url:", config.url);
+        console.log("requestInterceptor accessToken:", accessToken);
         if (accessToken) {
-          console.log("requestInterceptor accessToken:", accessToken);
           config.headers.Authorization = `Bearer ${accessToken}`;
         }
         return config;
@@ -54,4 +60,41 @@ const useAxiosPrivate = (
   return axiosPrivate;
 };
 
-export default useAxiosPrivate;
+const AxiosPrivateProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { accessToken, setAccessToken } = useAuth();
+  console.group("AxiosPrivateProvider rendering...");
+  console.log("accessToken:", accessToken);
+  console.groupEnd();
+  const axiosPrivate = useAxiosPrivateInit(accessToken, setAccessToken);
+
+  const providerValue = useMemo(() => {
+    console.group("useMemo");
+    console.log("accessToken:", accessToken);
+    console.groupEnd();
+    return { axiosPrivate };
+  }, [accessToken]);
+
+  return (
+    <AxiosPrivateContext.Provider value={providerValue}>
+      {children}
+    </AxiosPrivateContext.Provider>
+  );
+};
+
+const useAxiosPrivate = () => {
+  const context = useContext(AxiosPrivateContext);
+
+  if (!context) {
+    throw new Error("usAxiosPrivateContext");
+  }
+
+  return context;
+};
+
+export {
+  AxiosPrivateProvider as default,
+  useAxiosPrivateInit,
+  useAxiosPrivate,
+};
