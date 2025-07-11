@@ -8,8 +8,9 @@ import React, {
 import { AuthenticatedUser } from "../interfaces/user";
 import { useAuth } from "./useAuth";
 import { AuthUserResponse } from "../interfaces/responses";
-import { useAxiosPrivate } from "./useAxiosPrivate";
+// import { axiosPrivate } from "../config/axios.config";
 import { Post } from "../interfaces/blog";
+import useAxiosPrivate from "./useAxiosPrivate";
 
 interface PostCallback<T> {
   (param: T): void;
@@ -51,10 +52,10 @@ const UserContext = createContext<UserContextType>({
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accessToken, isAuthenticated } = useAuth();
+  const { accessToken, setAccessToken, isAuthenticated } = useAuth();
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
-  const { axiosPrivate } = useAxiosPrivate();
+  const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
 
   const addPost: PostCallback<Post> = (newPost) => {
     setUser((prevUser) => {
@@ -106,6 +107,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     console.group("UserProvider mounted");
+    console.log("accessToken:", accessToken);
     console.groupEnd();
     const getUser = async () => {
       console.group("getUser running...");
@@ -126,7 +128,6 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.groupEnd();
     };
 
-    // getUser();
     if (accessToken && isAuthenticated) {
       console.log("accessToken && isAuthenticate");
       getUser();
@@ -134,7 +135,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("accessToken && isAuthenticate ELSE");
       setUser(null);
     }
-  }, [isAuthenticated]);
+  }, [accessToken, isAuthenticated]);
 
   const useUserValue = useMemo<UserContextType>(() => {
     console.group("useUserValue useMemo running...");
@@ -159,7 +160,14 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       removePost: () => {},
       isUserDataLoading,
     };
-  }, [user]);
+  }, [
+    user,
+    isAuthenticated,
+    isUserDataLoading,
+    addPost,
+    updatePost,
+    removePost,
+  ]);
 
   return (
     <UserContext.Provider value={useUserValue}>{children}</UserContext.Provider>

@@ -34,9 +34,9 @@ import "./config/passport";
 // Parses incoming requests with JSON payloads
 app.use(express.json());
 
-/* app.get("/favicon.ico", (req: Request, res: Response) => {
+app.get("/favicon.ico", (req, res) => {
   res.sendStatus(204);
-}); */
+});
 
 // Testing...
 app.use(passport.initialize());

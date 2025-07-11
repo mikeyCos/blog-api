@@ -1,17 +1,13 @@
 import React, {
   createContext,
-  Dispatch,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
 
-import axios from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
-import { useUserData } from "./useUser";
-import router from "../config/router.config";
-import { useAxiosPrivateInit } from "./useAxiosPrivate";
+import useAxiosPrivate from "./useAxiosPrivate";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -41,7 +37,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   console.groupEnd();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const axiosPrivate = useAxiosPrivateInit(accessToken, setAccessToken);
+  // const axiosPrivate = useAxiosPrivateInit(accessToken, setAccessToken);
+  const axiosPrivate = useAxiosPrivate(accessToken, setAccessToken);
+  const refresh = useRefreshToken();
 
   const login: Login = (newToken) => {
     console.log("login from AuthProvider running...");
@@ -52,7 +50,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout: Logout = async () => {
     console.log("logout from AuthProvider running...");
-    return axios.post("/auth/logout").then((_resolve) => {
+    return axiosPrivate.post("/auth/logout").then((_resolve) => {
       return new Promise(async (resolve) => {
         setAccessToken(null);
         setIsAuthenticated(false);
@@ -84,7 +82,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     console.log("AuthProvider mounted...");
-    const refresh = useRefreshToken();
+    // const refresh = useRefreshToken();
 
     const initAuth = async () => {
       console.log("initAuth running...");

@@ -1,8 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 11 JUL 2025
+- Authenticated user is fetched from database and stored in `user` state in `UserProvider`.
+---
 ### 09 JUL 2025
-- 
 - Recreated `AxiosPrivateContext` and `AxiosPrivateProvider` in `useAxiosPrivate` module.
 - Recreated `_dashboard` pathless route subdirectory.
 ---
