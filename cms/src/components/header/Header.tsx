@@ -32,7 +32,7 @@ const Header: React.FC = () => {
     console.log("from:", from);
     console.groupEnd();
     await logout();
-    navigate({ to: from, replace: true });
+    // navigate({ to: from, replace: true });
   };
 
   return (

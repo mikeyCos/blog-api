@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { axiosPrivate } from "../config/axios.config";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { axiosPrivate as globalAxiosPrivate } from "../config/axios.config";
 import useRefreshToken from "./useRefreshToken";
+import { AxiosInstance } from "axios";
+import { useAuth } from "./useAuth";
 
-const useAxiosPrivate = (
-  accessToken: string | null,
-  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>
-) => {
-  // const [axiosPrivateLoading, setAxiosPrivateLoading] = useState(true);
+// https://stackoverflow.com/questions/75676588/react-integration-of-axios-instance-allowing-token-refresh
+
+const useAxiosPrivate = () => {
+  const [interceptorsReady, setInterceptorsReady] = useState(false);
+  const { accessToken, setAccessToken } = useAuth();
   const refresh = useRefreshToken();
   useEffect(() => {
     console.group("useAxiosPrivate mounted...");
     console.groupEnd();
-    const requestInterceptor = axiosPrivate.interceptors.request.use(
+    const requestInterceptor = globalAxiosPrivate.interceptors.request.use(
       (config) => {
         console.group("useAxiosPrivate requestInterceptor");
         console.log("config.url:", config.url);
@@ -30,7 +32,7 @@ const useAxiosPrivate = (
 
     // What if access token expires when a user submits a form?
     // Retry original request one time
-    const responseInterceptor = axiosPrivate.interceptors.response.use(
+    const responseInterceptor = globalAxiosPrivate.interceptors.response.use(
       (response) => response,
       async (err) => {
         console.group(
@@ -45,20 +47,23 @@ const useAxiosPrivate = (
           err.config.headers["Authorization"] =
             `Bearer ${refreshResponse.accessToken}`;
           setAccessToken(refreshResponse.accessToken);
-          return axiosPrivate(err.config);
+          return globalAxiosPrivate(err.config);
         }
         return Promise.reject(err);
       }
     );
 
+    setInterceptorsReady(true);
+
     return () => {
       console.log("useAxiosPrivate clean up function running...");
-      axiosPrivate.interceptors.request.eject(requestInterceptor);
-      axiosPrivate.interceptors.response.eject(responseInterceptor);
+      globalAxiosPrivate.interceptors.request.eject(requestInterceptor);
+      globalAxiosPrivate.interceptors.response.eject(responseInterceptor);
+      setInterceptorsReady(false);
     };
   }, [accessToken, refresh, setAccessToken]);
 
-  return axiosPrivate;
+  return { axiosPrivate: globalAxiosPrivate, interceptorsReady };
 };
 
 export default useAxiosPrivate;

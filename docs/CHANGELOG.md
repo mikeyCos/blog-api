@@ -1,8 +1,13 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 23 JUL 2025
+- Defined `failedRequests`/`setFailedRequests` state and `retryFailedRequests` function in `useAuth` to store and retry previous failed requests.
+- Recreated `AxiosPrivateContext` in `useAuth` module.
+- Private Axios instance is created in the `useAuth` module; interceptors are also attached.
+---
 ### 11 JUL 2025
-- Authenticated user is fetched from database and stored in `user` state in `UserProvider`.
+- Authenticated user data is fetched from database and stored in `user` state in `UserProvider`.
 ---
 ### 09 JUL 2025
 - Recreated `AxiosPrivateContext` and `AxiosPrivateProvider` in `useAxiosPrivate` module.
