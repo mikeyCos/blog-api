@@ -1,26 +1,33 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_protected")({
-  beforeLoad: async ({ context, location }) => {
-    console.group("/_protected beforeLoad running...");
-    console.log(context.auth);
-    if (!context.auth.isAuthenticated) {
-      console.log(
-        "context.auth.isAuthenticated:",
-        context.auth.isAuthenticated
-      );
-      console.groupEnd();
-      throw redirect({
-        to: "/login",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
+  beforeLoad: async ({ context }) => {
+    console.group("[_protected] beforeLoad running...");
+    console.log("context:", context);
+    console.groupEnd();
 
-    // const result = false;
-    const result = await context.auth.authorize();
-    console.log("result:", result);
+    //   if (!context.auth.isAuthenticated) {
+    //     console.log(
+    //       "context.auth.isAuthenticated:",
+    //       context.auth.isAuthenticated
+    //     );
+    //     console.groupEnd();
+    //     throw redirect({
+    //       to: "/login",
+    //       search: {
+    //         redirect: location.href,
+    //       },
+    //     });
+    //   }
+
+    //   // const result = false;
+    //   const result = await context.auth.authorize();
+    //   console.log("result:", result);
+    //   console.groupEnd();
+  },
+  loader: ({ context }) => {
+    console.group("[_protected] loader running...");
+    console.log("context:", context);
     console.groupEnd();
   },
   component: RouteComponent,

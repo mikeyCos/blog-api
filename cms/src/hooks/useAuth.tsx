@@ -17,6 +17,7 @@ import config from "../config/env.config";
 // Need to check roles of logged in user
 //  Admins, they can read, write, delete anyone's material and comments
 //  Authors, can only read, write, delete their own material and user comments under their blog
+type InitAuth = () => Promise<void>;
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
 type Authorize = () => Promise<boolean>;
@@ -24,6 +25,7 @@ type Authorize = () => Promise<boolean>;
 export type AxiosPrivateContext = AxiosInstance;
 
 export interface AuthContext {
+  initAuth: InitAuth;
   login: Login;
   logout: Logout;
   isAuthenticated: boolean;
@@ -147,6 +149,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           }
 
           // If there is no existing request to /auth/refresh
+          // Allows only one request to /auth/refresh
           setIsRefreshing(true);
 
           return new Promise(async (resolve, reject) => {
@@ -159,6 +162,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               retryFailedRequests();
               resolve(axiosInstance(originalRequest));
             } catch (refreshErr: any) {
+              console.log("refreshErr:", refreshErr);
               retryFailedRequests(refreshErr);
               setAccessToken(null);
               reject(refreshErr);
@@ -221,30 +225,46 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsAuthenticated,
   ]);
 
+  const initAuth = async () => {
+    console.log("initAuth running...");
+    try {
+      const refreshResponse = await refreshToken();
+      console.log("refreshResponse.accessToken:", refreshResponse.accessToken);
+      login(refreshResponse.accessToken);
+    } catch (err) {
+      console.error(err);
+      setAccessToken(null);
+      setIsAuthenticated(false);
+    }
+  };
+
   useEffect(() => {
     console.log("AuthProvider mounted...");
 
-    const initAuth = async () => {
-      console.log("initAuth running...");
-      try {
-        const refreshResponse = await refreshToken();
-        console.log(
-          "refreshResponse.accessToken:",
-          refreshResponse.accessToken
-        );
-        login(refreshResponse.accessToken);
-      } catch (err) {
-        console.error(err);
-        setAccessToken(null);
-        setIsAuthenticated(false);
-      }
-    };
+    // const initAuth = async () => {
+    //   console.log("initAuth running...");
+    //   try {
+    //     const refreshResponse = await refreshToken();
+    //     console.log(
+    //       "refreshResponse.accessToken:",
+    //       refreshResponse.accessToken
+    //     );
+    //     login(refreshResponse.accessToken);
+    //   } catch (err) {
+    //     console.error(err);
+    //     setAccessToken(null);
+    //     setIsAuthenticated(false);
+    //   }
+    // };
 
-    initAuth();
-  }, [isAuthenticated, refreshToken, login, setAccessToken]);
+    if (!accessToken) {
+      // initAuth();
+    }
+  }, []);
 
   const AuthProviderValue = useMemo(() => {
     return {
+      initAuth,
       login,
       logout,
       isAuthenticated,

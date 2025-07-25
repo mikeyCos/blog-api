@@ -13,7 +13,8 @@ const Login = () => {
   // If accessToken exists (user is logged in)
   //  Navigate the user to their dashboard or the previous location
   if (accessToken) {
-    console.log("location:", location);
+    console.log("[Login component] location:", location);
+    console.log("[Login component] preLocation:", prevLocation);
     /* if (location.state?.prevLocation) {
       return <Navigate to={location.state.prevLocation} />;
     } else {
@@ -27,15 +28,18 @@ const Login = () => {
         />
       );
     } */
-    return (
-      <Navigate
-        to={
-          !prevLocation || prevLocation === "/login"
-            ? "/dashboard"
-            : prevLocation
-        }
-      />
-    );
+
+    // return (
+    //   <Navigate
+    //     to={
+    //       !prevLocation || prevLocation === "/login"
+    //         ? "/dashboard"
+    //         : prevLocation
+    //     }
+    //   />
+    // );
+
+    // return <Navigate to={location.search?.redirect} />;
   }
 
   return (

@@ -17,6 +17,8 @@ import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected/_dashboard'
 import { Route as ProtectedDashboardDashboardRouteImport } from './routes/_protected/_dashboard/dashboard'
+import { Route as ProtectedDashboardUserUsernamePostsRouteImport } from './routes/_protected/_dashboard/_user/$username/posts'
+import { Route as ProtectedDashboardUserUsernameCommentsRouteImport } from './routes/_protected/_dashboard/_user/$username/comments'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -57,6 +59,18 @@ const ProtectedDashboardDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => ProtectedDashboardRoute,
   } as any)
+const ProtectedDashboardUserUsernamePostsRoute =
+  ProtectedDashboardUserUsernamePostsRouteImport.update({
+    id: '/_user/$username/posts',
+    path: '/$username/posts',
+    getParentRoute: () => ProtectedDashboardRoute,
+  } as any)
+const ProtectedDashboardUserUsernameCommentsRoute =
+  ProtectedDashboardUserUsernameCommentsRouteImport.update({
+    id: '/_user/$username/comments',
+    path: '/$username/comments',
+    getParentRoute: () => ProtectedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -65,6 +79,8 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard': typeof ProtectedDashboardDashboardRoute
+  '/$username/comments': typeof ProtectedDashboardUserUsernameCommentsRoute
+  '/$username/posts': typeof ProtectedDashboardUserUsernamePostsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -73,6 +89,8 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard': typeof ProtectedDashboardDashboardRoute
+  '/$username/comments': typeof ProtectedDashboardUserUsernameCommentsRoute
+  '/$username/posts': typeof ProtectedDashboardUserUsernamePostsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -84,12 +102,30 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_protected/_dashboard': typeof ProtectedDashboardRouteWithChildren
   '/_protected/_dashboard/dashboard': typeof ProtectedDashboardDashboardRoute
+  '/_protected/_dashboard/_user/$username/comments': typeof ProtectedDashboardUserUsernameCommentsRoute
+  '/_protected/_dashboard/_user/$username/posts': typeof ProtectedDashboardUserUsernamePostsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/faq' | '/login' | '/signup' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/faq'
+    | '/login'
+    | '/signup'
+    | '/dashboard'
+    | '/$username/comments'
+    | '/$username/posts'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/faq' | '/login' | '/signup' | '/dashboard'
+  to:
+    | '/'
+    | '/about'
+    | '/faq'
+    | '/login'
+    | '/signup'
+    | '/dashboard'
+    | '/$username/comments'
+    | '/$username/posts'
   id:
     | '__root__'
     | '/'
@@ -100,6 +136,8 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_protected/_dashboard'
     | '/_protected/_dashboard/dashboard'
+    | '/_protected/_dashboard/_user/$username/comments'
+    | '/_protected/_dashboard/_user/$username/posts'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -169,15 +207,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardDashboardRouteImport
       parentRoute: typeof ProtectedDashboardRoute
     }
+    '/_protected/_dashboard/_user/$username/posts': {
+      id: '/_protected/_dashboard/_user/$username/posts'
+      path: '/$username/posts'
+      fullPath: '/$username/posts'
+      preLoaderRoute: typeof ProtectedDashboardUserUsernamePostsRouteImport
+      parentRoute: typeof ProtectedDashboardRoute
+    }
+    '/_protected/_dashboard/_user/$username/comments': {
+      id: '/_protected/_dashboard/_user/$username/comments'
+      path: '/$username/comments'
+      fullPath: '/$username/comments'
+      preLoaderRoute: typeof ProtectedDashboardUserUsernameCommentsRouteImport
+      parentRoute: typeof ProtectedDashboardRoute
+    }
   }
 }
 
 interface ProtectedDashboardRouteChildren {
   ProtectedDashboardDashboardRoute: typeof ProtectedDashboardDashboardRoute
+  ProtectedDashboardUserUsernameCommentsRoute: typeof ProtectedDashboardUserUsernameCommentsRoute
+  ProtectedDashboardUserUsernamePostsRoute: typeof ProtectedDashboardUserUsernamePostsRoute
 }
 
 const ProtectedDashboardRouteChildren: ProtectedDashboardRouteChildren = {
   ProtectedDashboardDashboardRoute: ProtectedDashboardDashboardRoute,
+  ProtectedDashboardUserUsernameCommentsRoute:
+    ProtectedDashboardUserUsernameCommentsRoute,
+  ProtectedDashboardUserUsernamePostsRoute:
+    ProtectedDashboardUserUsernamePostsRoute,
 }
 
 const ProtectedDashboardRouteWithChildren =

@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 24 JUL 2025
+- Initial authentication now occurs on the `_root` route's `beforeLoad` function.
+- Created pathless file path `_user/` and `$username` parameter route.
+---
 ### 23 JUL 2025
 - Defined `failedRequests`/`setFailedRequests` state and `retryFailedRequests` function in `useAuth` to store and retry previous failed requests.
 - Recreated `AxiosPrivateContext` in `useAuth` module.

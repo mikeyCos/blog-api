@@ -8,5 +8,17 @@ interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: async ({ context }) => {
+    console.group("[_root] beforeLoad running...");
+    console.log("context:", context);
+    console.groupEnd();
+    try {
+      await context.auth.initAuth();
+    } catch (err) {
+      console.group("[_root] err caught:");
+      console.log("err:", err);
+      console.groupEnd();
+    }
+  },
   component: RootLayout,
 });
