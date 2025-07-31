@@ -4,12 +4,15 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
 import useRefreshToken from "./useRefreshToken";
 import axios, { AxiosError, AxiosInstance } from "axios";
 import config from "../config/env.config";
+import router from "../config/router.config";
+import { useLocation } from "@tanstack/react-router";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -20,19 +23,21 @@ import config from "../config/env.config";
 type InitAuth = () => Promise<void>;
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
+// type Logout = () => void;
 type Authorize = () => Promise<boolean>;
 
 export type AxiosPrivateContext = AxiosInstance;
 
 export interface AuthContext {
-  initAuth: InitAuth;
   login: Login;
   logout: Logout;
+  isLoading: boolean;
   isAuthenticated: boolean;
   accessToken: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
   authorize: Authorize;
   axiosPrivate: AxiosInstance;
+  updateLoading: (newUpdateLoading: boolean) => void;
 }
 
 interface FailedRequests {
@@ -47,10 +52,17 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   console.log("AuthProvider running...");
+  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [failedRequests, setFailedRequests] = useState<FailedRequests[]>([]);
+
+  const initialAuthRef = useRef(true);
+
+  const updateLoading = useCallback((newUpdateLoading: boolean) => {
+    setIsLoading(newUpdateLoading);
+  }, []);
 
   const refreshToken = useRefreshToken();
 
@@ -69,6 +81,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.groupEnd();
       setAccessToken(newToken);
       setIsAuthenticated(true);
+      // router.invalidate();
     },
     [setAccessToken]
   );
@@ -185,7 +198,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout: Logout = useCallback(async () => {
     console.group("logout from AuthProvider running...");
+    // console.log("location:", location);
     console.groupEnd();
+    await axiosPrivate.post("/auth/logout");
+    // setAccessToken(null);
+    // setIsAuthenticated(false);
+    // router.invalidate();
     return axiosPrivate.post("/auth/logout").then((_resolve) => {
       return new Promise(async (resolve) => {
         setAccessToken(null);
@@ -193,7 +211,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setTimeout(() => resolve(null), 0);
       });
     });
-  }, [axiosPrivate, setAccessToken, setIsAuthenticated]);
+  }, []);
 
   const authorize = useCallback(async () => {
     console.log("authorize running...");
@@ -225,7 +243,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsAuthenticated,
   ]);
 
-  const initAuth = async () => {
+  const initAuth = useCallback(async () => {
     console.log("initAuth running...");
     try {
       const refreshResponse = await refreshToken();
@@ -235,45 +253,45 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error(err);
       setAccessToken(null);
       setIsAuthenticated(false);
-    }
-  };
-
-  useEffect(() => {
-    console.log("AuthProvider mounted...");
-
-    // const initAuth = async () => {
-    //   console.log("initAuth running...");
-    //   try {
-    //     const refreshResponse = await refreshToken();
-    //     console.log(
-    //       "refreshResponse.accessToken:",
-    //       refreshResponse.accessToken
-    //     );
-    //     login(refreshResponse.accessToken);
-    //   } catch (err) {
-    //     console.error(err);
-    //     setAccessToken(null);
-    //     setIsAuthenticated(false);
-    //   }
-    // };
-
-    if (!accessToken) {
-      // initAuth();
+    } finally {
+      setIsLoading(false);
+      console.log("[useAuth initAuth finally...]");
     }
   }, []);
 
+  useEffect(() => {
+    console.group("AuthProvider mounted...");
+    console.log("isAuthenticated:", isAuthenticated);
+    console.groupEnd();
+
+    if (!accessToken) {
+      initAuth();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && initialAuthRef.current) {
+      router.invalidate();
+    }
+
+    if (isLoading === false && initialAuthRef.current) {
+      initialAuthRef.current = false;
+    }
+  }, [isAuthenticated, accessToken, isLoading, router]);
+
   const AuthProviderValue = useMemo(() => {
     return {
-      initAuth,
       login,
       logout,
+      isLoading,
       isAuthenticated,
       accessToken,
       setAccessToken,
       authorize,
       axiosPrivate,
+      updateLoading,
     };
-  }, [accessToken, isAuthenticated]);
+  }, [accessToken, isAuthenticated, isLoading]);
 
   return (
     <AuthContext.Provider value={AuthProviderValue}>

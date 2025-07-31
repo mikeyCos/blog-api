@@ -1,6 +1,12 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 30 JUL 2025
+- Routes are invalidated by calling `router.invalidate()` when a user logs in or logs out.
+- When an authenticated user logs out, the user wil be redirected to the page they are currently on. If the authenticated user logs out on a protected route, they will be redirected to the login route.z
+- Visiting a protected route will redirect user to login page and when a user logs in, the user will be redirected to the protected route they attempted to visit.
+- Updated outdated packages in `cms` subdirectory.
+---
 ### 24 JUL 2025
 - Initial authentication now occurs on the `_root` route's `beforeLoad` function.
 - Created pathless file path `_user/` and `$username` parameter route.

@@ -7,6 +7,12 @@ import router from "../config/router.config";
 const InnerApp = () => {
   console.group("InnerApp running...");
   const auth = useAuth();
+  console.log("auth:", auth);
+  console.groupEnd();
+  if (auth.isLoading) {
+    return <p>Loading...</p>;
+  }
+
   return <RouterProvider router={router} context={{ auth }} />;
 };
 

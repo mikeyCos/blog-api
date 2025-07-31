@@ -102,8 +102,10 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       return prevUser;
     });
   };
+
   useEffect(() => {
     const getUser = async () => {
+      console.log("[useUser] getUser running...");
       try {
         // Why is the accessToken not getting attached to the request?
         console.group("getUser tryblock running...");

@@ -6,13 +6,13 @@ import { useAuth } from "../../hooks/useAuth";
 import { usePrevLocation } from "../../hooks/usePrevLocation";
 import { useUserData } from "../../hooks/useUser";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import router from "../../config/router.config";
 
 const Header: React.FC = () => {
   const { accessToken, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const from = location.pathname;
   const navigate = useNavigate();
-  const { prevLocation } = usePrevLocation();
   console.group("Header component rendering...");
   // console.log("prevLocation in Header component:", prevLocation);
   // console.log("from in Header component:", from);
@@ -28,11 +28,11 @@ const Header: React.FC = () => {
   //    Logging out from /faq should return the user to /faq, not /login
   const handleLogout = async () => {
     console.group("handleLogout running...");
-    console.log("prevLocation:", prevLocation);
-    console.log("from:", from);
+    console.log("location:", location);
     console.groupEnd();
     await logout();
-    // navigate({ to: from, replace: true });
+    router.invalidate();
+    navigate({ to: from, replace: true });
   };
 
   return (
