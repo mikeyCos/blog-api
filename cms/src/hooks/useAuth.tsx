@@ -9,10 +9,9 @@ import React, {
 } from "react";
 
 import useRefreshToken from "./useRefreshToken";
-import axios, { AxiosError, AxiosInstance } from "axios";
-import config from "../config/env.config";
+import { AxiosInstance } from "axios";
 import router from "../config/router.config";
-import useAxiosPrivateConfig from "./useAxiosPrivate";
+// import useAxiosPrivateConfig from "./useAxiosPrivate";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -20,13 +19,11 @@ import useAxiosPrivateConfig from "./useAxiosPrivate";
 // Need to check roles of logged in user
 //  Admins, they can read, write, delete anyone's material and comments
 //  Authors, can only read, write, delete their own material and user comments under their blog
-type InitAuth = () => Promise<void>;
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
-// type Logout = () => void;
 type Authorize = () => Promise<void>;
 
-export type AxiosPrivateContext = AxiosInstance;
+// export type AxiosPrivateContext = AxiosInstance;
 
 export interface AuthContext {
   login: Login;
@@ -34,36 +31,29 @@ export interface AuthContext {
   isLoading: boolean;
   isAuthenticated: boolean;
   accessToken: string | null;
-  // updateAccessToken: (newAccessToken: string | null) => void; // TESTING
-  setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
   authorize: Authorize;
-  axiosPrivate: AxiosInstance;
   updateLoading: (newUpdateLoading: boolean) => void;
 }
 
 interface AuthProviderProps {
   children: React.ReactNode;
-  // accessToken: string | null;
-  // updateAccessToken: (newAccessToken: string | null) => void;
-  // axiosPrivate: AxiosInstance;
+  accessToken: string | null;
+  updateAccessToken: (newAccessToken: string | null) => void;
+  axiosPrivate: AxiosInstance;
 }
 
 const AuthContext = createContext<AuthContext | null>(null);
-const AxiosPrivateContext = createContext<AxiosPrivateContext | null>(null);
+// const AxiosPrivateContext = createContext<AxiosPrivateContext | null>(null);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({
   children,
-  // accessToken,
-  // updateAccessToken,
-  // axiosPrivate,
+  accessToken,
+  updateAccessToken,
+  axiosPrivate,
 }) => {
   console.log("[AuthProvider] rendering...");
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  // const [isRefreshing, setIsRefreshing] = useState(false);
-  // const [failedRequests, setFailedRequests] = useState<FailedRequests[]>([]);
-
   const initialAuthRef = useRef(true);
 
   const updateLoading = useCallback((newUpdateLoading: boolean) => {
@@ -72,37 +62,17 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
 
   const refreshToken = useRefreshToken();
 
-  const getAccessToken = useCallback(() => {
-    return accessToken;
-  }, [accessToken]);
-
-  const updateAccessToken = useCallback((newToken: string | null) => {
-    setAccessToken(newToken);
+  const login: Login = useCallback((newToken) => {
+    console.group("[AuthProvider] login running...");
+    console.log("newToken:", newToken);
+    console.groupEnd();
+    // setAccessToken(newToken);
+    updateAccessToken(newToken);
+    setIsAuthenticated(true);
   }, []);
-
-  const login: Login = useCallback(
-    (newToken) => {
-      console.group("login from AuthProvider running...");
-      console.log("newToken:", newToken);
-      console.groupEnd();
-      setAccessToken(newToken);
-      // updateAccessToken(newToken); // TESTING
-      setIsAuthenticated(true);
-      // router.invalidate();
-    },
-    [updateAccessToken]
-  );
-
-  const axiosPrivate = useAxiosPrivateConfig({
-    accessToken,
-    setAccessToken,
-    getAccessToken,
-    updateAccessToken,
-  });
 
   const logout: Logout = useCallback(async () => {
     console.group("[AuthProvider] logout running...");
-    // console.log("location:", location);
     console.groupEnd();
     await axiosPrivate.post("/auth/logout");
     return axiosPrivate.post("/auth/logout").then((_resolve) => {
@@ -115,7 +85,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   }, []);
 
   const authorize = useCallback(async () => {
-    console.log("authorize running...");
+    console.log("[AuthProvider] authorize running...");
     try {
       await axiosPrivate.get("/auth");
     } catch (err) {
@@ -130,16 +100,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
         throw err;
       }
     }
-  }, [
-    axiosPrivate,
-    accessToken,
-    isAuthenticated,
-    updateAccessToken,
-    setIsAuthenticated,
-  ]);
+  }, []);
 
   const initAuth = useCallback(async () => {
-    console.log("initAuth running...");
+    console.log("[AuthProvider] initAuth running...");
     try {
       const refreshResponse = await refreshToken();
       console.log("refreshResponse.accessToken:", refreshResponse.accessToken);
@@ -155,7 +119,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   }, []);
 
   useEffect(() => {
-    console.group("AuthProvider mounted...");
+    console.group("[AuthProvider] mounted...");
     console.log("isAuthenticated:", isAuthenticated);
     console.groupEnd();
 
@@ -172,7 +136,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
     if (isLoading === false && initialAuthRef.current) {
       initialAuthRef.current = false;
     }
-  }, [isAuthenticated, accessToken, isLoading, router]);
+  }, [isLoading]);
 
   const AuthProviderValue = useMemo(() => {
     return {
@@ -181,8 +145,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       isLoading,
       isAuthenticated,
       accessToken,
-      setAccessToken,
-      // updateAccessToken,
       authorize,
       axiosPrivate,
       updateLoading,
@@ -191,9 +153,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
 
   return (
     <AuthContext.Provider value={AuthProviderValue}>
-      <AxiosPrivateContext.Provider value={axiosPrivate}>
-        {children}
-      </AxiosPrivateContext.Provider>
+      {children}
     </AuthContext.Provider>
   );
 };
@@ -208,16 +168,4 @@ const useAuth = () => {
   return context;
 };
 
-const useAxiosPrivateContext = () => {
-  const context = useContext(AxiosPrivateContext);
-
-  if (!context) {
-    throw new Error(
-      "useAxiosPrivate needs to be called inside AxiosPrivateContext Provider."
-    );
-  }
-
-  return context;
-};
-
-export { AuthProvider as default, useAuth, useAxiosPrivateContext };
+export { AuthProvider as default, useAuth };

@@ -21,6 +21,9 @@ const userController = {
   }),
   getUsers: asyncHandler(async (req, res) => {
     const users = await getUsers();
+    console.group("getUsers running...");
+    console.log("req.accessToken:", req.accessToken);
+    console.groupEnd();
     res.json(users);
   }),
   deleteUser: asyncHandler(async (req, res) => {

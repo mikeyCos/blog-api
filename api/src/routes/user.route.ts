@@ -11,7 +11,7 @@ const userRoutes = () => {
 
   // GET requests
   // curl -w "\n" -X GET http://localhost:3001/user/:userId
-  userRouter.get("/", getUsers);
+  userRouter.get("/", authenticateToken, getUsers);
   userRouter.get("/:username", validateParams(userSchema), getUser);
 
   // PUT requests

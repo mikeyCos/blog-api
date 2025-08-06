@@ -1,9 +1,14 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 06 AUG 2025
+- Defined `axiosPrivate` in `RouterContext` interface and `axiosPrivate` instance is passed into the `RouterProvider.context` in `InnerApp` component.
+- Added `accessToken` to `useMemo` dependency array for `axiosPrivate` instance.
+- Removed dependencies from `useCallback` for `authorize` function.
+---
 ### 05 AUG 2025
-- Declared `accessToken`/`setAccessToken` state, `getAccessToken`, `updateAccessToken`, and `axiosPrivate` in `AppProviders`.
-- Temporarily defined `AppProviders` in `App` module.
+- Declared `accessToken`/`setAccessToken` state, `getAccessToken`, `updateAccessToken`, and `axiosPrivate` in `AppProviders` component.
+- Temporarily defined `AppProviders` component in `App` module.
 - Defined `useAxiosPrivateConfig` custom hook in `useAxiosPrivate` module.
 - Created pathless `_user` route.
 - Changed import for `useNavigate` from `react-router` to `@tanstack/react-router`.

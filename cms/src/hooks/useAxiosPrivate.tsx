@@ -1,9 +1,9 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
 import React, {
   createContext,
-  SetStateAction,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -20,28 +20,24 @@ interface FailedRequests {
 
 const AxiosPrivateContext = createContext<AxiosPrivateContext | null>(null);
 
-// const AxiosPrivateProvider: React.FC<{ children: React.ReactNode }> = ({
-//   children,
-// }) => {
-
-//   return (
-//     <AxiosPrivateContext.Provider value={}>
-//       {children}
-//     </AxiosPrivateContext.Provider>
-//   );
-// };
+const AxiosPrivateProvider: React.FC<{
+  children: React.ReactNode;
+  axiosPrivate: AxiosInstance;
+}> = ({ children, axiosPrivate }) => {
+  return (
+    <AxiosPrivateContext.Provider value={axiosPrivate}>
+      {children}
+    </AxiosPrivateContext.Provider>
+  );
+};
 
 interface InitAxiosPrivateProps {
   accessToken: null | string;
-  setAccessToken: React.Dispatch<SetStateAction<null | string>>;
-  getAccessToken: () => null | string;
   updateAccessToken: (newToken: string | null) => void;
 }
 
 const useAxiosPrivateConfig = ({
   accessToken,
-  setAccessToken,
-  getAccessToken,
   updateAccessToken,
 }: InitAxiosPrivateProps) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -70,6 +66,10 @@ const useAxiosPrivateConfig = ({
     [failedRequests, accessToken]
   );
 
+  useEffect(() => {
+    accessTokenRef.current = accessToken;
+  }, [accessToken]);
+
   const axiosPrivate = useMemo(() => {
     const axiosInstance = axios.create({
       baseURL: config.blogAPIBase,
@@ -82,7 +82,7 @@ const useAxiosPrivateConfig = ({
     // Attaches access token to request
     axiosInstance.interceptors.request.use(
       (config) => {
-        const currentAccessToken = getAccessToken();
+        const currentAccessToken = accessTokenRef.current;
         console.group("useAxiosPrivate requestInterceptor");
         console.log("config.url:", config.url);
         console.log(
@@ -143,7 +143,7 @@ const useAxiosPrivateConfig = ({
             } catch (refreshErr: any) {
               console.log("refreshErr:", refreshErr);
               retryFailedRequests(refreshErr);
-              setAccessToken(null);
+              updateAccessToken(null);
               reject(refreshErr);
             } finally {
               setIsRefreshing(false);
@@ -154,7 +154,7 @@ const useAxiosPrivateConfig = ({
     );
 
     return axiosInstance;
-  }, []);
+  }, [accessToken]);
 
   return axiosPrivate;
 };
@@ -171,4 +171,8 @@ const useAxiosPrivate = () => {
   return context;
 };
 
-export { useAxiosPrivateConfig as default, useAxiosPrivate };
+export {
+  AxiosPrivateProvider as default,
+  useAxiosPrivateConfig,
+  useAxiosPrivate,
+};

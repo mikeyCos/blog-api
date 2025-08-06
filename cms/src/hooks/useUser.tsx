@@ -6,9 +6,10 @@ import React, {
   useState,
 } from "react";
 import { AuthenticatedUser } from "../interfaces/user";
-import { useAuth, useAxiosPrivateContext } from "./useAuth";
+import { useAuth } from "./useAuth";
 import { AuthUserResponse } from "../interfaces/responses";
 import { Post } from "../interfaces/blog";
+import { useAxiosPrivate } from "./useAxiosPrivate";
 
 interface PostCallback<T> {
   (param: T): void;
@@ -50,8 +51,8 @@ const UserContext = createContext<UserContextType>({
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accessToken, setAccessToken, isAuthenticated } = useAuth();
-  const axiosPrivate = useAxiosPrivateContext();
+  const { accessToken, isAuthenticated } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
   const [isUserDataLoading, setIsUserDataLoading] = useState(true);
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
 
@@ -104,6 +105,10 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   useEffect(() => {
+    console.group("[UserProvider] mounted");
+    console.log("[UserProvider] accessToken:", accessToken);
+    console.groupEnd();
+
     const getUser = async () => {
       console.log("[useUser] getUser running...");
       try {
@@ -124,20 +129,14 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
 
-    console.group("UserProvider mounted");
-    console.log("[UserProvider] accessToken:", accessToken);
-    console.groupEnd();
-
     if (accessToken) {
       getUser();
-    } else {
-      // setUser(null);
     }
   }, [accessToken, axiosPrivate]);
 
   const providerValue = useMemo<UserContextType>(() => {
-    console.group("useUserValue useMemo running...");
-    console.log(user);
+    console.group("providerValue useMemo running...");
+    console.log("user:", user);
     console.groupEnd();
     if (isAuthenticated) {
       return {
