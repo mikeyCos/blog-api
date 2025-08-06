@@ -208,6 +208,7 @@ Project Link: [https://#](https://#)
 3. Should the access token be valid if the refresh token is invalid? In other words, a new access token is generated right before a refresh token expires, should the newly generated access token be valid? Since the refresh token expired, a new access token will not be generated and the most recent generated access token will expire. 
 4. What do payloads for access and refresh tokens include? What data should be excluded from token payloads?
 5. What are the pros and cons for throwing errors with `next({error})` versus `throw new [custom-error]`?
+6. What is the difference between the `Navigate` component and `router.history.push()`? When does it make more sense to use one or the other? For example, when a user visits a protected route they are redirected to the login page, after a user logs in they are redirected back to the protected route they attempted to visit.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -12,6 +12,8 @@ import { createUser, getUser } from "../services/user";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
 import { BadRequestError } from "../errors/customErrors";
 
+const ACCESS_TOKEN_EXPIRATION_SECONDS = 60 * 2; // 60 seconds * 2 minutes = 2 minutes
+
 interface authController {
   authorize: RequestHandler;
   authenticateRole: RequestHandler;
@@ -42,7 +44,7 @@ const authController: authController = {
   authorize: asyncHandler(async (req, res) => {
     const { accessToken, user: userPayload } = req;
     // If current accessToken is valid
-    // Return the accessToken and it's payload
+    // Return a successful response
     if (accessToken && userPayload) {
       res.json({
         status: "success",
@@ -70,7 +72,7 @@ const authController: authController = {
       (await signJWT(
         { user: { id: user.id, username: user.username, roles: user.roles } },
         {
-          expiresIn: 10,
+          expiresIn: ACCESS_TOKEN_EXPIRATION_SECONDS,
         }
       ));
 
@@ -110,11 +112,10 @@ const authController: authController = {
               // Create a private accessToken
               // Do not send private user properties
               const { id, username, roles } = user;
-              const accessTokenExpiresIn = 10; // 10 seconds
               const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
               const accessToken = await signJWT(
                 { user: { id, username, roles } },
-                { expiresIn: accessTokenExpiresIn }
+                { expiresIn: ACCESS_TOKEN_EXPIRATION_SECONDS }
               );
               const refreshToken = await Promise.resolve(
                 signJWT(

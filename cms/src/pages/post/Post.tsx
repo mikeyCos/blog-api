@@ -1,9 +1,9 @@
-import { useLoaderData, useLocation } from "react-router";
 import NavAnchor from "../../components/navAnchor/NavAnchor";
 import { Post as PostData } from "../../interfaces/blog";
 import { useUserData } from "../../hooks/useUser";
 import { useModalContext } from "../../hooks/useModal";
 import ConfirmPostDelete from "../../features/posts/components/ConfirmPostDelete";
+import { useLoaderData, useLocation } from "@tanstack/react-router";
 
 const Post = () => {
   const location = useLocation();

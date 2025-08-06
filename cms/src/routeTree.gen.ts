@@ -17,6 +17,7 @@ import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProtectedDashboardRouteImport } from './routes/_protected/_dashboard'
 import { Route as ProtectedDashboardDashboardRouteImport } from './routes/_protected/_dashboard/dashboard'
+import { Route as ProtectedDashboardUserRouteImport } from './routes/_protected/_dashboard/_user'
 import { Route as ProtectedDashboardUserUsernamePostsRouteImport } from './routes/_protected/_dashboard/_user/$username/posts'
 import { Route as ProtectedDashboardUserUsernameCommentsRouteImport } from './routes/_protected/_dashboard/_user/$username/comments'
 
@@ -59,17 +60,21 @@ const ProtectedDashboardDashboardRoute =
     path: '/dashboard',
     getParentRoute: () => ProtectedDashboardRoute,
   } as any)
+const ProtectedDashboardUserRoute = ProtectedDashboardUserRouteImport.update({
+  id: '/_user',
+  getParentRoute: () => ProtectedDashboardRoute,
+} as any)
 const ProtectedDashboardUserUsernamePostsRoute =
   ProtectedDashboardUserUsernamePostsRouteImport.update({
-    id: '/_user/$username/posts',
+    id: '/$username/posts',
     path: '/$username/posts',
-    getParentRoute: () => ProtectedDashboardRoute,
+    getParentRoute: () => ProtectedDashboardUserRoute,
   } as any)
 const ProtectedDashboardUserUsernameCommentsRoute =
   ProtectedDashboardUserUsernameCommentsRouteImport.update({
-    id: '/_user/$username/comments',
+    id: '/$username/comments',
     path: '/$username/comments',
-    getParentRoute: () => ProtectedDashboardRoute,
+    getParentRoute: () => ProtectedDashboardUserRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -101,6 +106,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_protected/_dashboard': typeof ProtectedDashboardRouteWithChildren
+  '/_protected/_dashboard/_user': typeof ProtectedDashboardUserRouteWithChildren
   '/_protected/_dashboard/dashboard': typeof ProtectedDashboardDashboardRoute
   '/_protected/_dashboard/_user/$username/comments': typeof ProtectedDashboardUserUsernameCommentsRoute
   '/_protected/_dashboard/_user/$username/posts': typeof ProtectedDashboardUserUsernamePostsRoute
@@ -135,6 +141,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_protected/_dashboard'
+    | '/_protected/_dashboard/_user'
     | '/_protected/_dashboard/dashboard'
     | '/_protected/_dashboard/_user/$username/comments'
     | '/_protected/_dashboard/_user/$username/posts'
@@ -207,35 +214,56 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardDashboardRouteImport
       parentRoute: typeof ProtectedDashboardRoute
     }
+    '/_protected/_dashboard/_user': {
+      id: '/_protected/_dashboard/_user'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedDashboardUserRouteImport
+      parentRoute: typeof ProtectedDashboardRoute
+    }
     '/_protected/_dashboard/_user/$username/posts': {
       id: '/_protected/_dashboard/_user/$username/posts'
       path: '/$username/posts'
       fullPath: '/$username/posts'
       preLoaderRoute: typeof ProtectedDashboardUserUsernamePostsRouteImport
-      parentRoute: typeof ProtectedDashboardRoute
+      parentRoute: typeof ProtectedDashboardUserRoute
     }
     '/_protected/_dashboard/_user/$username/comments': {
       id: '/_protected/_dashboard/_user/$username/comments'
       path: '/$username/comments'
       fullPath: '/$username/comments'
       preLoaderRoute: typeof ProtectedDashboardUserUsernameCommentsRouteImport
-      parentRoute: typeof ProtectedDashboardRoute
+      parentRoute: typeof ProtectedDashboardUserRoute
     }
   }
 }
 
-interface ProtectedDashboardRouteChildren {
-  ProtectedDashboardDashboardRoute: typeof ProtectedDashboardDashboardRoute
+interface ProtectedDashboardUserRouteChildren {
   ProtectedDashboardUserUsernameCommentsRoute: typeof ProtectedDashboardUserUsernameCommentsRoute
   ProtectedDashboardUserUsernamePostsRoute: typeof ProtectedDashboardUserUsernamePostsRoute
 }
 
+const ProtectedDashboardUserRouteChildren: ProtectedDashboardUserRouteChildren =
+  {
+    ProtectedDashboardUserUsernameCommentsRoute:
+      ProtectedDashboardUserUsernameCommentsRoute,
+    ProtectedDashboardUserUsernamePostsRoute:
+      ProtectedDashboardUserUsernamePostsRoute,
+  }
+
+const ProtectedDashboardUserRouteWithChildren =
+  ProtectedDashboardUserRoute._addFileChildren(
+    ProtectedDashboardUserRouteChildren,
+  )
+
+interface ProtectedDashboardRouteChildren {
+  ProtectedDashboardUserRoute: typeof ProtectedDashboardUserRouteWithChildren
+  ProtectedDashboardDashboardRoute: typeof ProtectedDashboardDashboardRoute
+}
+
 const ProtectedDashboardRouteChildren: ProtectedDashboardRouteChildren = {
+  ProtectedDashboardUserRoute: ProtectedDashboardUserRouteWithChildren,
   ProtectedDashboardDashboardRoute: ProtectedDashboardDashboardRoute,
-  ProtectedDashboardUserUsernameCommentsRoute:
-    ProtectedDashboardUserUsernameCommentsRoute,
-  ProtectedDashboardUserUsernamePostsRoute:
-    ProtectedDashboardUserUsernamePostsRoute,
 }
 
 const ProtectedDashboardRouteWithChildren =

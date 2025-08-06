@@ -52,19 +52,12 @@ const Posts = () => {
     }
   }; */
 
-  /* return (
-    <>
-      <h2>Posts</h2>
-      <p>username {user?.username}</p>
-      <PostForm submitForm={submitPost} formErrors={errors} />
-      <PostList data={data} />
-    </>
-  ); */
   return (
     <>
       <h2>Posts</h2>
-      {/* <p>username {params.username}</p> */}
-      {/* <PostList data={posts} /> */}
+      {/* <p>username {user?.username}</p> */}
+      {/* <PostForm submitForm={submitPost} formErrors={errors} />
+      <PostList data={data} /> */}
     </>
   );
 };

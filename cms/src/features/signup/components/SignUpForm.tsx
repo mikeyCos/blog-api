@@ -4,12 +4,13 @@ import { SignUpFormError } from "../../../interfaces/errors";
 import config from "../../../config/env.config";
 import axios from "../../../config/axios.config";
 import { useAuth } from "../../../hooks/useAuth";
-import { useNavigate } from "react-router";
+
 import {
   AuthSuccessResponse,
   SignupErrorResponse,
 } from "../../../interfaces/responses";
 import { isAxiosError } from "axios";
+import { useNavigate } from "@tanstack/react-router";
 
 const SignUpForm: React.FC = () => {
   // TODO
@@ -37,7 +38,7 @@ const SignUpForm: React.FC = () => {
         body
       );
       login(response.data.accessToken);
-      navigate("/dashboard", { replace: true });
+      navigate({ to: "/dashboard", replace: true });
     } catch (err) {
       if (isAxiosError<SignupErrorResponse>(err)) {
         if (err.response) {

@@ -12,7 +12,7 @@ import useRefreshToken from "./useRefreshToken";
 import axios, { AxiosError, AxiosInstance } from "axios";
 import config from "../config/env.config";
 import router from "../config/router.config";
-import { useLocation } from "@tanstack/react-router";
+import useAxiosPrivateConfig from "./useAxiosPrivate";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -24,7 +24,7 @@ type InitAuth = () => Promise<void>;
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
 // type Logout = () => void;
-type Authorize = () => Promise<boolean>;
+type Authorize = () => Promise<void>;
 
 export type AxiosPrivateContext = AxiosInstance;
 
@@ -34,29 +34,35 @@ export interface AuthContext {
   isLoading: boolean;
   isAuthenticated: boolean;
   accessToken: string | null;
+  // updateAccessToken: (newAccessToken: string | null) => void; // TESTING
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
   authorize: Authorize;
   axiosPrivate: AxiosInstance;
   updateLoading: (newUpdateLoading: boolean) => void;
 }
 
-interface FailedRequests {
-  resolve: (value: string | PromiseLike<string>) => void;
-  reject: (reason?: any) => void;
+interface AuthProviderProps {
+  children: React.ReactNode;
+  // accessToken: string | null;
+  // updateAccessToken: (newAccessToken: string | null) => void;
+  // axiosPrivate: AxiosInstance;
 }
 
 const AuthContext = createContext<AuthContext | null>(null);
 const AxiosPrivateContext = createContext<AxiosPrivateContext | null>(null);
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+const AuthProvider: React.FC<AuthProviderProps> = ({
   children,
+  // accessToken,
+  // updateAccessToken,
+  // axiosPrivate,
 }) => {
-  console.log("AuthProvider running...");
+  console.log("[AuthProvider] rendering...");
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [failedRequests, setFailedRequests] = useState<FailedRequests[]>([]);
+  // const [isRefreshing, setIsRefreshing] = useState(false);
+  // const [failedRequests, setFailedRequests] = useState<FailedRequests[]>([]);
 
   const initialAuthRef = useRef(true);
 
@@ -80,133 +86,28 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("newToken:", newToken);
       console.groupEnd();
       setAccessToken(newToken);
+      // updateAccessToken(newToken); // TESTING
       setIsAuthenticated(true);
       // router.invalidate();
     },
-    [setAccessToken]
+    [updateAccessToken]
   );
 
-  const retryFailedRequests = useCallback(
-    (error: AxiosError | null = null) => {
-      failedRequests.forEach((request) => {
-        if (error) {
-          request.reject(error);
-        } else {
-          if (accessToken) {
-            request.resolve(accessToken);
-          } else {
-            // This is unlikely to happen after successful request to /auth/refresh
-            request.reject(
-              new Error("Access token is null after /auth/refresh")
-            );
-          }
-        }
-      });
-      setFailedRequests([]);
-    },
-    [failedRequests, accessToken]
-  );
-
-  const axiosPrivate = useMemo(() => {
-    const axiosInstance = axios.create({
-      baseURL: config.blogAPIBase,
-      withCredentials: true,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    // Attaches access token to request
-    axiosInstance.interceptors.request.use(
-      (config) => {
-        console.group("useAxiosPrivate requestInterceptor");
-        console.log("config.url:", config.url);
-        console.log("requestInterceptor accessToken:", accessToken);
-        console.groupEnd();
-        const currentAccessToken = getAccessToken();
-        if (currentAccessToken) {
-          config.headers.Authorization = `Bearer ${currentAccessToken}`;
-        } else {
-          console.log("accessToken not set");
-        }
-
-        console.log("config.headers:", config.headers);
-        return config;
-      },
-      (err) => Promise.reject(err)
-    );
-
-    axiosInstance.interceptors.response.use(
-      (response) => response,
-      async (err) => {
-        const originalRequest = err.config;
-
-        if (
-          (err.request.status === 403 || err.request.status === 401) &&
-          !originalRequest._retry
-        ) {
-          originalRequest._retry = true;
-          // If there is an existing request to /auth/refresh
-          // Add latest failed request to failedRequests array
-          if (isRefreshing) {
-            return new Promise<string>((resolve, reject) => {
-              setFailedRequests((prev) => [...prev, { resolve, reject }]);
-            })
-              .then((token) => {
-                originalRequest.headers.Authorization = `Bearer ${token}`;
-                return axiosInstance(originalRequest);
-              })
-              .catch((err) => {
-                return Promise.reject(err);
-              });
-          }
-
-          // If there is no existing request to /auth/refresh
-          // Allows only one request to /auth/refresh
-          setIsRefreshing(true);
-
-          return new Promise(async (resolve, reject) => {
-            try {
-              const refreshResponse = await refreshToken();
-              const newAccessToken = refreshResponse.accessToken;
-              updateAccessToken(newAccessToken);
-
-              originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-              retryFailedRequests();
-              resolve(axiosInstance(originalRequest));
-            } catch (refreshErr: any) {
-              console.log("refreshErr:", refreshErr);
-              retryFailedRequests(refreshErr);
-              setAccessToken(null);
-              reject(refreshErr);
-            } finally {
-              setIsRefreshing(false);
-            }
-          });
-        }
-      }
-    );
-
-    return axiosInstance;
-  }, [
+  const axiosPrivate = useAxiosPrivateConfig({
+    accessToken,
+    setAccessToken,
     getAccessToken,
-    isRefreshing,
-    setIsRefreshing,
-    setFailedRequests,
     updateAccessToken,
-  ]);
+  });
 
   const logout: Logout = useCallback(async () => {
-    console.group("logout from AuthProvider running...");
+    console.group("[AuthProvider] logout running...");
     // console.log("location:", location);
     console.groupEnd();
     await axiosPrivate.post("/auth/logout");
-    // setAccessToken(null);
-    // setIsAuthenticated(false);
-    // router.invalidate();
     return axiosPrivate.post("/auth/logout").then((_resolve) => {
       return new Promise(async (resolve) => {
-        setAccessToken(null);
+        updateAccessToken(null);
         setIsAuthenticated(false);
         setTimeout(() => resolve(null), 0);
       });
@@ -217,29 +118,23 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log("authorize running...");
     try {
       await axiosPrivate.get("/auth");
-      // const newAccessToken = getGlobalAccessToken();
-      const refreshResponse = await refreshToken();
-      console.log("refreshResponse:", refreshResponse.accessToken);
-      setAccessToken(refreshResponse.accessToken);
-      return true;
     } catch (err) {
       console.error(err);
+      updateAccessToken(null);
+      setIsAuthenticated(false);
       if (err instanceof Error && isAuthenticated) {
         console.log("err instanceof Error:", err instanceof Error);
         console.log("[authorize] err:", err);
         // How to throw error to Tanstack Router errorElement?
         // throwError(err);
-      } else {
-        setAccessToken(null);
-        setIsAuthenticated(false);
+        throw err;
       }
-      return false;
     }
   }, [
     axiosPrivate,
     accessToken,
     isAuthenticated,
-    setAccessToken,
+    updateAccessToken,
     setIsAuthenticated,
   ]);
 
@@ -251,7 +146,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       login(refreshResponse.accessToken);
     } catch (err) {
       console.error(err);
-      setAccessToken(null);
+      updateAccessToken(null);
       setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
@@ -287,6 +182,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       isAuthenticated,
       accessToken,
       setAccessToken,
+      // updateAccessToken,
       authorize,
       axiosPrivate,
       updateLoading,
@@ -312,7 +208,7 @@ const useAuth = () => {
   return context;
 };
 
-const useAxiosPrivate = () => {
+const useAxiosPrivateContext = () => {
   const context = useContext(AxiosPrivateContext);
 
   if (!context) {
@@ -324,4 +220,4 @@ const useAxiosPrivate = () => {
   return context;
 };
 
-export { AuthProvider as default, useAuth, useAxiosPrivate };
+export { AuthProvider as default, useAuth, useAxiosPrivateContext };

@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import ProtectedLayout from "../layouts/ProtectedLayout";
 
 export const Route = createFileRoute("/_protected")({
   beforeLoad: async ({ context, location }) => {
@@ -6,6 +7,8 @@ export const Route = createFileRoute("/_protected")({
     console.log("context:", context);
     console.groupEnd();
 
+    // Check if user is authenticated
+    // Otherwise, check if user is still authenticated
     if (!context.auth.isAuthenticated) {
       console.log("context.auth.isLoading:", context.auth.isLoading);
       console.log(
@@ -20,24 +23,30 @@ export const Route = createFileRoute("/_protected")({
           redirect: location.href,
         },
       });
+    } else {
+      // Special case, what if refresh token expires
+      // And the most recent access token expires
+      try {
+        await context.auth.authorize();
+      } catch (err) {
+        throw redirect({
+          to: "/login",
+          search: {
+            redirect: location.href,
+          },
+        });
+      }
     }
-
-    //   // const result = false;
-    //   const result = await context.auth.authorize();
-    //   console.log("result:", result);
-    //   console.groupEnd();
   },
   loader: async ({ context }) => {
     console.group("[_protected] loader running...");
     console.log("context:", context);
     console.groupEnd();
 
-    const result = await context.auth.authorize();
-    console.log("result:", result);
+    // const result = await context.auth.authorize();
+    // console.log("result:", result);
   },
-  component: RouteComponent,
+  component: ProtectedLayout,
 });
 
-function RouteComponent() {
-  return <Outlet />;
-}
+// 2DLP-QVMG-EE2A-2888.

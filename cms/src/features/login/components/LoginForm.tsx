@@ -19,9 +19,8 @@ import {
 } from "../../../interfaces/responses";
 import router from "../../../config/router.config";
 
-const LoginForm: React.FC<{
-  redirectTo: string;
-}> = ({ redirectTo }) => {
+const LoginForm: React.FC = () => {
+  console.log("[LoginForm] rendering...");
   const userRef = useRef<HTMLInputElement | null>(null);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -50,7 +49,6 @@ const LoginForm: React.FC<{
   const handlerSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     console.log("handlerSubmit running...");
-    console.log("redirectTo:", redirectTo);
     const body = new URLSearchParams();
 
     // '...expression of type string cannot be used to index...'
@@ -72,7 +70,7 @@ const LoginForm: React.FC<{
       setErrors(null);
 
       router.invalidate();
-      router.history.push(redirectTo);
+      // router.history.push(redirectTo);
     } catch (err) {
       if (isAxiosError<LoginErrorResponse>(err) && err.response) {
         const { data } = err.response;

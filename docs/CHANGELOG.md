@@ -1,6 +1,14 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 05 AUG 2025
+- Declared `accessToken`/`setAccessToken` state, `getAccessToken`, `updateAccessToken`, and `axiosPrivate` in `AppProviders`.
+- Temporarily defined `AppProviders` in `App` module.
+- Defined `useAxiosPrivateConfig` custom hook in `useAxiosPrivate` module.
+- Created pathless `_user` route.
+- Changed import for `useNavigate` from `react-router` to `@tanstack/react-router`.
+- Reenabled `SignUpForm` component for rendering.
+---
 ### 30 JUL 2025
 - Routes are invalidated by calling `router.invalidate()` when a user logs in or logs out.
 - When an authenticated user logs out, the user wil be redirected to the page they are currently on. If the authenticated user logs out on a protected route, they will be redirected to the login route.z
