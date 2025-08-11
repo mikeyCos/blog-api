@@ -68,9 +68,6 @@ const LoginForm: React.FC = () => {
       login(response.data.accessToken);
       setFormData(initialFormData);
       setErrors(null);
-
-      router.invalidate();
-      // router.history.push(redirectTo);
     } catch (err) {
       if (isAxiosError<LoginErrorResponse>(err) && err.response) {
         const { data } = err.response;

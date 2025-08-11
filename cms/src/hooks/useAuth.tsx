@@ -11,7 +11,6 @@ import React, {
 import useRefreshToken from "./useRefreshToken";
 import { AxiosInstance } from "axios";
 import router from "../config/router.config";
-// import useAxiosPrivateConfig from "./useAxiosPrivate";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -22,8 +21,6 @@ import router from "../config/router.config";
 type Login = (newToken: string) => void;
 type Logout = () => Promise<null>;
 type Authorize = () => Promise<void>;
-
-// export type AxiosPrivateContext = AxiosInstance;
 
 export interface AuthContext {
   login: Login;
@@ -43,7 +40,6 @@ interface AuthProviderProps {
 }
 
 const AuthContext = createContext<AuthContext | null>(null);
-// const AxiosPrivateContext = createContext<AxiosPrivateContext | null>(null);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({
   children,
@@ -66,7 +62,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
     console.group("[AuthProvider] login running...");
     console.log("newToken:", newToken);
     console.groupEnd();
-    // setAccessToken(newToken);
     updateAccessToken(newToken);
     setIsAuthenticated(true);
   }, []);
@@ -79,6 +74,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       return new Promise(async (resolve) => {
         updateAccessToken(null);
         setIsAuthenticated(false);
+        router.invalidate();
         setTimeout(() => resolve(null), 0);
       });
     });
@@ -96,7 +92,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
         console.log("err instanceof Error:", err instanceof Error);
         console.log("[authorize] err:", err);
         // How to throw error to Tanstack Router errorElement?
-        // throwError(err);
         throw err;
       }
     }
@@ -128,15 +123,15 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
     }
   }, []);
 
-  useEffect(() => {
-    if (!isLoading && initialAuthRef.current) {
-      router.invalidate();
-    }
+  // useEffect(() => {
+  //   if (!isLoading && initialAuthRef.current) {
+  //     router.invalidate();
+  //   }
 
-    if (isLoading === false && initialAuthRef.current) {
-      initialAuthRef.current = false;
-    }
-  }, [isLoading]);
+  //   if (isLoading === false && initialAuthRef.current) {
+  //     initialAuthRef.current = false;
+  //   }
+  // }, [isLoading]);
 
   const AuthProviderValue = useMemo(() => {
     return {

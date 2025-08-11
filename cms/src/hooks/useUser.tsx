@@ -10,6 +10,7 @@ import { useAuth } from "./useAuth";
 import { AuthUserResponse } from "../interfaces/responses";
 import { Post } from "../interfaces/blog";
 import { useAxiosPrivate } from "./useAxiosPrivate";
+import router from "../config/router.config";
 
 interface PostCallback<T> {
   (param: T): void;
@@ -23,7 +24,7 @@ interface UserContextAuthenticated {
   addPost: PostCallback<Post>;
   updatePost: PostCallback<Post>;
   removePost: PostCallback<string>;
-  isUserDataLoading: boolean;
+  isLoading: boolean;
 }
 
 interface UserContextUnauthenticated {
@@ -32,7 +33,7 @@ interface UserContextUnauthenticated {
   addPost: PostCallback<Post>;
   updatePost: PostCallback<Post>;
   removePost: PostCallback<string>;
-  isUserDataLoading: boolean;
+  isLoading: boolean;
 }
 
 export type UserContextType =
@@ -45,7 +46,7 @@ const UserContext = createContext<UserContextType>({
   addPost: () => {},
   updatePost: () => {},
   removePost: () => {},
-  isUserDataLoading: true,
+  isLoading: true,
 });
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -53,7 +54,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { accessToken, isAuthenticated } = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const [isUserDataLoading, setIsUserDataLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<AuthenticatedUser | null>(null);
 
   const addPost: PostCallback<Post> = (newPost) => {
@@ -120,12 +121,12 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         console.groupEnd();
         const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
         setUser(response.data.user);
-        console.log("response:", response);
+        console.log("[UserProvider] getUser response:", response);
       } catch (err) {
         setUser(null);
         console.error(err);
       } finally {
-        setIsUserDataLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -134,9 +135,17 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [accessToken, axiosPrivate]);
 
+  // useEffect(() => {
+  //   if (!isLoading) {
+  //     console.log("[UserProvider] router.invalidate() running...");
+  //     router.invalidate();
+  //   }
+  // }, [isLoading]);
+
   const providerValue = useMemo<UserContextType>(() => {
     console.group("providerValue useMemo running...");
     console.log("user:", user);
+    console.log("isAuthenticated:", isAuthenticated);
     console.groupEnd();
     if (isAuthenticated) {
       return {
@@ -145,7 +154,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         addPost,
         updatePost,
         removePost,
-        isUserDataLoading,
+        isLoading,
       };
     }
 
@@ -155,16 +164,9 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       addPost: () => {},
       updatePost: () => {},
       removePost: () => {},
-      isUserDataLoading,
+      isLoading,
     };
-  }, [
-    user,
-    isAuthenticated,
-    isUserDataLoading,
-    addPost,
-    updatePost,
-    removePost,
-  ]);
+  }, [user, isAuthenticated, isLoading, addPost, updatePost, removePost]);
 
   return (
     <UserContext.Provider value={providerValue}>

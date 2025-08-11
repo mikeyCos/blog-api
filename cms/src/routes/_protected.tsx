@@ -48,5 +48,3 @@ export const Route = createFileRoute("/_protected")({
   },
   component: ProtectedLayout,
 });
-
-// 2DLP-QVMG-EE2A-2888.

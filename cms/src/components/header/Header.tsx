@@ -28,7 +28,6 @@ const Header: React.FC = () => {
     console.log("location:", location);
     console.groupEnd();
     await logout();
-    router.invalidate();
     navigate({ to: from, replace: true });
   };
 

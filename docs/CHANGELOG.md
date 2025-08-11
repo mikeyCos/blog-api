@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 11 AUG 2025
+- A GET request is sent to `/users/${params.username}/posts` in the route loader for `/_protected/_dashboard/_user/$username/posts`.
+- Defined `user` in `RouterContext` interface.
+---
 ### 06 AUG 2025
 - Defined `axiosPrivate` in `RouterContext` interface and `axiosPrivate` instance is passed into the `RouterProvider.context` in `InnerApp` component.
 - Added `accessToken` to `useMemo` dependency array for `axiosPrivate` instance.
@@ -317,7 +321,7 @@
 ---
 ### 09 MAY 2025
 - Logging in will direct user to the dashboard.
-- Added `init=true` query parameter to the post request url in `useAuth` module.
+- Added `init=true` query parameter to the POST request URL in `useAuth` module.
 - Created `query.validator` module; validates optional `init` query parameter.
 - Renamed `axiosPrivate` to `axiosInit` and added `validateStatus` config option.
 ---
