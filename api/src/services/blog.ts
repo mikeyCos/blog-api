@@ -106,13 +106,6 @@ export const getPost = async (publicId: number, username: string) => {
 // Should I use prisma.$transaction to get the user, then the user's posts?
 // https://www.prisma.io/docs/orm/prisma-client/queries/transactions#interactive-transactions-1
 export const getPosts = async (username: string) => {
-  /* const posts = await prisma.post.findMany({
-    where: {
-      blogId: blogId,
-    },
-  });
-
-  return posts; */
   return await prisma.$transaction(async (tx) => {
     const user = await tx.user
       .findUniqueOrThrow({

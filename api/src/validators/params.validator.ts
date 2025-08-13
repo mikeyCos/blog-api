@@ -4,10 +4,17 @@ import { checkSchema, Schema, validationResult } from "express-validator";
 import { BadRequestError } from "../errors/customErrors";
 import { RoleName as allowedRoles } from "../prisma/generated/prisma";
 
-interface ValidDataPostSchema {
-  username: string;
-  postPublicId: number;
-  postSlugTitle: string;
+type Username = string;
+type PostPublicId = number;
+type PostSlugTitle = string;
+
+interface ValidUserParams {
+  username: Username;
+}
+
+interface ValidUserPostParams extends ValidUserParams {
+  postPublicId: PostPublicId;
+  postSlugTitle: PostSlugTitle;
 }
 
 const isValidRole = async (roleName: string) => {
@@ -22,6 +29,7 @@ const userSchema: Schema = {
   username: {
     trim: true,
     notEmpty: {
+      errorMessage: 'Parameter "username" cannot be left empty',
       bail: true,
     },
     escape: true,
@@ -31,14 +39,14 @@ const userSchema: Schema = {
 // TODO
 // custom validation for username and postSlugTitle
 const postSchema: Schema = {
-  username: {
-    trim: true,
-    notEmpty: {
-      errorMessage: 'Parameter "username" cannot be left empty',
-      bail: true,
-    },
-    escape: true,
-  },
+  // username: {
+  //   trim: true,
+  //   notEmpty: {
+  //     errorMessage: 'Parameter "username" cannot be left empty',
+  //     bail: true,
+  //   },
+  //   escape: true,
+  // },
   postId: {
     trim: true,
     notEmpty: {
@@ -145,5 +153,6 @@ export {
   userSchema,
   postSchema,
   roleSchema,
-  ValidDataPostSchema,
+  ValidUserParams,
+  ValidUserPostParams,
 };

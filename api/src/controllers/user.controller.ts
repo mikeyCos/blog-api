@@ -4,6 +4,7 @@ import { matchedData } from "express-validator";
 
 import { createUser, getUser, getUsers, deleteUser } from "../services/user";
 import validateCreateUser from "../validators/signup.validator";
+import { ValidUserParams } from "../validators/params.validator";
 
 interface userController {
   createUser: RequestHandler;
@@ -13,7 +14,7 @@ interface userController {
 
 const userController = {
   getUser: asyncHandler(async (req, res) => {
-    const { username } = matchedData<{ username: string }>(req, {
+    const { username } = matchedData<ValidUserParams>(req, {
       onlyValidData: true,
     });
     const user = await getUser(null, username);
@@ -22,12 +23,11 @@ const userController = {
   getUsers: asyncHandler(async (req, res) => {
     const users = await getUsers();
     console.group("getUsers running...");
-    console.log("req.accessToken:", req.accessToken);
     console.groupEnd();
     res.json(users);
   }),
   deleteUser: asyncHandler(async (req, res) => {
-    const { username } = matchedData<{ username: string }>(req, {
+    const { username } = matchedData<ValidUserParams>(req, {
       onlyValidData: true,
     });
     const user = await deleteUser(username);

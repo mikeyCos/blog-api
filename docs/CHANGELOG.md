@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 12 AUG 2025
+- Defined `ValidUserPostParams` interface that extends `ValidUserParams` interface.
+- Defined `Username`, `PostPublicId` and `PostSlugTitle` types in `params.validator`.
+---
 ### 11 AUG 2025
 - A GET request is sent to `/users/${params.username}/posts` in the route loader for `/_protected/_dashboard/_user/$username/posts`.
 - Defined `user` in `RouterContext` interface.

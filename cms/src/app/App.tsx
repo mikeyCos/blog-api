@@ -17,7 +17,7 @@ const InnerApp = () => {
   console.log("auth:", auth);
   console.log("user:", user);
   console.groupEnd();
-  if (auth.isLoading) {
+  if (auth.isLoading || user.isLoading) {
     return <p>Loading...</p>;
   }
 

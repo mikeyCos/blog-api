@@ -19,6 +19,10 @@ export interface PostSuccessResponse extends SuccessResponse {
   post: Post;
 }
 
+export interface UserPostsSuccessResponse extends SuccessResponse {
+  posts: Post[];
+}
+
 export interface LoginErrorResponse {
   code: number;
   status: "fail";

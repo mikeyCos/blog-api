@@ -1,5 +1,7 @@
 import { createFileRoute, useRouteContext } from "@tanstack/react-router";
+
 import Posts from "../../../../../features/posts/Posts";
+import { UserPostsSuccessResponse } from "../../../../../interfaces/responses";
 
 export const Route = createFileRoute(
   "/_protected/_dashboard/_user/$username/posts"
@@ -11,27 +13,22 @@ export const Route = createFileRoute(
     console.groupEnd();
 
     if (context.auth.isAuthenticated) {
-      try {
-        // What if the username parameter is the same as the authenticated user?
-        const response = await context.axiosPrivate.get(
-          `/users/${params.username}/posts`
-        );
-        console.log(
-          `[response] for /users/${params.username}/posts:`,
-          response
-        );
-      } catch (err) {}
+      if (params.username === context.user.user?.username) {
+        return context.user.user.blog?.posts ?? [];
+      } else {
+        try {
+          const response =
+            await context.axiosPrivate.get<UserPostsSuccessResponse>(
+              `/users/${params.username}/posts`
+            );
+          console.log(
+            `[response] for /users/${params.username}/posts:`,
+            response
+          );
+          return response.data.posts;
+        } catch (err) {}
+      }
     }
   },
   component: Posts,
 });
-
-function RouteComponent() {
-  const context = useRouteContext({
-    from: "/_protected",
-  });
-  console.group("[Posts] component rendering...");
-  console.log("context:", context);
-  console.groupEnd();
-  return <div>Hello "/_protected/$username/posts"!</div>;
-}

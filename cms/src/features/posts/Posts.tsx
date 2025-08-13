@@ -28,18 +28,6 @@ const Posts = () => {
   const axiosPrivate = useAxiosPrivate(); */
 
   useEffect(() => {
-    // const getUserPosts = async () => {
-    //   try {
-    //     /*         const response = await axiosPrivate.get(
-    //       `users/${params.username}/posts`
-    //     );
-    //     setPosts(response.data.posts); */
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // };
-
-    // getUserPosts();
     console.group("[Posts] mounted...");
     console.groupEnd();
   }, []);
@@ -61,7 +49,7 @@ const Posts = () => {
     <>
       <h2>Posts</h2>
       <p>Hello "/_protected/$username/posts"!</p>
-      {/* <p>username {user?.username}</p> */}
+      <p>username {context.user.user?.username}</p>
       {/* <PostForm submitForm={submitPost} formErrors={errors} />
       <PostList data={data} /> */}
     </>

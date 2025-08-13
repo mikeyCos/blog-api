@@ -125,22 +125,21 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       } catch (err) {
         setUser(null);
         console.error(err);
-      } finally {
-        setIsLoading(false);
       }
     };
 
     if (accessToken) {
       getUser();
     }
+    setIsLoading(false);
   }, [accessToken, axiosPrivate]);
 
-  // useEffect(() => {
-  //   if (!isLoading) {
-  //     console.log("[UserProvider] router.invalidate() running...");
-  //     router.invalidate();
-  //   }
-  // }, [isLoading]);
+  useEffect(() => {
+    if (!isLoading) {
+      console.log("[UserProvider] router.invalidate() running...");
+      router.invalidate();
+    }
+  }, [isLoading]);
 
   const providerValue = useMemo<UserContextType>(() => {
     console.group("providerValue useMemo running...");

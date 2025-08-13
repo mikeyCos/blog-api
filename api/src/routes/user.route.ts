@@ -15,12 +15,23 @@ const userRoutes = () => {
   userRouter.get("/:username", validateParams(userSchema), getUser);
 
   // PUT requests
+  // userRouter.put('/:username', authenticateToken, validateParams(userSchema), updateUser)
 
   // DELETE requests
-  userRouter.delete("/:username", validateParams(userSchema), deleteUser);
+  userRouter.delete(
+    "/:username",
+    authenticateToken,
+    validateParams(userSchema),
+    deleteUser
+  );
 
   // Nested routes
-  userRouter.use("/:username/posts", validateParams(postSchema), postRoutes());
+  userRouter.use(
+    "/:username/posts",
+    validateParams(userSchema),
+    validateParams(postSchema),
+    postRoutes()
+  );
 
   return userRouter;
 };

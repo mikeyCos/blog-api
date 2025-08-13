@@ -13,7 +13,11 @@ import {
 } from "../services/blog";
 import { User } from "../interfaces/user";
 import slugify from "../utils/slugify.utils";
-import { ValidDataPostSchema } from "../validators/params.validator";
+import {
+  ValidUserParams,
+  ValidUserPostParams,
+  postSchema,
+} from "../validators/params.validator";
 
 interface PostController {
   createPost: RequestHandler;
@@ -68,7 +72,7 @@ const postController: PostController = {
   getPost: asyncHandler(async (req, res) => {
     console.group("getPost endpoint running...");
     const { username, postPublicId, postSlugTitle } =
-      matchedData<ValidDataPostSchema>(req, { onlyValidData: true });
+      matchedData<ValidUserPostParams>(req, { onlyValidData: true });
     const post = await getPost(postPublicId, username);
     res.json(post);
     console.groupEnd();
@@ -78,9 +82,11 @@ const postController: PostController = {
     console.groupEnd();
     // TODO
     // Require query parameters of author?
-    const { username } = req.params;
+    const { username } = matchedData<ValidUserParams>(req, {
+      onlyValidData: true,
+    });
     const posts = await getPosts(username);
-    res.json({ posts });
+    res.json({ status: "success", code: 200, posts });
   }),
   getPostComment: asyncHandler(async (req, res) => {}),
   getPostComments: asyncHandler(async (req, res) => {}),

@@ -21,12 +21,7 @@ const postRoutes = () => {
   } = postController;
 
   // GET requests
-  postRouter.get(
-    "/",
-    authenticateToken,
-    authenticateRoles(["ADMIN"]),
-    getAllPosts
-  );
+  postRouter.get("/", getAllPosts);
   postRouter.get("/:postPublicId/:postSlugTitle", getPost);
   postRouter.get(
     "/:postPublicId/:postSlugTitle/comments/:commentId",

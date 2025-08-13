@@ -107,9 +107,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       console.error(err);
       updateAccessToken(null);
       setIsAuthenticated(false);
-    } finally {
-      setIsLoading(false);
-      console.log("[useAuth initAuth finally...]");
     }
   }, []);
 
@@ -121,17 +118,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
     if (!accessToken) {
       initAuth();
     }
+
+    setIsLoading(false);
   }, []);
 
-  // useEffect(() => {
-  //   if (!isLoading && initialAuthRef.current) {
-  //     router.invalidate();
-  //   }
+  useEffect(() => {
+    // if (!isLoading && initialAuthRef.current) {
+    //   router.invalidate();
+    // }
 
-  //   if (isLoading === false && initialAuthRef.current) {
-  //     initialAuthRef.current = false;
-  //   }
-  // }, [isLoading]);
+    // if (isLoading === false && initialAuthRef.current) {
+    //   initialAuthRef.current = false;
+    // }
+    if (!isLoading) {
+      router.invalidate();
+    }
+  }, [isLoading]);
 
   const AuthProviderValue = useMemo(() => {
     return {
