@@ -12,6 +12,7 @@ import { useParams, useRouteContext } from "@tanstack/react-router";
 //  and renders their posts
 // Should this fetch user based on :username parameters?
 const Posts = () => {
+  const user = useUserData();
   const context = useRouteContext({
     from: "/_protected",
   });
@@ -20,6 +21,7 @@ const Posts = () => {
   // const params = useParams<{ username: string }>();
   console.group("[Posts] component rendering...");
   console.log("context:", context);
+  console.log("user:", user);
   console.groupEnd();
   // console.log(posts);
   /* const { user, addPost } = useUserData();

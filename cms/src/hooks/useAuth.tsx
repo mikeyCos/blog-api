@@ -30,6 +30,7 @@ export interface AuthContext {
   accessToken: string | null;
   authorize: Authorize;
   updateLoading: (newUpdateLoading: boolean) => void;
+  initAuth: () => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -47,7 +48,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   updateAccessToken,
   axiosPrivate,
 }) => {
-  console.log("[AuthProvider] rendering...");
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const initialAuthRef = useRef(true);
@@ -99,6 +99,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
 
   const initAuth = useCallback(async () => {
     console.log("[AuthProvider] initAuth running...");
+    console.log("isLoading:", isLoading);
+    console.log("initialAuthRef.current:", initialAuthRef.current);
     try {
       const refreshResponse = await refreshToken();
       console.log("refreshResponse.accessToken:", refreshResponse.accessToken);
@@ -107,6 +109,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       console.error(err);
       updateAccessToken(null);
       setIsAuthenticated(false);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -115,25 +119,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
     console.log("isAuthenticated:", isAuthenticated);
     console.groupEnd();
 
-    if (!accessToken) {
-      initAuth();
-    }
+    // if (!accessToken) {
+    //   initAuth();
+    // }
 
-    setIsLoading(false);
+    // setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    // if (!isLoading && initialAuthRef.current) {
-    //   router.invalidate();
-    // }
-
-    // if (isLoading === false && initialAuthRef.current) {
-    //   initialAuthRef.current = false;
-    // }
-    if (!isLoading) {
-      router.invalidate();
-    }
-  }, [isLoading]);
 
   const AuthProviderValue = useMemo(() => {
     return {
@@ -145,6 +136,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       authorize,
       axiosPrivate,
       updateLoading,
+      initAuth,
     };
   }, [accessToken, isAuthenticated, isLoading]);
 

@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 13 AUG 2025
+- Defined `loader` function on the `__root` route and `initAuth()` is called when `context.auth.isLoading` is `true`.
+- Attached `initAuth` onto `AuthContext.Provider`. 
+---
 ### 12 AUG 2025
 - Defined `ValidUserPostParams` interface that extends `ValidUserParams` interface.
 - Defined `Username`, `PostPublicId` and `PostSlugTitle` types in `params.validator`.

@@ -18,22 +18,21 @@ interface PostCallback<T> {
 
 type status = "loading" | "unauthenticated" | "authenticated";
 
-interface UserContextAuthenticated {
+interface UserContextBase {
   status: status;
-  user: AuthenticatedUser;
   addPost: PostCallback<Post>;
   updatePost: PostCallback<Post>;
   removePost: PostCallback<string>;
   isLoading: boolean;
+  getUser: () => Promise<void>;
 }
 
-interface UserContextUnauthenticated {
-  status: status;
+interface UserContextAuthenticated extends UserContextBase {
+  user: AuthenticatedUser;
+}
+
+interface UserContextUnauthenticated extends UserContextBase {
   user: null;
-  addPost: PostCallback<Post>;
-  updatePost: PostCallback<Post>;
-  removePost: PostCallback<string>;
-  isLoading: boolean;
 }
 
 export type UserContextType =
@@ -47,6 +46,7 @@ const UserContext = createContext<UserContextType>({
   updatePost: () => {},
   removePost: () => {},
   isLoading: true,
+  getUser: () => new Promise(() => {}),
 });
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -105,47 +105,23 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  useEffect(() => {
-    console.group("[UserProvider] mounted");
-    console.log("[UserProvider] accessToken:", accessToken);
-    console.groupEnd();
-
-    const getUser = async () => {
-      console.log("[useUser] getUser running...");
-      try {
-        // Why is the accessToken not getting attached to the request?
-        console.group("getUser tryblock running...");
-        console.log(
-          `[getUser] accessToken: ${accessToken}, isAuthenticated: ${isAuthenticated}`
-        );
-        console.groupEnd();
-        const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
-        setUser(response.data.user);
-        console.log("[UserProvider] getUser response:", response);
-      } catch (err) {
-        setUser(null);
-        console.error(err);
-      }
-    };
-
-    if (accessToken) {
-      getUser();
+  const getUser = async () => {
+    console.log("[useUser] getUser running...");
+    try {
+      console.group("getUser tryblock running...");
+      console.groupEnd();
+      const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
+      setUser(response.data.user);
+      console.log("[UserProvider] getUser response:", response);
+    } catch (err) {
+      setUser(null);
+      console.error(err);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  }, [accessToken, axiosPrivate]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      console.log("[UserProvider] router.invalidate() running...");
-      router.invalidate();
-    }
-  }, [isLoading]);
+  };
 
   const providerValue = useMemo<UserContextType>(() => {
-    console.group("providerValue useMemo running...");
-    console.log("user:", user);
-    console.log("isAuthenticated:", isAuthenticated);
-    console.groupEnd();
     if (isAuthenticated) {
       return {
         status: "authenticated",
@@ -154,6 +130,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         updatePost,
         removePost,
         isLoading,
+        getUser,
       };
     }
 
@@ -164,6 +141,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       updatePost: () => {},
       removePost: () => {},
       isLoading,
+      getUser,
     };
   }, [user, isAuthenticated, isLoading, addPost, updatePost, removePost]);
 

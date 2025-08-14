@@ -16,10 +16,11 @@ const InnerApp = () => {
   const axiosPrivate = useAxiosPrivate();
   console.log("auth:", auth);
   console.log("user:", user);
+  console.log("axiosPrivate:", axiosPrivate);
   console.groupEnd();
-  if (auth.isLoading || user.isLoading) {
-    return <p>Loading...</p>;
-  }
+  // if (auth.isLoading || user.isLoading) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <RouterProvider router={router} context={{ auth, axiosPrivate, user }} />

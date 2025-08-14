@@ -13,7 +13,6 @@ const Header: React.FC = () => {
   const from = location.pathname;
   console.group("Header component rendering...");
   console.log("from in Header component:", from);
-  console.log("accessToken in Header component:", accessToken);
   console.log("isAuthenticated in Header component:", isAuthenticated);
   console.groupEnd();
   // TODO
