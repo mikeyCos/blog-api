@@ -111,11 +111,14 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.group("getUser tryblock running...");
       console.groupEnd();
       const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
-      setUser(response.data.user);
+      const user = response.data.user;
+      setUser(user);
       console.log("[UserProvider] getUser response:", response);
+      return user;
     } catch (err) {
       setUser(null);
       console.error(err);
+      throw err;
     } finally {
       setIsLoading(false);
     }

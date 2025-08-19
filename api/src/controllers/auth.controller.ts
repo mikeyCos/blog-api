@@ -26,12 +26,12 @@ interface authController {
 
 const authController: authController = {
   getAuthenticatedUser: asyncHandler(async (req, res) => {
-    console.group("authenticatedUser running...");
+    console.group("[authController] authenticatedUser running...");
+    console.groupEnd();
     const { user: userPayload } = req;
     const user = await getUser(userPayload.id);
     // What if user does not have a blog?
     console.log("user:", user);
-    console.groupEnd();
     if (user) {
       res.json({
         status: "success",
@@ -58,6 +58,7 @@ const authController: authController = {
     // Create new accessToken unless the current accessToken is still valid
     // TODO
     // Refactor this endpoint
+    console.log("[authController] refreshToken running...");
     const { refreshToken } = req;
 
     if (!refreshToken) {

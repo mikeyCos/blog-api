@@ -38,7 +38,7 @@ export const Route = createFileRoute("/_protected")({
       }
     }
   },
-  loader: async ({ context }) => {
+  loader: async ({ context, parentMatchPromise }) => {
     console.group("[_protected] loader running...");
     console.log("context:", context);
     console.groupEnd();

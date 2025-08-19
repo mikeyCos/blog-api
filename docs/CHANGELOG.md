@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 15 AUG 2025
+- Both `initAuth` and `getUser` asynchronous function now throw their errors in the `catch` block after state setters are called.
+- Moved `context.user.getUser()` from it's own `try...catch` block into the `try...catch` block containing `context.auth.initAuth()`. 
+---
 ### 13 AUG 2025
 - Defined `loader` function on the `__root` route and `initAuth()` is called when `context.auth.isLoading` is `true`.
 - Attached `initAuth` onto `AuthContext.Provider`. 

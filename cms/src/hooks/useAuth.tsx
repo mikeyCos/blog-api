@@ -109,6 +109,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       console.error(err);
       updateAccessToken(null);
       setIsAuthenticated(false);
+      throw err;
     } finally {
       setIsLoading(false);
     }

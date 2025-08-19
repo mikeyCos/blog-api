@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 
 // Extract tokens from request headers and cookies
 const deserializeTokens: RequestHandler = async (req, res, next) => {
-  console.clear();
+  // console.clear();
   console.group("deserializeTokens running...");
   console.log("req.headers:", req.headers);
   console.groupEnd();

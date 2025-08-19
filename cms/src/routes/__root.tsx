@@ -4,12 +4,12 @@ import { AuthContext } from "../hooks/useAuth";
 import RootLayout from "../layouts/RootLayout";
 import { AxiosPrivateContext } from "../hooks/useAxiosPrivate";
 import { UserContextType } from "../hooks/useUser";
-import router from "../config/router.config";
 
 interface RouterContext {
   auth: AuthContext;
   axiosPrivate: AxiosPrivateContext;
   user: UserContextType;
+  foo: string | null;
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
@@ -22,21 +22,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       try {
         console.log("context.auth.isLoading:", context.auth.isLoading);
         await context.auth.initAuth();
+        const user = await context.user.getUser();
+        return { parentLoaderData: { user } };
       } catch (err) {
         console.log("context.auth.initAuth() err:", err);
-      }
-      return null;
-    }
-
-    if (context.auth.isAuthenticated && context.user.isLoading) {
-      try {
-        console.log(
-          "context.auth.isAuthenticated && context.user.isLoading:",
-          context.auth.isAuthenticated && context.user.isLoading
-        );
-        await context.user.getUser();
-      } catch (err) {
-        console.log("context.auth.initAuth() err:", err);
+        return null;
       }
     }
   },
