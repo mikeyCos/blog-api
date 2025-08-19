@@ -1,6 +1,9 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 19 AUG 2025
+- Merged `rewrite-routes-tanstack` branch to `role-authentication`. 
+---
 ### 15 AUG 2025
 - Both `initAuth` and `getUser` asynchronous function now throw their errors in the `catch` block after state setters are called.
 - Moved `context.user.getUser()` from it's own `try...catch` block into the `try...catch` block containing `context.auth.initAuth()`. 
