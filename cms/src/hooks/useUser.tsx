@@ -1,7 +1,7 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -10,7 +10,6 @@ import { useAuth } from "./useAuth";
 import { AuthUserResponse } from "../interfaces/responses";
 import { Post } from "../interfaces/blog";
 import { useAxiosPrivate } from "./useAxiosPrivate";
-import router from "../config/router.config";
 
 interface PostCallback<T> {
   (param: T): void;
@@ -24,7 +23,7 @@ interface UserContextBase {
   updatePost: PostCallback<Post>;
   removePost: PostCallback<string>;
   isLoading: boolean;
-  getUser: () => Promise<void>;
+  getUser: () => Promise<AuthenticatedUser>;
 }
 
 interface UserContextAuthenticated extends UserContextBase {
@@ -123,6 +122,10 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsLoading(false);
     }
   };
+
+  const updateUser = useCallback((newUser: null | AuthenticatedUser) => {
+    setUser(newUser);
+  }, []);
 
   const providerValue = useMemo<UserContextType>(() => {
     if (isAuthenticated) {

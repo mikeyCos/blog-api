@@ -9,7 +9,6 @@ interface RouterContext {
   auth: AuthContext;
   axiosPrivate: AxiosPrivateContext;
   user: UserContextType;
-  foo: string | null;
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
@@ -22,8 +21,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       try {
         console.log("context.auth.isLoading:", context.auth.isLoading);
         await context.auth.initAuth();
-        const user = await context.user.getUser();
-        return { parentLoaderData: { user } };
+        // TODO will need to TanStack query here
+        // https://tanstack.com/router/latest/docs/framework/react/guide/external-data-loading
+        // const user = await context.user.getUser();
+        // return { user };
       } catch (err) {
         console.log("context.auth.initAuth() err:", err);
         return null;

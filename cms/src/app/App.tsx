@@ -8,6 +8,8 @@ import AxiosPrivateProvider, {
   useAxiosPrivate,
   useAxiosPrivateConfig,
 } from "../hooks/useAxiosPrivate";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "../config/query.config";
 
 const InnerApp = () => {
   console.group("InnerApp running...");
@@ -43,15 +45,17 @@ const AppProviders: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <>
-      <AuthProvider
-        accessToken={accessToken}
-        updateAccessToken={updateAccessToken}
-        axiosPrivate={axiosPrivate}
-      >
-        <AxiosPrivateProvider axiosPrivate={axiosPrivate}>
-          <UserProvider>{children}</UserProvider>
-        </AxiosPrivateProvider>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider
+          accessToken={accessToken}
+          updateAccessToken={updateAccessToken}
+          axiosPrivate={axiosPrivate}
+        >
+          <AxiosPrivateProvider axiosPrivate={axiosPrivate}>
+            <UserProvider>{children}</UserProvider>
+          </AxiosPrivateProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </>
   );
 };

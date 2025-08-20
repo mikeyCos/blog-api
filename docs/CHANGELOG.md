@@ -2,6 +2,10 @@
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
 ### 19 AUG 2025
+- Created `query.config` module.
+- Installed `@tanstack/react-query`
+- Updated outdated packages in `cms` subdirectory.
+- Created `tanstack-query` branch.
 - Merged `rewrite-routes-tanstack` branch to `role-authentication`. 
 ---
 ### 15 AUG 2025
