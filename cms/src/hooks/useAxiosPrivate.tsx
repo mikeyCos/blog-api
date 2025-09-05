@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import config from "../config/env.config";
-import useRefreshToken from "./useRefreshToken";
+import { refreshToken } from "../features/auth/api/refreshToken";
 
 export type AxiosPrivateContext = AxiosInstance;
 
@@ -42,7 +42,6 @@ const useAxiosPrivateConfig = ({
 }: InitAxiosPrivateProps) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [failedRequests, setFailedRequests] = useState<FailedRequests[]>([]);
-  const refreshToken = useRefreshToken();
   const accessTokenRef = useRef(accessToken);
 
   const retryFailedRequests = useCallback(
@@ -131,30 +130,32 @@ const useAxiosPrivateConfig = ({
           // Allows only one request to /auth/refresh
           setIsRefreshing(true);
 
-          return new Promise(async (resolve, reject) => {
-            try {
-              const refreshResponse = await refreshToken();
-              const newAccessToken = refreshResponse.accessToken;
-              updateAccessToken(newAccessToken);
+          // return new Promise(async (resolve, reject) => {
+          try {
+            const refreshTokenData = await refreshToken();
+            const newAccessToken = refreshTokenData.accessToken;
+            console.log("newAccessToken:", newAccessToken);
+            updateAccessToken(newAccessToken);
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
-              originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-              retryFailedRequests();
-              resolve(axiosInstance(originalRequest));
-            } catch (refreshErr: any) {
-              console.log("refreshErr:", refreshErr);
-              retryFailedRequests(refreshErr);
-              updateAccessToken(null);
-              reject(refreshErr);
-            } finally {
-              setIsRefreshing(false);
-            }
-          });
+            retryFailedRequests();
+            // resolve(axiosInstance(originalRequest));
+            return axiosInstance(originalRequest);
+          } catch (refreshErr: any) {
+            console.log("refreshErr:", refreshErr);
+            retryFailedRequests(refreshErr);
+            updateAccessToken(null);
+            // reject(refreshErr);
+            return Promise.reject(refreshErr);
+          } finally {
+            setIsRefreshing(false);
+          }
         }
       }
     );
 
     return axiosInstance;
-  }, [accessToken]);
+  }, [accessToken, updateAccessToken]);
 
   return axiosPrivate;
 };

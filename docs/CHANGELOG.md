@@ -1,6 +1,10 @@
 # Changelog
 <!-- https://medium.com/@dtgasparyan/feature-sliced-design-the-ideal-frontend-architecture-84d701ad44ba -->
 ---
+### 05 SEP 2025
+- Deleted `useRefreshToken` module.
+- Created `entities` and `auth` subdirectories.
+---
 ### 19 AUG 2025
 - Created `query.config` module.
 - Installed `@tanstack/react-query`

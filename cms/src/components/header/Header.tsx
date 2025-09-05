@@ -3,17 +3,25 @@ import React from "react";
 import NavAnchor from "../navAnchor/NavAnchor";
 import styles from "./Header.module.css";
 import { useAuth } from "../../hooks/useAuth";
-import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import router from "../../config/router.config";
+import {
+  getRouteApi,
+  Link,
+  useLocation,
+  useNavigate,
+} from "@tanstack/react-router";
+
+const routeApi = getRouteApi("__root__");
 
 const Header: React.FC = () => {
   const { accessToken, isAuthenticated, logout } = useAuth();
+  const rootData = routeApi.useLoaderData();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.pathname;
   console.group("Header component rendering...");
   console.log("from in Header component:", from);
-  console.log("isAuthenticated in Header component:", isAuthenticated);
+  console.log("rootData:", rootData);
+  // console.log("isAuthenticated in Header component:", isAuthenticated);
   console.groupEnd();
   // TODO
   // Should the user be redirected to the home page or the page they are logging out from?
@@ -24,7 +32,6 @@ const Header: React.FC = () => {
   //    Logging out from /faq should return the user to /faq, not /login
   const handleLogout = async () => {
     console.group("handleLogout running...");
-    console.log("location:", location);
     console.groupEnd();
     await logout();
     navigate({ to: from, replace: true });

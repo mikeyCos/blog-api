@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_protected")({
 
     // Check if user is authenticated
     // Otherwise, check if user is still authenticated
-    if (!context.auth.isAuthenticated) {
+    /*     if (!context.auth.isAuthenticated) {
       console.log("context.auth.isLoading:", context.auth.isLoading);
       console.log(
         "context.auth.isAuthenticated:",
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/_protected")({
           },
         });
       }
-    }
+    } */
   },
   loader: async ({ context, parentMatchPromise }) => {
     console.group("[_protected] loader running...");

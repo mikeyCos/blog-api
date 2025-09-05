@@ -8,9 +8,10 @@ import React, {
   useState,
 } from "react";
 
-import useRefreshToken from "./useRefreshToken";
-import { AxiosInstance } from "axios";
+import { AxiosError, AxiosInstance } from "axios";
 import router from "../config/router.config";
+import { useQuery } from "@tanstack/react-query";
+import refreshAccessQuery from "../features/auth/api/refreshToken";
 
 // TODO
 // Need to set type for createContext, useState, and user
@@ -51,12 +52,14 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const initialAuthRef = useRef(true);
+  // const authQuery = useQuery({
+  //   queryKey: ['auth'],
+  //   queryFn:
+  // })
 
   const updateLoading = useCallback((newUpdateLoading: boolean) => {
     setIsLoading(newUpdateLoading);
   }, []);
-
-  const refreshToken = useRefreshToken();
 
   const login: Login = useCallback((newToken) => {
     console.group("[AuthProvider] login running...");
@@ -85,15 +88,24 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
     try {
       await axiosPrivate.get("/auth");
     } catch (err) {
+      console.log("[useAuth] authorize running...");
+      console.log("isAuthenticated:", isAuthenticated);
       console.error(err);
       updateAccessToken(null);
       setIsAuthenticated(false);
-      if (err instanceof Error && isAuthenticated) {
-        console.log("err instanceof Error:", err instanceof Error);
-        console.log("[authorize] err:", err);
-        // How to throw error to Tanstack Router errorElement?
-        throw err;
-      }
+      // if (err instanceof Error) {
+      //   throw err;
+      // }
+
+      throw err;
+
+      // if (err instanceof Error && isAuthenticated) {
+      //   console.log("err instanceof Error:", err instanceof Error);
+      //   console.log("[authorize] err:", err);
+      //   throw err;
+      // } else if (err instanceof AxiosError && isAuthenticated) {
+      //   throw err;
+      // }
     }
   }, []);
 
@@ -102,9 +114,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
     console.log("isLoading:", isLoading);
     console.log("initialAuthRef.current:", initialAuthRef.current);
     try {
-      const refreshResponse = await refreshToken();
-      console.log("refreshResponse.accessToken:", refreshResponse.accessToken);
-      login(refreshResponse.accessToken);
+      const accessToken = await refreshAccessQuery();
+
+      login(accessToken);
     } catch (err) {
       console.error(err);
       updateAccessToken(null);
@@ -126,6 +138,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
 
     // setIsLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.invalidate();
+    }
+  }, [isAuthenticated]);
 
   const AuthProviderValue = useMemo(() => {
     return {

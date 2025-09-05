@@ -12,10 +12,8 @@ export const Route = createFileRoute(
     console.log("context:", context);
     console.log("params:", params);
     console.groupEnd();
-    const parentDataFoo = await parentMatchPromise;
-    console.log("parentDataFoo:", parentDataFoo);
 
-    if (context.auth.isAuthenticated) {
+    /*     if (context.auth.isAuthenticated) {
       if (params.username === context.user.user?.username) {
         return context.user.user.blog?.posts ?? [];
       } else {
@@ -31,7 +29,7 @@ export const Route = createFileRoute(
           return response.data.posts;
         } catch (err) {}
       }
-    }
+    } */
   },
   component: Posts,
 });

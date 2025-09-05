@@ -10,6 +10,10 @@ import { useAuth } from "./useAuth";
 import { AuthUserResponse } from "../interfaces/responses";
 import { Post } from "../interfaces/blog";
 import { useAxiosPrivate } from "./useAxiosPrivate";
+import queryClient from "../config/query.config";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { getAuthenticatedUser } from "../entities/user/api/queries";
 
 interface PostCallback<T> {
   (param: T): void;
@@ -19,11 +23,11 @@ type status = "loading" | "unauthenticated" | "authenticated";
 
 interface UserContextBase {
   status: status;
-  addPost: PostCallback<Post>;
-  updatePost: PostCallback<Post>;
-  removePost: PostCallback<string>;
-  isLoading: boolean;
-  getUser: () => Promise<AuthenticatedUser>;
+  // addPost: PostCallback<Post>;
+  // updatePost: PostCallback<Post>;
+  // removePost: PostCallback<string>;
+  // isLoading: boolean;
+  // updateUser: PostCallback<AuthenticatedUser | null>;
 }
 
 interface UserContextAuthenticated extends UserContextBase {
@@ -41,115 +45,91 @@ export type UserContextType =
 const UserContext = createContext<UserContextType>({
   status: "unauthenticated",
   user: null,
-  addPost: () => {},
-  updatePost: () => {},
-  removePost: () => {},
-  isLoading: true,
-  getUser: () => new Promise(() => {}),
+  // addPost: () => {},
+  // updatePost: () => {},
+  // removePost: () => {},
+  // isLoading: true,
+  // updateUser: () => {},
 });
 
 const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accessToken, isAuthenticated } = useAuth();
+  console.log("[UserProvider] rendering...");
+  // const { accessToken, isAuthenticated } = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<AuthenticatedUser | null>(null);
+  // const {
+  //   data: user,
+  //   isLoading,
+  //   isError,
+  // } = useQuery({
+  //   queryKey: ["user"],
+  //   queryFn: () => getAuthenticatedUser(axiosPrivate),
+  // });
 
-  const addPost: PostCallback<Post> = (newPost) => {
-    setUser((prevUser) => {
-      if (!prevUser) return prevUser;
+  // const [isLoading, setIsLoading] = useState(true);
+  // const [user, setUser] = useState<AuthenticatedUser | null>(null);
 
-      return {
-        ...prevUser,
-        ...(prevUser.blog && {
-          blog: { ...prevUser.blog, posts: [...prevUser.blog.posts, newPost] },
-        }),
-      };
-    });
-  };
+  // const addPost: PostCallback<Post> = (newPost) => {
+  //   setUser((prevUser) => {
+  //     if (!prevUser) return prevUser;
 
-  const updatePost: PostCallback<Post> = (newPost) => {
-    setUser((prevUser) => {
-      if (prevUser?.blog) {
-        const posts = prevUser.blog.posts.map((post) => {
-          if (post.id !== newPost.id) return post;
-          return newPost;
-        });
+  //     return {
+  //       ...prevUser,
+  //       ...(prevUser.blog && {
+  //         blog: { ...prevUser.blog, posts: [...prevUser.blog.posts, newPost] },
+  //       }),
+  //     };
+  //   });
+  // };
 
-        return {
-          ...prevUser,
-          blog: { ...prevUser.blog, posts },
-        };
-      }
+  // const updatePost: PostCallback<Post> = (newPost) => {
+  //   setUser((prevUser) => {
+  //     if (prevUser?.blog) {
+  //       const posts = prevUser.blog.posts.map((post) => {
+  //         if (post.id !== newPost.id) return post;
+  //         return newPost;
+  //       });
 
-      return prevUser;
-    });
-  };
+  //       return {
+  //         ...prevUser,
+  //         blog: { ...prevUser.blog, posts },
+  //       };
+  //     }
 
-  const removePost: PostCallback<string> = (postId) => {
-    setUser((prevUser) => {
-      if (prevUser?.blog) {
-        const posts = prevUser.blog.posts.filter((post) => {
-          if (post.id !== postId) return post;
-        });
+  //     return prevUser;
+  //   });
+  // };
 
-        return {
-          ...prevUser,
-          blog: { ...prevUser.blog, posts },
-        };
-      }
+  // const removePost: PostCallback<string> = (postId) => {
+  //   setUser((prevUser) => {
+  //     if (prevUser?.blog) {
+  //       const posts = prevUser.blog.posts.filter((post) => {
+  //         if (post.id !== postId) return post;
+  //       });
 
-      return prevUser;
-    });
-  };
+  //       return {
+  //         ...prevUser,
+  //         blog: { ...prevUser.blog, posts },
+  //       };
+  //     }
 
-  const getUser = async () => {
-    console.log("[useUser] getUser running...");
-    try {
-      console.group("getUser tryblock running...");
-      console.groupEnd();
-      const response = await axiosPrivate.get<AuthUserResponse>("/auth/user");
-      const user = response.data.user;
-      setUser(user);
-      console.log("[UserProvider] getUser response:", response);
-      return user;
-    } catch (err) {
-      setUser(null);
-      console.error(err);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     return prevUser;
+  //   });
+  // };
 
-  const updateUser = useCallback((newUser: null | AuthenticatedUser) => {
-    setUser(newUser);
-  }, []);
+  // const updateUser = useCallback((newUser: null | AuthenticatedUser) => {
+  //   setUser(newUser);
+  // }, []);
 
   const providerValue = useMemo<UserContextType>(() => {
-    if (isAuthenticated) {
-      return {
-        status: "authenticated",
-        user,
-        addPost,
-        updatePost,
-        removePost,
-        isLoading,
-        getUser,
-      };
-    }
-
+    // const status = user ? "authenticated" : "unauthenticated";
+    const status = "unauthenticated";
     return {
-      status: "unauthenticated",
+      status,
       user: null,
-      addPost: () => {},
-      updatePost: () => {},
-      removePost: () => {},
-      isLoading,
-      getUser,
     };
-  }, [user, isAuthenticated, isLoading, addPost, updatePost, removePost]);
+  }, []);
 
   return (
     <UserContext.Provider value={providerValue}>
@@ -159,7 +139,7 @@ const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 // I wish a generic type could be provided to useContext on consumption
-const useUserData = () => {
+const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
     throw Error("useUserData needs to be called inside UserContext Provider.");
@@ -167,4 +147,4 @@ const useUserData = () => {
   return context;
 };
 
-export { UserProvider as default, useUserData };
+export { UserProvider as default, useUser };

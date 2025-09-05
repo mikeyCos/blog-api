@@ -1,7 +1,7 @@
 import { RouterProvider } from "@tanstack/react-router";
 
 import AuthProvider, { useAuth } from "../hooks/useAuth";
-import UserProvider, { useUserData } from "../hooks/useUser";
+import UserProvider, { useUser } from "../hooks/useUser";
 import router from "../config/router.config";
 import React, { useCallback, useEffect, useState } from "react";
 import AxiosPrivateProvider, {
@@ -14,13 +14,13 @@ import queryClient from "../config/query.config";
 const InnerApp = () => {
   console.group("InnerApp running...");
   const auth = useAuth();
-  const user = useUserData();
+  const user = useUser();
   const axiosPrivate = useAxiosPrivate();
   console.log("auth:", auth);
   console.log("user:", user);
   console.log("axiosPrivate:", axiosPrivate);
   console.groupEnd();
-  // if (auth.isLoading || user.isLoading) {
+  // if (auth.isLoading) {
   //   return <p>Loading...</p>;
   // }
 

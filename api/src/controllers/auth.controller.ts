@@ -12,7 +12,8 @@ import { createUser, getUser } from "../services/user";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
 import { BadRequestError } from "../errors/customErrors";
 
-const ACCESS_TOKEN_EXPIRATION_SECONDS = 60 * 2; // 60 seconds * 2 minutes = 2 minutes
+const ACCESS_TOKEN_EXPIRATION_SECONDS = 60 * 1; // 60 seconds * 2 minutes = 2 minutes
+const REFRESH_TOKEN_EXPIRATION_MS = 1000 * 60 * 60; // 6 0 seconds * 60 minutes = 1 hour
 
 interface authController {
   authorize: RequestHandler;
@@ -122,7 +123,7 @@ const authController: authController = {
                 signJWT(
                   { user: { id } },
                   {
-                    expiresIn: `${refreshTokenExpiresIn}`,
+                    expiresIn: `${REFRESH_TOKEN_EXPIRATION_MS}`,
                   }
                 )
               );
@@ -132,7 +133,7 @@ const authController: authController = {
                 secure: true,
                 sameSite: "strict",
                 // maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 30 days
-                maxAge: refreshTokenExpiresIn, // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
+                maxAge: REFRESH_TOKEN_EXPIRATION_MS, // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
                 // maxAge: 24 * 60 * 60 * 1000, // 30 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
                 // maxAge: 20 * 1000, // 20 seconds * 1000 milliseconds
               });
@@ -175,7 +176,6 @@ const authController: authController = {
         const { id, username, roles } = user;
         const expiresIn = 10; // seconds
         const refreshTokenExpiresIn = 24 * 60 * 60 * 1000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds = 1 day
-        // const refreshTokenExpiresIn = 20 * 1000; // 20 seconds * 1000 milliseconds
         const accessToken = await signJWT(
           { user: { id, username, roles } },
           { expiresIn }
